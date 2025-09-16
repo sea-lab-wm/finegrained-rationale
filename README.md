@@ -1,9 +1,9 @@
-# Fine-grained-Multi-Document-Extraction-and-Generation-of-Code-Change-Rationale
+# Fine-grained Multi-Document Extraction and Generation of Code Change Rationale
 
-Abstract: Understanding the reasons behind past code changes is critical for many software engineering tasks, including refactoring and reviewing code, diagnosing and fixing bugs, and implementing new features. Unfortunately, locating and reconstructing this rationale can be extremely difficult for developers, because the information is often fragmented, inconsistently documented, and scattered across heterogeneous artifacts such as commit messages, issue reports, and pull requests.
+This repository contains the replication package of "Fine-grained Multi-Document Extraction and Generation of Code Change Rationale". The contents of this repository can be found in [Directory](#directory) section.
 
-In this paper, we address this challenge in two major steps. First, we conduct an empirical study of 63 commits from five open-source Java projects to systematically analyze how nine rationale components (for example, a change’s goal, need, and alternative) are distributed across artifacts associated with a commit. We find that rationale is highly fragmented: commit messages and pull requests primarily capture goals, while needs and alternatives are more often found in issues and pull requests. Other components are scarce but do appear in artifacts other than commit messages. Importantly, no single artifact type consistently captures all components, underscoring the need for cross-document reasoning and synthesis.
+## Directory
 
-Second, we introduce Tool, an LLM-based approach that identifies sentences expressing goals, needs, and alternatives across a commit’s artifacts and synthesizes them into concise rationale summaries to support code comprehension and maintenance tasks. We developed Tool’s prompts using 13 commits and evaluated it on the remaining 50 commits. Tool outperforms baselines, achieving 51.4% precision and 93.2% recall for rationale identification, while producing rationale summaries rated as accurate and correct. A user study with 12 Java developers further shows that these summaries are perceived as useful, may reduce effort in understanding code changes, and can support tasks such as code review, documentation, and debugging.
-
-Our results highlight the need for multi-document reasoning in capturing rationale and demonstrate the potential of Tool to help developers understand and maintain software systems.
+### Data
+### Scripts
+### Results
