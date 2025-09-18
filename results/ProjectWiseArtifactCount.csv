@@ -1,0 +1,41 @@
+#Project,#Source,#Artifact
+dubbo,CLASS_JAVADOCS,11
+dubbo,CODE_COMMENT,16
+dubbo,CODE_REVIEW_COMMENT,1
+dubbo,COMMIT_MESSAGE,13
+dubbo,ISSUE,6
+dubbo,METHOD_JAVADOCS,4
+dubbo,PULL_REQUEST,15
+dubbo Total,,66
+junit4,CLASS_JAVADOCS,10
+junit4,CODE_COMMENT,7
+junit4,CODE_REVIEW_COMMENT,3
+junit4,COMMIT_MESSAGE,13
+junit4,ISSUE,3
+junit4,METHOD_JAVADOCS,2
+junit4,PULL_REQUEST,9
+junit4 Total,,47
+okhttp,CLASS_JAVADOCS,13
+okhttp,CODE_COMMENT,21
+okhttp,CODE_REVIEW_COMMENT,2
+okhttp,COMMIT_MESSAGE,12
+okhttp,ISSUE,4
+okhttp,METHOD_JAVADOCS,5
+okhttp,PULL_REQUEST,11
+okhttp Total,,68
+retrofit,CLASS_JAVADOCS,8
+retrofit,CODE_COMMENT,17
+retrofit,CODE_REVIEW_COMMENT,7
+retrofit,COMMIT_MESSAGE,13
+retrofit,ISSUE,4
+retrofit,METHOD_JAVADOCS,5
+retrofit,PULL_REQUEST,11
+retrofit Total,,65
+spring-boot,CLASS_JAVADOCS,15
+spring-boot,CODE_COMMENT,7
+spring-boot,CODE_REVIEW_COMMENT,1
+spring-boot,COMMIT_MESSAGE,12
+spring-boot,ISSUE,7
+spring-boot,PULL_REQUEST,3
+spring-boot Total,,45
+Grand Total,,291
