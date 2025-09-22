@@ -206,9 +206,6 @@ def collect_additional_ref_info(input_path, output_path):
     print(f"Adding reference info to {len(commits)} commits...")
     for i, commit in enumerate(commits):
         try:
-            if (i+1) < 250: # TODO
-                continue
-
             print(f"Collecting reference for commit {i + 1}/{len(commits)}: {commit['url']}")
 
             owner, repo, sha = extract_info_from_commit_message(commit['url'])
