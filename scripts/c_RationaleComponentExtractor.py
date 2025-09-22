@@ -986,7 +986,7 @@ def voting_response(config, test=False):
 
 
 if __name__ == "__main__":
-    # add argparse -t test for test data
+    # add argparse: -t test for test data
     parser = argparse.ArgumentParser(description="Rationale Component Extractor")
     parser.add_argument('-t', default="dev", choices=["dev", "test"], type=str, help="Use dev/test data")
     args = parser.parse_args()

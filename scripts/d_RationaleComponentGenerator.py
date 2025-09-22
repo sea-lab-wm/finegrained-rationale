@@ -1,3 +1,4 @@
+import argparse
 import multiprocessing as mp
 import os.path
 from concurrent.futures import ProcessPoolExecutor, as_completed
@@ -171,13 +172,13 @@ def base_prompt_design(config, dev_path, output_path, test):
 
     # gt_column = f"response_label_{comp_iden_config_exp_id}_{comp_iden_config_model_name}"
     gt_column = 'final_annotation'
-    dev_path = f"dataset/prompts/component_identification{'/test' if test else ''}/{comp_iden_config_exp_id}/{comp_iden_config_model_name}/prompt_template_with_response_runs_combined.csv"
+    dev_path = f"data/prompts/component_identification{'/test' if test else ''}/{comp_iden_config_exp_id}/{comp_iden_config_model_name}/prompt_template_with_response_runs_combined.csv"
 
     data = pd.read_csv(dev_path)
 
-    prompt_templates = pd.read_csv("dataset/prompts/prompt_templates_rationale_generation.csv")
+    prompt_templates = pd.read_csv("data/CGPromptTemplate.csv")
 
-    codebook = pd.read_csv('dataset/prompts/codebook.csv')
+    codebook = pd.read_csv('data/AnnotationCodebook.csv')
     codebook = codebook[codebook['Annotation Labels'].isin(codes)].reset_index(drop=True)
 
     data_json = []
@@ -1227,9 +1228,14 @@ def get_response():
 
 
 if __name__ == "__main__":
+    # add argparse: -t test for test data
+    parser = argparse.ArgumentParser(description="Rationale Component Generator")
+    parser.add_argument('-t', default="dev", choices=["dev", "test"], type=str, help="Use dev/test data")
+    args = parser.parse_args()
+
     config = {
         "exp_ids": [
-            # "2.0.0",
+            "2.0.0",
             # "2.1.0",
             "2.2.0",
             # "2.0.1",
@@ -1248,16 +1254,13 @@ if __name__ == "__main__":
         "eval_runs": 3
     }
 
-    ### DEVELOPMENT DATA ###
-
-    base_prompt_design(config, development_data, base_prompt_rationale_geenration, test=False)
-    get_response_from_prompt(config, base_prompt_rationale_geenration, prompt_response_rationale_generation, test=False)
-    compute_metrics(config,prompt_response_rationale_generation, test=False)
-
-    ### TEST DATA ###
-
-    # base_prompt_design(config, test_data, base_prompt_rationale_geenration, test=True)
-    # get_response_from_prompt(config, base_prompt_rationale_geenration, prompt_response_rationale_generation, test=True)
-    # compute_metrics(config,prompt_response_rationale_generation, test=True)
+    if args.t == "test":
+        base_prompt_design(config, test_data, base_prompt_rationale_geenration, test=True)
+        get_response_from_prompt(config, base_prompt_rationale_geenration, prompt_response_rationale_generation, test=True)
+        # compute_metrics(config,prompt_response_rationale_generation, test=True)
+    else:
+        base_prompt_design(config, development_data, base_prompt_rationale_geenration, test=False)
+        get_response_from_prompt(config, base_prompt_rationale_geenration, prompt_response_rationale_generation, test=False)
+        # compute_metrics(config,prompt_response_rationale_generation, test=False)
 
     # get_response()
