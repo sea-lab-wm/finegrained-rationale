@@ -22,7 +22,6 @@ This repository contains the replication package of "Fine-grained Multi-Document
 
 ### Results
 - **results/AnnotatorAgreement.csv**: This csv shows the agreement rate and accuracy of the annotations in each annotation session. (Referenced in *Section 3.4 - Results and Analysis*)
-- **results/AnnotatorAgreement.csv**: This csv shows the agreement rate and accuracy of the annotations in each annotation session. (Referenced in *Section 3.4 - Results and Analysis*)
 - **results/CommitWiseArtifactCount.csv**: This csv shows the number of Artifact we collected for each commit. (Referenced in *Section 3.4 - Results and Analysis*)
 - **results/ProjectWiseArtifactCount.csv**: This csv shows the number of Artifact we collected for each project. (Referenced in *Section 3.4 - Results and Analysis*)
 - **results/PromptDevelopmentPerformanceComparisonIndividualVSVoting.pdf**: This table shows performance comparison between voting and individual response of a model. (Referenced in *Section 5.3 - Prompt Development Results*)
