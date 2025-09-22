@@ -2,7 +2,7 @@ codes = ["GOAL", "NEED", "ALTERNATIVES", "SELECTED_ALTERNATIVE", "VALIDATION", "
 content_identification_codes = ["GOAL", "NEED", "ALTERNATIVES"]
 sources = ["COMMIT_MESSAGE", "CLASS_JAVADOCS", "METHOD_JAVADOCS", "CODE_COMMENT", "ISSUE", "PULL_REQUEST", "CODE_REVIEW_COMMENT"]
 
-### Preprocess Dataset - Tian et al. ###
+### Preprocess & Sample Dataset ###
 dataset_path = "data/sampled messages.csv"
 non_atomic_commits_path = "data/generated/non_atomic_commits.csv"
 pop_data_with_commit_info = "data/generated/dataset_with_commit_info.csv"
@@ -12,19 +12,19 @@ issue_pr_id_from_commit_msg = "data/issue_pr_id_from_commit_msg.csv"
 preprocess_data = "data/generated/preprocess_data.json"
 
 ### Retrival Module ###
-dataset_with_commit_info = "data/dataset_with_commit_info.json"
-dataset_with_commit_issue_info = "data/dataset_with_commit_issue_info.json"
-dataset_with_commit_issue_pr_info = "data/dataset_with_commit_issue_pr_info.json"
-dataset_with_commit_issue_pr_cr_info = "data/dataset_with_commit_issue_pr_cr_info.json"
-dataset_with_commit_issue_pr_cr_javadoc_info = "data/dataset_with_commit_issue_pr_cr_javadoc_info.json"
-dataset_with_commit_issue_pr_cr_javadoc_ref_info = "data/dataset_with_commit_issue_pr_cr_javadoc_ref_info.json"
-dataset_with_commit_issue_pr_cr_javadoc_add_ref_info = "data/dataset_with_commit_issue_pr_cr_javadoc_add_ref_info.json"
+dataset_with_commit_info = "data/generated/dataset_with_commit_info.json"
+dataset_with_commit_issue_info = "data/generated/dataset_with_commit_issue_info.json"
+dataset_with_commit_issue_pr_info = "data/generated/dataset_with_commit_issue_pr_info.json"
+dataset_with_commit_issue_pr_cr_info = "data/generated/dataset_with_commit_issue_pr_cr_info.json"
+dataset_with_commit_issue_pr_cr_javadoc_info = "data/generated/dataset_with_commit_issue_pr_cr_javadoc_info.json"
+dataset_with_commit_issue_pr_cr_javadoc_ref_info = "data/generated/dataset_with_commit_issue_pr_cr_javadoc_ref_info.json"
+dataset_with_commit_issue_pr_cr_javadoc_add_ref_info = "data/generated/dataset_with_commit_issue_pr_cr_javadoc_add_ref_info.json"
 
 final_data_json = "data/final_data.json"
 final_data_csv = "data/final_data.csv"
 
 ### Postprocess ###
-dataset_sentence = "data/dataset_with_parsed_sentence.json"
+dataset_sentence = "data/generated/dataset_with_parsed_sentence.json"
 dataset_filtered = "data/dataset_filtered.json"
 
 ### Prompt Design ###

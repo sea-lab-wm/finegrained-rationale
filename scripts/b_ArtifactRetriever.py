@@ -43,7 +43,7 @@ def collect_issue_info(input_path, output_path):
 
         print(f"Collecting issue info for commit {i + 1}/{len(commits)}: {commit['url']}")
         owner, repo, _ = extract_info_from_commit_message(commit['url'])
-        issue_ids = extract_ids_from_list_str(commit['issue_id'])
+        issue_ids = commit['issue_id']
 
         issue_info_all = []
         for issue_id in issue_ids:
@@ -79,7 +79,7 @@ def collect_pr_info(input_path, output_path):
 
         print(f"Collecting pr info for commit {i + 1}/{len(commits)}: {commit['url']}")
         owner, repo, _ = extract_info_from_commit_message(commit['url'])
-        ids = extract_ids_from_list_str(commit['pr_id'])
+        ids = commit['pr_id']
 
         pr_info_all = []
         for id in ids:
@@ -198,7 +198,6 @@ def collect_ref_info(input_path, output_path):
 
     print(f"Writing issue info to {output_path}...")
     write_json(commits, output_path)
-
 
 def collect_additional_ref_info(input_path, output_path):
     print(f"Collecting Commit info from {input_path}...")
@@ -405,10 +404,32 @@ def parse_sentence(input_path, output_path, num_workers=None):
     # write_json(final_commits, output_path)
     write_json(results, output_path)
 
+def add_issue_pr_ids(input_path, output_path):
+    data = read_json(input_path)
+
+    def extract_ids(row):
+        owner, repo, _ = extract_info_from_commit_url(row['url'])
+        return pd.Series(extract_issue_pr_ids(row['message'], owner=owner, repo=repo))
+
+    # Extract issue and PR IDs from commit messages
+    print('Collecting issue and PR IDs from commit messages...')
+    for commit in data:
+        owner, repo, _ = extract_info_from_commit_message(commit['url'])
+        issue_ids, pr_ids = extract_issue_pr_ids(commit['commit_info']['commit']['message'], owner=owner, repo=repo)
+        commit['issue_id'] = issue_ids
+        commit['pr_id'] = pr_ids
+
+    print('Successfully extracted issue and PR IDs from commit messages.')
+    write_json(data, output_path)
+
+
 if __name__ == '__main__':
 
     print(f"Adding Commit Info ...")
     collect_commit_info(preprocess_data, dataset_with_commit_info)
+
+    print('Adding issue and PR IDs to commits...')
+    add_issue_pr_ids(dataset_with_commit_info, dataset_with_commit_info)
     
     print(f"Adding Issue Info ...")
     collect_issue_info(dataset_with_commit_info, dataset_with_commit_issue_info)
@@ -422,9 +443,6 @@ if __name__ == '__main__':
     print(f"Adding Code Comments & Javadocs in Commits  ...")
     collect_javadoc_info(dataset_with_commit_issue_pr_cr_info, dataset_with_commit_issue_pr_cr_javadoc_info)
 
-    # collect_javadoc_info("dataset/updated_javadocs/data.json",
-    #                      "dataset/updated_javadocs/Data- Analysis - Final data_Javadocs_updated.csv")
-
     print(f"Adding reference pr/issue in Commits  ...")
     collect_ref_info(dataset_with_commit_issue_pr_cr_javadoc_info, dataset_with_commit_issue_pr_cr_javadoc_ref_info)
     
@@ -432,4 +450,4 @@ if __name__ == '__main__':
     collect_additional_ref_info(dataset_with_commit_issue_pr_cr_javadoc_ref_info, dataset_with_commit_issue_pr_cr_javadoc_add_ref_info)
 
     print(f"Parsing sentences ...")
-    parse_sentence(dataset_filtered, dataset_sentence, os.cpu_count()-10)
+    parse_sentence(dataset_with_commit_issue_pr_cr_javadoc_add_ref_info, dataset_sentence, os.cpu_count())
