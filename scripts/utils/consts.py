@@ -5,8 +5,11 @@ sources = ["COMMIT_MESSAGE", "CLASS_JAVADOCS", "METHOD_JAVADOCS", "CODE_COMMENT"
 ### Preprocess Dataset - Tian et al. ###
 dataset_path = "data/sampled messages.csv"
 non_atomic_commits_path = "data/generated/non_atomic_commits.csv"
+pop_data_with_commit_info = "data/generated/dataset_with_commit_info.csv"
+pop_filtered_data = "data/generated/pop_filtered_data.csv"
+sample_marked_data = "data/FilteredCommits.csv"
 issue_pr_id_from_commit_msg = "data/issue_pr_id_from_commit_msg.csv"
-preprocess_data = "data/preprocess_data.json"
+preprocess_data = "data/generated/preprocess_data.json"
 
 ### Retrival Module ###
 dataset_with_commit_info = "data/dataset_with_commit_info.json"
