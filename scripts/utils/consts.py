@@ -3,8 +3,8 @@ content_identification_codes = ["GOAL", "NEED", "ALTERNATIVES"]
 sources = ["COMMIT_MESSAGE", "CLASS_JAVADOCS", "METHOD_JAVADOCS", "CODE_COMMENT", "ISSUE", "PULL_REQUEST", "CODE_REVIEW_COMMENT"]
 
 ### Preprocess Dataset - Tian et al. ###
-dataset_path = "data/preload/sampled messages.csv"
-non_atomic_commits_path = "data/non_atomic_commits.csv"
+dataset_path = "data/sampled messages.csv"
+non_atomic_commits_path = "data/generated/non_atomic_commits.csv"
 issue_pr_id_from_commit_msg = "data/issue_pr_id_from_commit_msg.csv"
 preprocess_data = "data/preprocess_data.json"
 

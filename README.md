@@ -18,3 +18,20 @@ This repository contains the replication package of "Fine-grained Multi-Document
 - **results/AnnotatorAgreement.csv**: This csv shows the agreement rate and accuracy of the annotations in each annotation session. (Referenced in *Section 3.4 - Results and Analysis*)
 - **results/PromptDevelopmentPerformanceComparisonIndividualVSVoting.pdf**: This table shows performance comparison between voting and individual response of a model. (Referenced in *Section 5.3 - Prompt Development Results*)
 - **results/UserStudyCommitDistribution.pdf**: This table shows the distribution of commits used in user study. (Referenced in *Section 6.1 - Methodology*)
+
+## Replication Steps
+
+### Prerequisite
+- Python 3.10
+- OpenAI Api Key
+- Github Access Token
+
+### Environment Set-Up
+1. Create a virtual environment: ```python -m venv venv```
+2. Activate the environment: ```source venv/bin/activate```
+3. Install required packages: ```pip install -r requirements.txt```
+4. Add OpenAI API key as the environment variable: ```export OPENAI_TOKEN=<Your OpenAI Api Key>```
+5. Add Github Access Token as the environment variable: ```export GITHUB_TOKEN=<Your Github Access Token>```
+
+### Execution
+Run the following commands sequentially from the root directory:

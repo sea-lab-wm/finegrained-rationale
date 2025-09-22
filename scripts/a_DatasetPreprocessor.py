@@ -68,11 +68,11 @@ if __name__ == "__main__":
     print('Removing non-atomic commits from dataset...')
     remove_non_atomic_commits(dataset_path, non_atomic_commits_path)
 
-    print('Filtering commits...')
-    filter_commits(dataset_with_commit_issue_pr_cr_javadoc_add_ref_info, dataset_filtered)
+    # print('Filtering commits...')
+    # filter_commits(dataset_with_commit_issue_pr_cr_javadoc_add_ref_info, dataset_filtered)
 
-    print('Adding issue and PR IDs to commits...')
-    add_issue_pr_ids(non_atomic_commits_path, issue_pr_id_from_commit_msg)
+    # print('Adding issue and PR IDs to commits...')
+    # add_issue_pr_ids(non_atomic_commits_path, issue_pr_id_from_commit_msg)
 
-    print("Converting to json format...")
-    convert_csv_to_json(issue_pr_id_from_commit_msg, preprocess_data)
+    # print("Converting to json format...")
+    # convert_csv_to_json(issue_pr_id_from_commit_msg, preprocess_data)
