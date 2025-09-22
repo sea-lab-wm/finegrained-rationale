@@ -1,0 +1,73 @@
+Theme,Component,Annotation Labels,Component Expressed as Question,Description,Annotation Rules,Rules
+Change Objective,Goal,GOAL,What did the developer want to achieve?,"Describes what changes have been made by the developer in the code change. This is a high-level or low-level description of the code change, indicating what the developer aims to achieve with the code change.","-High or low-level description of code change
+-Task of the change
+--Improve implementation
+--Logical change
+--Code refactoring
+--Remove code
+--Exception handling
+","* If a sentence describes the code change and provides more information about what the developer aims to achieve in the commit, that should be a GOAL."
+,Need,NEED,Why did the developer need to achieve that?,"Describes the specific reason, motivation, or benefit of the code change. This indicates why the developer wants to make the code change.","-Redundancy
+--Runtime variable
+--Code Implementation
+-Bug Fix
+-Improve a feature
+-Ensure a feature works correctly as intended
+-Demand for developers’ needs
+--Integrate commonly used patterns into core features
+","* If the commit message contains justificatory language (words or phrases that indicate problem, redundancy, necessity, or reason), then label that as NEED.
+* If a sentence mentions a detailed problem/regression/undesired behavior, label that as NEED.
+* If a sentence describes a solution that is considered a good/bad approach but does not include any details about why it is good or bad, it will not be labeled as NEED
+* When a sentence claims a problem, consider the broader context provided by surrounding sentences and related artifacts to clarify if the problem is a false alarm. If so, do not label it as NEED.
+* If the sentence only describes a situation when the problem (addressed in the commit) appears, then that is not a NEED.
+* If a sentence describes a solution for a problem but doesn't discuss the problem itself, then that is not a NEED.
+* If a sentence only states when a problem/regression was introduced and does not explain cause/impact/benefit or describe the change, do not label it as NEED."
+,Benefits,BENEFITS,What is the benefit of what the developer wants to achieve?,,"- Improvement in non-functional property (performance, reliability, usability, safety)
+- Improvement in functionality which is not initially intended.
+- BENEFITS must be outcomes, not intentions",
+Change Design (pre-implementation assessment),Constraints,CONSTRAINTS,What were the constraints limiting the developer implementation choice?,,"- Environmental restrictions.
+- Resource constraints.
+- Coding standards or tooling limits.
+",
+,Alternatives,ALTERNATIVES,What other alternatives did the developer have?,"Describes other potential solutions considered by the developers before making the final code change. This indicates the alternative solutions discussed by the developers, but not implemented for the code change.","-Use a different implementation
+-Version fallback
+-Ignore/delete the error case
+","* If the sentence describes a potential solution that is already implemented in the code change (maybe with different syntax), that should not be an ALTERNATIVES."
+,Selected_Alternative,SELECTED_ALTERNATIVE,Why did the developer make those specific changes and not others?,,"- Reasons for not accepting other alternatives.
+- Reasons for accepting the final alternative.
+- If there is only one approach, which is not compared with any other approach, the reason for selecting that approach will not be SELECTED_ALTERNATIVE.",
+,Dependency,DEPENDENCY,What other changes does this change depend on?,,"- External API, data formats, systems, or prior code changes on which the current commit depends.",
+Change Execution,Committer,COMMITTER,Who changed the code?,,,
+,Time,TIME,Why were the changes made at that time?,,"- Deadlines, release cycles, timing due to urgency.",
+,Location,LOCATION,What artifacts were changed?,,"R1. Sentences that mention the files, classes or other artifacts which has been changed in the commit will be labeled as LOCATION",
+,Modifications,MODIFICATIONS,What specific changes were performed in the artifacts?,,R1. Sentences that describes high level explanations about source code change will be labeled as MODIFICATIONS.,
+,Explanation_of_Modifications,EXPLANATION_OF_MODIFICATIONS,What are the details of the implementation?,,R1. Sentences that describes low level explanations about source code change will be labeled as EXPLANATION_OF_MODIFICATIONS.,
+Change Evaluation (post-implementation assessment),Validation,VALIDATION,How did those specific changes achieve the goal?,,"- The verification can be done through automated or manual test cases
+- Code review or static analysis.
+- A logical explanation for the code change",
+,Maturity_Stage,MATURITY_STAGE,How mature is this code?,,"- Stability, review status, production-readiness of the commit",
+,Side_Effects,SIDE_EFFECTS,What are the side effects of the change?,,"- If this change has an adverse effect (e.g., performance, maintainability, compatibility, or user experience) that is not part of the main goal.",
+Others,Uncoded,UNCODED,,,"In the following cases, keep the sentences uncoded:
+E1. Sentences that are not related to the code change
+E2. Autogenerated Message/ Error Message/ Stack Trace/ Log Message
+E3. Greetings/Wishes
+E4. Update on a task
+E5. Apology
+E6. Closes <issue id>
+E7. Developer assignment without any reason.
+E8. Any sentences explaining the previous implementation being correct.
+E9. Any sentences explaining the current implementation being correct.",
+,Secondary_reference_commit,SECONDARY_REFERENCE_COMMIT,,,Assign this label to references that point to other commit messages containing information relevant to the target code commit.,
+,Secondary_reference_issue,SECONDARY_REFERENCE_ISSUE,,,Use this label for references to issue reports that provide information related to the target code commit.,
+,Secondary_reference_pull,SECONDARY_REFERENCE_PULL,,,This label applies to references made to pull requests that contain information relevant to the target code commit.,
+,Irrelevant_reference,IRRELEVANT_REFERENCE,,,"Assign this label when the referenced item (issue, pull request, or commit) is not relevant to the target code commit.",
+,Commit_discard,COMMIT_DISCARD,,,"R1. Large number of non-java file change.
+
+R2. Change revolve around mainly non-java files.",
+Global Rules (these rules are applicable to all annotations),,,,,"R0. We will not code location, modification, and explanation of modification.
+
+R1. Sometimes a single word can express what the developer want to do in the code commit.
+
+R2. if one sentence alone cannot be labeled as one annotation but along with it's sorrounding sentences, it can be labeled as an annotation, then all the sorrunding sentences will also be labeled with the same annotation.
+
+R3. If a sentence alone can be labeled as one annotation but it has no relation to the code change than it will not be labeled with that annotation.",

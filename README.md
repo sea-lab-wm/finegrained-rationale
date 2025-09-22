@@ -6,7 +6,8 @@ This repository contains the replication package of "Fine-grained Multi-Document
 
 ### Data
 - **data/AnnotatedSentenceData.csv**: Code change rationale dataset with manually annotated rationale components. (Referenced in *Section 1 - Introduction*)
-- **data/FilteredCommits.csv**: Full list of commits(830 commits) after the applied exclusion criteria. (Referenced in *Section 3.1 - Commit Collection*)
+- **data/FilteredCommits.csv**: Full list of commits after the applied exclusion criteria. (Referenced in *Section 3.1 - Commit Collection*)
+- **data/sampled messages.csv**: Original dataset from Tian et al.(https://dl.acm.org/doi/10.1145/3510003.3510205)
 ### Scripts
 - **scripts/a_DatasetPreprocessor.py**: This script filter commits and prepare the data for artifacts collection.
 - **scripts/b_ArtifactRetriever.py**: This script collect artifacts sentences from different source for each commit.
@@ -19,7 +20,7 @@ This repository contains the replication package of "Fine-grained Multi-Document
 - **results/PromptDevelopmentPerformanceComparisonIndividualVSVoting.pdf**: This table shows performance comparison between voting and individual response of a model. (Referenced in *Section 5.3 - Prompt Development Results*)
 - **results/UserStudyCommitDistribution.pdf**: This table shows the distribution of commits used in user study. (Referenced in *Section 6.1 - Methodology*)
 
-## Replication Steps
+## Reproducibility Steps
 
 ### Prerequisite
 - Python 3.10
@@ -35,3 +36,7 @@ This repository contains the replication package of "Fine-grained Multi-Document
 
 ### Execution
 Run the following commands sequentially from the root directory:
+1. ```python scripts/a_DatasetPreprocessor.py```: Preprocess & sample commits from original dataset.
+2. ```python scripts/b_ArtifactRetriever.py```: Retrieve information from artifacts for each commit. By default this script parse the information into sentences.
+3. ```python scripts/c_RationaleComponentExtractor.py```: Produce the results of component identification(*CI*) for different prompts using developement data. To generate the results of *ARGUS*'s CI, run ```python scripts/c_RationaleComponentExtractor.py -t test```.
+4. ```python scripts/d_RationaleComponentGenerator.py```: Produce the results of component generation(*CG*) for different prompts using developement data. To generate the results of *ARGUS*'s CG, run ```python scripts/d_RationaleComponentGenerator.py -t test```

@@ -28,11 +28,11 @@ dataset_sentence = "data/generated/dataset_with_parsed_sentence.json"
 dataset_filtered = "data/dataset_filtered.json"
 
 ### Prompt Design ###
-all_data = "data/all_data.csv"
+all_data = "data/generated/all_data.csv"
 all_data_annotation_separated = "data/all_data_annotation_separated.csv"
-development_data = "data/development_data.csv"
-example_data = "data/example_data.csv"
-test_data = "data/test_data.csv"
+development_data = "data/generated/development_data.csv"
+example_data = "data/generated/example_data.csv"
+test_data = "data/generated/test_data.csv"
 base_prompt_results = 'data/prompts/component_identification/<exp_id>/prompt_template_wo_response.csv'
 base_prompt_rationale_geenration = 'data/prompts/rationale_generation/<exp_id>/prompt_template_wo_response.csv'
 prompt_response = 'data/prompts/component_identification/<exp_id>/<model>/<run>/prompt_template_with_response.csv'
@@ -43,7 +43,6 @@ prompt_response_result = 'data/prompt_template_with_response_result.csv'
 
 ### Util ###
 annotation_data = "source/prompt_engineering/data/annotation_data.csv"
-development_data = "source/prompt_engineering/data/development_data.csv"
 
 ### Preloaded Data Process ###
 preloaded_commits = "data/preload/TrainingData.csv"

@@ -1,0 +1,1465 @@
+prompt_strategy,llm_annotation_reasoning,reasoning_of_example,rules,example,version,template,code_information,code_diff_information,sentences_information
+CI-ZS,No,No,No,No,1.0.0.0,"# Task summary
+
+You are an experienced Java programmer on the <project_name> project. Your task is to analyze a set of sentences, identify whether they express the rationale behind a target code commit, and annotate them according to a taxonomy of rationale components.
+
+You will be provided with:
+* A list of rationale components, each one describing a different aspect that explains why the code was changed the way it was.
+* The diff of the target commit, which shows how one or more code files were changed.
+* A list of sentences extracted from different sources (artifacts) related to the commit, namely the commit message, pull requests, issue reports, code review comments, Javadoc comments, and inline/block code comments of the changed code.
+
+# Instructions
+* Analyze the content of the sentences, identify the rationale components that they describe, and annotate them with those components.
+* Annotate the sentences individually using one or more of the provided rationale components only if the sentence contains information about those components.
+* If a sentence does not describe any of the rationale components, do not include that sentence in your response.
+* In your response, provide only the sentence ID and the component(s); do not include any additional information.
+* Provide your response in CSV format.
+
+# Important
+Each sentence ID follows the format: CommitID_SourceID_TextID_LocalSentenceID. The IDs in this format are numbers that we use to identify different artifacts and text snippets within these artifacts. If consecutive sentences share the same CommitID_SourceID_TextID, it means they are logically grouped within the artifacts' text. For labeling the sentences, consider these groups as context (as they may give more information about the sentences), but still label the sentences individually.
+
+# Inputs
+
+## Rationale Components
+<code_information>
+
+## Diff of the Target Commit
+<code_diff_information>
+
+## Sentences to Annotate (Separated by Source)
+<sentences_information>
+
+# Response Format (CSV)
+
+sentence_id, labels
+<ID1>, ""<LABEL1>, ...""",<index>. <code>: <definintion>,"<index>. 
+File: <file_name>
+Diff:
+""""""<diff>""""""","Id: <index>
+Source: <source>
+Sentence: 
+""""""<sentence>"""""""
+CI-FS,No,No,No,Yes,1.0.0.2,"# Task summary
+
+You are an experienced Java programmer on the <project_name> project. Your task is to analyze a set of sentences, identify whether they express the rationale behind a target code commit, and annotate them according to a taxonomy of rationale components.
+
+You will be provided with:
+* A list of rationale components, each one describing a different aspect that explains why the code was changed the way it was.
+* The diff of the target commit, which shows how one or more code files were changed.
+* A list of sentences extracted from different sources (artifacts) related to the commit, namely the commit message, pull requests, issue reports, code review comments, Javadoc comments, and inline/block code comments of the changed code.
+
+# Instructions
+* Analyze the content of the sentences, identify the rationale components that they describe, and annotate them with those components.
+* Annotate the sentences individually using one or more of the provided rationale components only if the sentence contains information about those components.
+* If a sentence does not describe any of the rationale components, do not include that sentence in your response.
+* In your response, provide only the sentence ID and the component(s); do not include any additional information.
+* Provide your response in CSV format.
+
+# Important
+Each sentence ID follows the format: CommitID_SourceID_TextID_LocalSentenceID. The IDs in this format are numbers that we use to identify different artifacts and text snippets within these artifacts. If consecutive sentences share the same CommitID_SourceID_TextID, it means they are logically grouped within the artifacts' text. For labeling the sentences, consider these groups as context (as they may give more information about the sentences), but still label the sentences individually.
+
+# Inputs
+
+## Rationale Components
+<code_information>
+
+## Diff of the Target Commit
+<code_diff_information>
+
+## Sentences to Annotate (Separated by Source)
+<sentences_information>
+
+# Response Format (CSV)
+
+sentence_id, labels
+<ID1>, ""<LABEL1>, ...""
+
+
+# Example for Illustration Purposes
+
+Below, I am providing 2 example commits with the code diff and extracted sentences for that commit with the expected rationale component labels. Use the examples only for learning purposes.
+
+## Diff of the Example Commit 1
+1.
+File: src/main/java/org/junit/rules/ExpectedException.java
+Diff:
+""""""@@ -43,8 +43,8 @@
+* public void throwsIllegalArgumentExceptionWithMessageAndCause() {
+* NullPointerException expectedCause = new NullPointerException();
+* thrown.expect(IllegalArgumentException.class);
+- * thrown.expectMessage(&quot;happened?&quot;);
+- * thrown.expectCause(expectedCause);
++ * thrown.expectMessage(&quot;What&quot;);
++ * thrown.expectCause(is(expectedCause));
+* throw new IllegalArgumentException(&quot;What happened?&quot;, cause);
+* }
+* }
+@@ -106,8 +106,12 @@ public void expectMessage(Matcher<String> matcher) {
+expect(hasMessage(matcher));
+}
+
+- public void expectCause(Throwable expectedCause) {
+- expect(causeEquals(expectedCause));
++ /**
++ * Adds {@code matcher} to the list of requirements for the cause of
++ * any thrown exception.
++ */
++ public void expectCause(Matcher<? extends Throwable> expectedCause) {
++ expect(hasCause(expectedCause));
+}
+
+private class ExpectedExceptionStatement extends Statement {
+@@ -147,16 +151,16 @@ public boolean matchesSafely(Throwable item) {
+};
+}
+
+- private Matcher<Throwable> causeEquals(final Throwable expectedCause) {
++ private Matcher<Throwable> hasCause(final Matcher<? extends Throwable> causeMatcher) {
+return new TypeSafeMatcher<Throwable>() {
+- @Override
+- public boolean matchesSafely(Throwable item) {
+- return expectedCause == null ? item.getCause() == null : expectedCause.equals(item.getCause());
+- }
+-
+public void describeTo(Description description) {
+description.appendText(""exception with cause "");
+- description.appendText(expectedCause.toString());
++ description.appendDescriptionOf(causeMatcher);
++ }
++
++ @Override
++ public boolean matchesSafely(Throwable item) {
++ return causeMatcher.matches(item.getCause());
+}
+};
+}""""""
+
+2.
+File: src/test/java/org/junit/tests/experimental/rules/ExpectedExceptionRuleTest.java
+Diff:
+""""""@@ -1,18 +1,21 @@
+package org.junit.tests.experimental.rules;
+
+-import static org.hamcrest.CoreMatchers.any;
+-import static org.junit.Assert.assertThat;
+-import static org.junit.experimental.results.PrintableResult.testResult;
+-import static org.junit.experimental.results.ResultMatchers.hasSingleFailureContaining;
+-import static org.junit.experimental.results.ResultMatchers.isSuccessful;
+-import static org.junit.matchers.JUnitMatchers.both;
++import org.hamcrest.CoreMatchers;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.internal.matchers.TypeSafeMatcher;
+import org.junit.rules.ExpectedException;
+
++import static org.hamcrest.CoreMatchers.any;
++import static org.hamcrest.CoreMatchers.is;
++import static org.junit.Assert.assertThat;
++import static org.junit.experimental.results.PrintableResult.testResult;
++import static org.junit.experimental.results.ResultMatchers.hasSingleFailureContaining;
++import static org.junit.experimental.results.ResultMatchers.isSuccessful;
++import static org.junit.matchers.JUnitMatchers.both;
++
+public class ExpectedExceptionRuleTest {
+public static class HasExpectedException {
+@Rule
+@@ -42,7 +45,7 @@ public void throwsIllegalArgumentExceptionWithCause() {
+
+thrown.expect(IllegalArgumentException.class);
+thrown.expectMessage(""Ack!"");
+- thrown.expectCause(expectedCause);
++ thrown.expectCause(is(expectedCause));
+
+throw new IllegalArgumentException(""Ack!"", expectedCause);
+}
+@@ -51,7 +54,7 @@ public void throwsIllegalArgumentExceptionWithCause() {
+public void throwsIllegalArgumentExceptionWithCauseExplicitlyNull() {
+thrown.expect(IllegalArgumentException.class);
+thrown.expectMessage(""Ack!"");
+- thrown.expectCause(null);
++ thrown.expectCause(CoreMatchers.<Throwable>nullValue());
+
+throw new IllegalArgumentException(""Ack!"");
+}
+@@ -260,7 +263,7 @@ public static class HasWrongCause {
+public void throwWithCause() {
+thrown.expect(IllegalArgumentException.class);
+thrown.expectMessage(""Ack!"");
+- thrown.expectCause(EXPECTED_CAUSE);
++ thrown.expectCause(is(EXPECTED_CAUSE));
+
+throw new IllegalArgumentException(""Ack!"", new NullPointerException(""an unexpected cause""));
+}""""""
+
+## Sentences of the Example Commit 1 (Separated by Source).
+
+The sentences we have already labeled are shown with their corresponding labels. Sentences without any labels (i.e., those that do not contain rationale information) have empty labels.
+
+The following sentences come from the commit message:
+
+Id: 756_1_1_0
+Source: COMMIT_MESSAGE
+Sentence:
+""""""changed the expectedCause() method to accept a Matcher instead of an explicit Throwable and made some documentation changes""""""
+Label: GOAL
+
+The following sentences come from the Javadoc comments of the class(src/main/java/org/junit/rules/ExpectedException.java#ExpectedException) that were changed:
+
+Id: 756_3_5_0
+Source: CLASS_JAVADOCS
+Sentence:
+""""""The ExpectedException Rule allows in-test specification of expected exception types and messages: <pre> // These tests all pass.""""""
+Label:
+
+Id: 756_3_2_0
+Source: CLASS_JAVADOCS
+Sentence:
+""""""thrown.expectMessage(&quot;What&quot;); thrown.expectCause(is(expectedCause));""""""
+Label:
+Reason: This sentence contains source code that checks the exception class's cause and messages during testing. It is unrelated to the target code change. It doesn’t describe what changes were made or why, nor does it propose alternative solutions to the current implementation. Therefore, it is not labeled as GOAL, NEED, or ALTERNATIVES.
+
+The following sentences come from the Javadoc comments of the method(src/main/java/org/junit/rules/ExpectedException.java#expectCause) that were changed
+
+Id: 756_4_28_0
+Source: METHOD_JAVADOCS
+Sentence:
+""""""Adds {@code matcher} to the list of requirements for the cause of any thrown exception.""""""
+Label: GOAL
+
+The following sentences come from the pull_request: https://github.com/junit-team/junit4/pull/377, associated with the commit
+
+Id: 756_6_7_0
+Source: PULL_REQUEST
+Sentence:
+""""""Enable ExpectedException to match causes more easily""""""
+Label: NEED
+
+Id: 756_6_8_0
+Source: PULL_REQUEST
+Sentence:
+""""""When working especially with third-party libraries, it's common to deal with checked exceptions in a way similar to this:
+
+``` java
+try {
+collaborator.something();
+}
+catch (CheckedException e) {
+throw new MyRuntimeException(""failed to do something"", e);
+}
+```
+
+It's common for different instances of MyRuntimeException to be thrown from many possible execution branches, so when testing this, I would like to do something like:
+
+``` java
+@Rule
+ExpectedException thrown= ExpectedException.none();
+
+@Test
+public void aTest() throws Exception {
+CheckedException expected = new CheckedException(""expected"");
+
+Mockito.when(collaborator.something()).thenThrow(expected);
+
+thrown.expect(MyRuntimeException.class);
+thrown.expectMessage(""failed to do something"");
+thrown.expectCause(expected);
+
+myObject.method();
+}""""""
+Label: 
+
+Id: 756_6_8_4
+Source: PULL_REQUEST
+Sentence:
+""""""I realise you can do that with a custom matcher as well, but it feels like this is (at least nearly) as fundamental as matching on the message, so it should perhaps be a part of the core framework?""""""
+Label: ALTERNATIVES, NEED
+
+Id: 756_6_9_1
+Source: PULL_REQUEST
+Sentence:
+""""""One concern I have is that many custom exceptions don't have well-defined equals() methods.""""""
+Label:
+
+Id: 756_6_9_2
+Source: PULL_REQUEST
+Sentence:
+""""""What about one of these ideas:
+
+thrown.expectCause(instanceOf(CheckedException.class));
+
+Or, trickier:
+
+thrown.onCause().expectMessage(""failed to do something""), where onCause() returns an ExpectedException itself (haven't thought about how hard this would be).""""""
+Label: ALTERNATIVES
+
+Id: 756_6_10_0
+Source: PULL_REQUEST
+Sentence:
+""""""Hm, in the initial implementation, I actually didn't check equals but ==.""""""
+Label:
+
+Id: 756_6_10_1
+Source: PULL_REQUEST
+Sentence:
+""""""I can't remember why I changed it now, but using == feels a little better in some ways - I can't think of a scenario where some code would want to do for instance a clone of an exception that was thrown, and wrapping it in another cause would require the comparison to be recursive.""""""
+Label:
+
+Id: 756_6_11_1
+Source: PULL_REQUEST
+Sentence:
+""""""I still think that having expectCause take a Matcher means more flexibility for everyone.""""""
+Label: NEED
+
+Id: 756_6_11_2
+Source: PULL_REQUEST
+Sentence:
+""""""Developers can use thrown.expectCause(is(expected)) when they want the exact exception, and other matchers when they want something more generic.""""""
+Label: NEED
+
+## Diff of the Example Commit 2
+1.
+File: src/main/java/org/junit/rules/TemporaryFolder.java
+Diff:
+""""""@@ -61,13 +61,19 @@ public Result invoke(Invocation invocation) throws RpcException {\n asyncResult.get(Integer.MAX_VALUE, TimeUnit.MILLISECONDS);\n }\n } catch (InterruptedException e) {\n- throw new RpcException(\""Interrupted unexpectedly while waiting for remoting result to return! method: \"" + invocation.getMethodName() + \"", provider: \"" + getUrl() + \"", cause: \"" + e.getMessage(), e);\n+ throw new RpcException(\""Interrupted unexpectedly while waiting for remote result to return! method: \"" +\n+ invocation.getMethodName() + \"", provider: \"" + getUrl() + \"", cause: \"" + e.getMessage(), e);\n } catch (ExecutionException e) {\n Throwable t = e.getCause();\n if (t instanceof TimeoutException) {\n- throw new RpcException(RpcException.TIMEOUT_EXCEPTION, \""Invoke remote method timeout. method: \"" + invocation.getMethodName() + \"", provider: \"" + getUrl() + \"", cause: \"" + e.getMessage(), e);\n+ throw new RpcException(RpcException.TIMEOUT_EXCEPTION, \""Invoke remote method timeout. method: \"" +\n+ invocation.getMethodName() + \"", provider: \"" + getUrl() + \"", cause: \"" + e.getMessage(), e);\n } else if (t instanceof RemotingException) {\n- throw new RpcException(RpcException.NETWORK_EXCEPTION, \""Failed to invoke remote method: \"" + invocation.getMethodName() + \"", provider: \"" + getUrl() + \"", cause: \"" + e.getMessage(), e);\n+ throw new RpcException(RpcException.NETWORK_EXCEPTION, \""Failed to invoke remote method: \"" +\n+ invocation.getMethodName() + \"", provider: \"" + getUrl() + \"", cause: \"" + e.getMessage(), e);\n+ } else {\n+ throw new RpcException(RpcException.UNKNOWN_EXCEPTION, \""Fail to invoke remote method: \"" +\n+ invocation.getMethodName() + \"", provider: \"" + getUrl() + \"", cause: \"" + e.getMessage(), e);\n }\n } catch (Throwable e) {\n throw new RpcException(e.getMessage(), e);""""""
+
+
+## Sentences of the Example Commit 2 (Separated by Source).
+
+The sentences we have already labeled are shown with their corresponding labels. Sentences without any labels (i.e., those that do not contain rationale information) have empty labels.
+
+The following sentences come from the commit message
+
+Id: 2653_1_1_0
+Source: COMMIT_MESSAGE
+Sentence:
+""""""throw unknown exception (#5849)""""""
+Label: GOAL
+
+The following sentences come from the comments of the changed code.
+
+Id: 2653_2_40_0
+Source: CODE_COMMENT
+Sentence: 
+""""""NOTICE! must call {@link java.util.concurrent.CompletableFuture#get(long, TimeUnit)} because {@link java.util.concurrent.CompletableFuture#get()} was proved to have serious performance drop.""""""
+Label:
+
+The following sentences come from the pull request: https://github.com/apache/dubbo/pull/5849, associated with the commit
+
+
+Id: 2653_6_4_0
+Source: PULL_REQUEST
+Sentence:
+""""""In `AsyncToSyncInvoker`, when `ExecutionException` happens, only `TimeoutException` and `RemotingException` are handled and wrapped as `RpcException` and re-throw.""""""
+Label: NEED
+
+Id: 2653_6_4_1
+Source: PULL_REQUEST
+Sentence:
+""""""The problem here is other exception will be swallowed silently.""""""
+Label: NEED
+
+Id: 2653_6_11_0
+Source: PULL_REQUEST
+Sentence:
+""""""fix #5855""""""
+Label:
+
+Id: 2653_6_4_3
+Source: PULL_REQUEST
+Sentence:
+""""""""wrap other exception in `RpcException` and rethrow.""""""
+Label: GOAL
+",<index>. <code>: <definintion>,"<index>. 
+File: <file_name>
+Diff:
+""""""<diff>""""""","Id: <index>
+Source: <source>
+Sentence: 
+""""""<sentence>"""""""
+CI-RFS,No,Yes,No,Yes,1.1.0.2,"# Task summary
+
+You are an experienced Java programmer on the <project_name> project. Your task is to analyze a set of sentences, identify whether they express the rationale behind a target code commit, and annotate them according to a taxonomy of rationale components.
+
+You will be provided with:
+* A list of rationale components, each one describing a different aspect that explains why the code was changed the way it was.
+* The diff of the target commit, which shows how one or more code files were changed.
+* A list of sentences extracted from different sources (artifacts) related to the commit, namely the commit message, pull requests, issue reports, code review comments, Javadoc comments, and inline/block code comments of the changed code.
+
+# Instructions
+* Analyze the content of the sentences, identify the rationale components that they describe, and annotate them with those components.
+* Annotate the sentences individually using one or more of the provided rationale components only if the sentence contains information about those components.
+* If a sentence does not describe any of the rationale components, do not include that sentence in your response.
+* In your response, provide only the sentence ID and the component(s); do not include any additional information.
+* Provide your response in CSV format.
+
+# Important
+Each sentence ID follows the format: CommitID_SourceID_TextID_LocalSentenceID. The IDs in this format are numbers that we use to identify different artifacts and text snippets within these artifacts. If consecutive sentences share the same CommitID_SourceID_TextID, it means they are logically grouped within the artifacts' text. For labeling the sentences, consider these groups as context (as they may give more information about the sentences), but still label the sentences individually.
+
+# Inputs
+
+## Rationale Components
+<code_information>
+
+## Diff of the Target Commit
+<code_diff_information>
+
+## Sentences to Annotate (Separated by Source)
+<sentences_information>
+
+# Response Format (CSV)
+
+sentence_id, labels
+<ID1>, ""<LABEL1>, ...""
+
+
+# Example for Illustration Purposes
+
+Below, I am providing 2 example commits with the code diff and extracted sentences for that commit with the expected rationale component labels. Use the examples only for learning purposes.
+
+## Diff of the Example Commit 1
+1.
+File: src/main/java/org/junit/rules/ExpectedException.java
+Diff:
+""""""@@ -43,8 +43,8 @@
+* public void throwsIllegalArgumentExceptionWithMessageAndCause() {
+* NullPointerException expectedCause = new NullPointerException();
+* thrown.expect(IllegalArgumentException.class);
+- * thrown.expectMessage(&quot;happened?&quot;);
+- * thrown.expectCause(expectedCause);
++ * thrown.expectMessage(&quot;What&quot;);
++ * thrown.expectCause(is(expectedCause));
+* throw new IllegalArgumentException(&quot;What happened?&quot;, cause);
+* }
+* }
+@@ -106,8 +106,12 @@ public void expectMessage(Matcher<String> matcher) {
+expect(hasMessage(matcher));
+}
+
+- public void expectCause(Throwable expectedCause) {
+- expect(causeEquals(expectedCause));
++ /**
++ * Adds {@code matcher} to the list of requirements for the cause of
++ * any thrown exception.
++ */
++ public void expectCause(Matcher<? extends Throwable> expectedCause) {
++ expect(hasCause(expectedCause));
+}
+
+private class ExpectedExceptionStatement extends Statement {
+@@ -147,16 +151,16 @@ public boolean matchesSafely(Throwable item) {
+};
+}
+
+- private Matcher<Throwable> causeEquals(final Throwable expectedCause) {
++ private Matcher<Throwable> hasCause(final Matcher<? extends Throwable> causeMatcher) {
+return new TypeSafeMatcher<Throwable>() {
+- @Override
+- public boolean matchesSafely(Throwable item) {
+- return expectedCause == null ? item.getCause() == null : expectedCause.equals(item.getCause());
+- }
+-
+public void describeTo(Description description) {
+description.appendText(""exception with cause "");
+- description.appendText(expectedCause.toString());
++ description.appendDescriptionOf(causeMatcher);
++ }
++
++ @Override
++ public boolean matchesSafely(Throwable item) {
++ return causeMatcher.matches(item.getCause());
+}
+};
+}""""""
+
+2.
+File: src/test/java/org/junit/tests/experimental/rules/ExpectedExceptionRuleTest.java
+Diff:
+""""""@@ -1,18 +1,21 @@
+package org.junit.tests.experimental.rules;
+
+-import static org.hamcrest.CoreMatchers.any;
+-import static org.junit.Assert.assertThat;
+-import static org.junit.experimental.results.PrintableResult.testResult;
+-import static org.junit.experimental.results.ResultMatchers.hasSingleFailureContaining;
+-import static org.junit.experimental.results.ResultMatchers.isSuccessful;
+-import static org.junit.matchers.JUnitMatchers.both;
++import org.hamcrest.CoreMatchers;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.internal.matchers.TypeSafeMatcher;
+import org.junit.rules.ExpectedException;
+
++import static org.hamcrest.CoreMatchers.any;
++import static org.hamcrest.CoreMatchers.is;
++import static org.junit.Assert.assertThat;
++import static org.junit.experimental.results.PrintableResult.testResult;
++import static org.junit.experimental.results.ResultMatchers.hasSingleFailureContaining;
++import static org.junit.experimental.results.ResultMatchers.isSuccessful;
++import static org.junit.matchers.JUnitMatchers.both;
++
+public class ExpectedExceptionRuleTest {
+public static class HasExpectedException {
+@Rule
+@@ -42,7 +45,7 @@ public void throwsIllegalArgumentExceptionWithCause() {
+
+thrown.expect(IllegalArgumentException.class);
+thrown.expectMessage(""Ack!"");
+- thrown.expectCause(expectedCause);
++ thrown.expectCause(is(expectedCause));
+
+throw new IllegalArgumentException(""Ack!"", expectedCause);
+}
+@@ -51,7 +54,7 @@ public void throwsIllegalArgumentExceptionWithCause() {
+public void throwsIllegalArgumentExceptionWithCauseExplicitlyNull() {
+thrown.expect(IllegalArgumentException.class);
+thrown.expectMessage(""Ack!"");
+- thrown.expectCause(null);
++ thrown.expectCause(CoreMatchers.<Throwable>nullValue());
+
+throw new IllegalArgumentException(""Ack!"");
+}
+@@ -260,7 +263,7 @@ public static class HasWrongCause {
+public void throwWithCause() {
+thrown.expect(IllegalArgumentException.class);
+thrown.expectMessage(""Ack!"");
+- thrown.expectCause(EXPECTED_CAUSE);
++ thrown.expectCause(is(EXPECTED_CAUSE));
+
+throw new IllegalArgumentException(""Ack!"", new NullPointerException(""an unexpected cause""));
+}""""""
+
+## Sentences of the Example Commit 1 (Separated by Source).
+
+The sentences we have already labeled are shown with their corresponding labels. Sentences without any labels (i.e., those that do not contain rationale information) have empty labels.
+
+The following sentences come from the commit message:
+
+Id: 756_1_1_0
+Source: COMMIT_MESSAGE
+Sentence:
+""""""changed the expectedCause() method to accept a Matcher instead of an explicit Throwable and made some documentation changes""""""
+Label: GOAL
+Reason: This sentence describes the changes made in the commit, i.e., (1) updated the expectedCause() method so that it accepts a matcher instead of a throwable, and (2) updated the documentation. Therefore, it is labeled as GOAL. It doesn’t describe why the code change was made, i.e., the reason, motivation, or benefit of the code change. Moreover, it does not describe any other potential solution that could be implemented instead of the current implementation. Hence, it is not labeled as NEED or ALTERNATIVES.
+
+The following sentences come from the Javadoc comments of the class(src/main/java/org/junit/rules/ExpectedException.java#ExpectedException) that were changed:
+
+Id: 756_3_5_0
+Source: CLASS_JAVADOCS
+Sentence:
+""""""The ExpectedException Rule allows in-test specification of expected exception types and messages: <pre> // These tests all pass.""""""
+Label:
+Reason: This sentence describes an exception class’s rule that allows the class's exception types and messages during testing. It is unrelated to the target code change. It doesn’t describe what changes were made or why, nor does it propose alternative solutions to the current implementation. Therefore, it is not labeled as GOAL, NEED, or ALTERNATIVES.
+
+Id: 756_3_2_0
+Source: CLASS_JAVADOCS
+Sentence:
+""""""thrown.expectMessage(&quot;What&quot;); thrown.expectCause(is(expectedCause));""""""
+Label:
+Reason: This sentence contains source code that checks the exception class's cause and messages during testing. It is unrelated to the target code change. It doesn’t describe what changes were made or why, nor does it propose alternative solutions to the current implementation. Therefore, it is not labeled as GOAL, NEED, or ALTERNATIVES.
+
+The following sentences come from the Javadoc comments of the method(src/main/java/org/junit/rules/ExpectedException.java#expectCause) that were changed
+
+Id: 756_4_28_0
+Source: METHOD_JAVADOCS
+Sentence:
+""""""Adds {@code matcher} to the list of requirements for the cause of any thrown exception.""""""
+Label: GOAL
+Reason: This sentence describes what the expectCause() function does. The method adds a matcher requirement for the cause, which aligns with the commit’s goal, i.e., match causes easily using a Matcher instead of an explicit Throwable. Hence, it was labeled as GOAL. It doesn’t describe why the code change was made, i.e., the reason, motivation, or benefit of the code change. Moreover, it does not describe any other potential solution that could be implemented instead of the current implementation. Hence, it is neither labeled as NEED nor ALTERNATIVES.
+
+
+The following sentences come from the pull_request: https://github.com/junit-team/junit4/pull/377, associated with the commit
+
+Id: 756_6_7_0
+Source: PULL_REQUEST
+Sentence:
+""""""Enable ExpectedException to match causes more easily""""""
+Label: NEED
+Reason: This sentence describes the benefit of the code change, i.e., the code change makes it easier for developers to match the causes for expected exceptions. Hence, it is labeled as NEED. It doesn’t describe what changes were made or what exactly was achieved by the code change. It also does not describe any other potential solution that could be implemented instead of the current implementation. Hence, it is neither labeled as GOAL nor ALTERNATIVES.
+
+Id: 756_6_8_0
+Source: PULL_REQUEST
+Sentence:
+""""""When working especially with third-party libraries, it's common to deal with checked exceptions in a way similar to this:
+
+``` java
+try {
+collaborator.something();
+}
+catch (CheckedException e) {
+throw new MyRuntimeException(""failed to do something"", e);
+}
+```
+
+It's common for different instances of MyRuntimeException to be thrown from many possible execution branches, so when testing this, I would like to do something like:
+
+``` java
+@Rule
+ExpectedException thrown= ExpectedException.none();
+
+@Test
+public void aTest() throws Exception {
+CheckedException expected = new CheckedException(""expected"");
+
+Mockito.when(collaborator.something()).thenThrow(expected);
+
+thrown.expect(MyRuntimeException.class);
+thrown.expectMessage(""failed to do something"");
+thrown.expectCause(expected);
+
+myObject.method();
+}""""""
+Label: 
+Reason: This sentence describes a real-world testing scenario, i.e., wrapping checked exceptions into a runtime exception. In this case, during testing, the developer might want to assert the thrown exception’s type, message, and cause using ExpectedException (expect, expectMessage, expectCause). This sentence doesn’t explicitly say what was changed inside the core framework or the benefit of the code change. It also doesn’t propose any other potential solution that could be implemented instead of the current implementation. Hence, it is neither labeled as GOAL, NEED, nor ALTERNATIVES.
+
+Id: 756_6_8_4
+Source: PULL_REQUEST
+Sentence:
+""""""I realise you can do that with a custom matcher as well, but it feels like this is (at least nearly) as fundamental as matching on the message, so it should perhaps be a part of the core framework?""""""
+Label: ALTERNATIVES, NEED
+Reason: This sentence proposes an alternative solution for the problem that the commit intended to solve. Currently, the code change updates the core Junit function to match the causes of the exception. This sentence proposes that this can be done by a custom matcher as well. Hence, it is labeled with ALTERNATIVES. This sentence also describes why the code change was needed, i.e., matching causes are a fundamental feature that should be in the core JUnit framework. Hence, it is also labeled as NEED. It does not describe what was changed in the commit, and hence, it is not labelled as GOAL.
+
+Id: 756_6_9_1
+Source: PULL_REQUEST
+Sentence:
+""""""One concern I have is that many custom exceptions don't have well-defined equals() methods.""""""
+Label:
+Reason: This sentence raises a concern about equals() methods of the custom exceptions, which is not related to the code change’s goal or need. It also does not mention any alternative solution. Therefore, it is not labeled as GOAL, NEED, or ALTERNATIVES.
+
+Id: 756_6_9_2
+Source: PULL_REQUEST
+Sentence:
+""""""What about one of these ideas:
+
+thrown.expectCause(instanceOf(CheckedException.class));
+
+Or, trickier:
+
+thrown.onCause().expectMessage(""failed to do something""), where onCause() returns an ExpectedException itself (haven't thought about how hard this would be).""""""
+Label: ALTERNATIVES
+Reason: This sentence proposes two different alternative solutions for matching the cause through expectCause() or onCause().expectMessage() function. As these are alternative ways to achieve the same functionality for the code change, this sentence is labeled as ALTERNATIVES. However, it doesn’t describe what was changed or why the code was changed in the commit. Hence, it is neither labeled as GOAL nor NEED.
+
+Id: 756_6_10_0
+Source: PULL_REQUEST
+Sentence:
+""""""Hm, in the initial implementation, I actually didn't check equals but ==.""""""
+Label:
+Reason: This sentence describes that in the initial implementation, the developer didn’t check with the equals function, but this is an alternative approach for a small part of the goal of the commit, not an alternative for the whole approach. It also doesn’t describe what was changed or why the code was changed in the commit. Hence, it is neither labeled as GOAL, NEED, nor ALTERNATIVES.
+
+Id: 756_6_10_1
+Source: PULL_REQUEST
+Sentence:
+""""""I can't remember why I changed it now, but using == feels a little better in some ways - I can't think of a scenario where some code would want to do for instance a clone of an exception that was thrown, and wrapping it in another cause would require the comparison to be recursive.""""""
+Label:
+Reason: This sentence explains the reasoning behind only a small part of the whole solution. It states using “==” for exception message matching, but in the solution, there are more changes introduced, i.e.adding a new function. It doesn’t consider the whole approach. It also doesn’t describe what was changed or why the code was changed in the commit. Hence, it is neither labeled as GOAL, NEED, nor ALTERNATIVES.
+
+Id: 756_6_11_1
+Source: PULL_REQUEST
+Sentence:
+""""""I still think that having expectCause take a Matcher means more flexibility for everyone.""""""
+Label: NEED
+Reason: This sentence describes the benefit of the changed code, i.e., using a Matcher gives more flexibility for developers, and hence, it was labeled as NEED. It doesn’t describe what changes were made or what exactly was achieved by this code change. It also does not describe any other potential solution that could be implemented instead of the current implementation. Hence, it is neither labeled as GOAL nor ALTERNATIVES.
+
+Id: 756_6_11_2
+Source: PULL_REQUEST
+Sentence:
+""""""Developers can use thrown.expectCause(is(expected)) when they want the exact exception, and other matchers when they want something more generic.""""""
+Label: NEED
+Reason: This sentence describes the benefit of the changed code, i.e., using a Matcher when they want a generic exception and using the is(expected) function when they want an exact exception. Combined with the previous sentence, this sentence shows how the code change gives more flexibility for developers, so it was labeled with NEED. It doesn’t describe what changes were made or what was achieved by this code change. It also does not describe any other potential solution that could be implemented instead of the current implementation. Hence, it is neither labeled as GOAL nor ALTERNATIVES.
+
+
+## Diff of the Example Commit 2
+1.
+File: src/main/java/org/junit/rules/TemporaryFolder.java
+Diff:
+""""""@@ -61,13 +61,19 @@ public Result invoke(Invocation invocation) throws RpcException {\n asyncResult.get(Integer.MAX_VALUE, TimeUnit.MILLISECONDS);\n }\n } catch (InterruptedException e) {\n- throw new RpcException(\""Interrupted unexpectedly while waiting for remoting result to return! method: \"" + invocation.getMethodName() + \"", provider: \"" + getUrl() + \"", cause: \"" + e.getMessage(), e);\n+ throw new RpcException(\""Interrupted unexpectedly while waiting for remote result to return! method: \"" +\n+ invocation.getMethodName() + \"", provider: \"" + getUrl() + \"", cause: \"" + e.getMessage(), e);\n } catch (ExecutionException e) {\n Throwable t = e.getCause();\n if (t instanceof TimeoutException) {\n- throw new RpcException(RpcException.TIMEOUT_EXCEPTION, \""Invoke remote method timeout. method: \"" + invocation.getMethodName() + \"", provider: \"" + getUrl() + \"", cause: \"" + e.getMessage(), e);\n+ throw new RpcException(RpcException.TIMEOUT_EXCEPTION, \""Invoke remote method timeout. method: \"" +\n+ invocation.getMethodName() + \"", provider: \"" + getUrl() + \"", cause: \"" + e.getMessage(), e);\n } else if (t instanceof RemotingException) {\n- throw new RpcException(RpcException.NETWORK_EXCEPTION, \""Failed to invoke remote method: \"" + invocation.getMethodName() + \"", provider: \"" + getUrl() + \"", cause: \"" + e.getMessage(), e);\n+ throw new RpcException(RpcException.NETWORK_EXCEPTION, \""Failed to invoke remote method: \"" +\n+ invocation.getMethodName() + \"", provider: \"" + getUrl() + \"", cause: \"" + e.getMessage(), e);\n+ } else {\n+ throw new RpcException(RpcException.UNKNOWN_EXCEPTION, \""Fail to invoke remote method: \"" +\n+ invocation.getMethodName() + \"", provider: \"" + getUrl() + \"", cause: \"" + e.getMessage(), e);\n }\n } catch (Throwable e) {\n throw new RpcException(e.getMessage(), e);""""""
+
+
+## Sentences of the Example Commit 2 (Separated by Source).
+
+The sentences we have already labeled are shown with their corresponding labels. Sentences without any labels (i.e., those that do not contain rationale information) have empty labels.
+
+The following sentences come from the commit message
+
+Id: 2653_1_1_0
+Source: COMMIT_MESSAGE
+Sentence:
+""""""throw unknown exception (#5849)""""""
+Label: GOAL
+Reason: This sentence describes what the commit intended to achieve, i.e., exception handling by throwing unknown exceptions. Hence, it is labeled as GOAL. It does not explain why it is needed or suggest any alternative solutions. Hence, it is not labeled as either NEED or ALTERNATIVES.
+
+The following sentences come from the comments of the changed code.
+
+Id: 2653_2_40_0
+Source: CODE_COMMENT
+Sentence: 
+""""""NOTICE! must call {@link java.util.concurrent.CompletableFuture#get(long, TimeUnit)} because {@link java.util.concurrent.CompletableFuture#get()} was proved to have serious performance drop.""""""
+Label:
+Reason: This sentence explains a performance-related issue, calling get() in CompletableFuture instead of get() is proven to drop performance. This is unrelated to the commit’s main purpose, i.e., exception handling. It doesn’t describe what was changed, why the code was changed, or any other potential solutions that could be implemented in the commit. Hence, it is neither labeled as GOAL, NEED, nor ALTERNATIVES.
+
+The following sentences come from the pull request: https://github.com/apache/dubbo/pull/5849, associated with the commit
+
+
+
+Id: 2653_6_4_0
+Source: PULL_REQUEST
+Sentence:
+""""""In `AsyncToSyncInvoker`, when `ExecutionException` happens, only `TimeoutException` and `RemotingException` are handled and wrapped as `RpcException` and re-throw.""""""
+Label: NEED
+Reason: This sentence describes that with the current implementation, only two types of exceptions can be handled. Combinedly with the next sentence, this sentence expresses why the code change is needed, i.e., to handle the unknown exceptions. Hence, it is labeled as NEED. This sentence states that those two handled the exception class. It’s not stating the goal or proposing a different solution, so ALTERNATIVES and GOAL aren’t applied.
+
+Id: 2653_6_4_1
+Source: PULL_REQUEST
+Sentence:
+""""""The problem here is other exception will be swallowed silently.""""""
+Label: NEED
+Reason: This sentence describes the specific problem for which the code change was made. Combinedly with the previous sentence, this sentence implies that the current implementation only handles two exception types; other exceptions are swallowed silently. As this is the motivation for the change, it is labeled as NEED. It’s not stating the goal or proposing a different solution, so ALTERNATIVES and GOAL aren’t applied.
+
+Id: 2653_6_11_0
+Source: PULL_REQUEST
+Sentence:
+""""""fix #5855""""""
+Label:
+Reason: The sentence is an issue reference, not a statement of purpose, motivation, or alternatives for this change.
+
+Id: 2653_6_4_3
+Source: PULL_REQUEST
+Sentence:
+""""""""wrap other exception in `RpcException` and rethrow.""""""
+Label: GOAL
+Reason: This sentence describes what the developer wanted to achieve by this code change, i.e., exception handling by wrapping other unhandled exceptions in `RpcException` and rethrowing those exceptions. Hence, it is labeled as GOAL. It does not explain why the code change is needed or suggest any alternative solutions. Hence, it is not labeled as either NEED or ALTERNATIVES.
+",<index>. <code>: <definintion>,"<index>. 
+File: <file_name>
+Diff:
+""""""<diff>""""""","Id: <index>
+Source: <source>
+Sentence: 
+""""""<sentence>"""""""
+CI-RFS+,No,Yes,Yes,Yes,1.1.1.2,"# Task summary
+
+You are an experienced Java programmer on the <project_name> project. Your task is to analyze a set of sentences, identify whether they express the rationale behind a target code commit, and annotate them according to a taxonomy of rationale components.
+
+You will be provided with:
+* A list of rationale components, each one describing a different aspect that explains why the code was changed the way it was.
+* The diff of the target commit, which shows how one or more code files were changed.
+* A list of sentences extracted from different sources (artifacts) related to the commit, namely the commit message, pull requests, issue reports, code review comments, Javadoc comments, and inline/block code comments of the changed code.
+
+# Instructions
+* Analyze the content of the sentences, identify the rationale components that they describe, and annotate them with those components.
+* Annotate the sentences individually using one or more of the provided rationale components only if the sentence contains information about those components.
+* If a sentence does not describe any of the rationale components, do not include that sentence in your response.
+* In your response, provide only the sentence ID and the component(s); do not include any additional information.
+* Provide your response in CSV format.
+
+# Important
+* Each sentence ID follows the format: CommitID_SourceID_TextID_LocalSentenceID. The IDs in this format are numbers that we use to identify different artifacts and text snippets within these artifacts. If consecutive sentences share the same CommitID_SourceID_TextID, it means they are logically grouped within the artifacts' text. For labeling the sentences, consider these groups as context (as they may give more information about the sentences), but still label the sentences individually.
+* If the discussed information about any rationale component (i.e., GOAL, NEED, ALTERNATIVES) isn't related to the actual code change, it will not be labeled as any component. 
+* Do not annotate in isolation. Consider the broader context provided by surrounding sentences and related artifacts.
+
+# Inputs
+
+## Rationale Components
+<code_information>
+
+## Diff of the Target Commit
+<code_diff_information>
+
+## Sentences to Annotate (Separated by Source)
+<sentences_information>
+
+# Response Format (CSV)
+
+sentence_id, labels
+<ID1>, ""<LABEL1>, ...""
+
+
+# Example for Illustration Purposes
+
+Below, I am providing 2 example commits with the code diff and extracted sentences for that commit with the expected rationale component labels. Use the examples only for learning purposes.
+
+## Diff of the Example Commit 1
+1.
+File: src/main/java/org/junit/rules/ExpectedException.java
+Diff:
+""""""@@ -43,8 +43,8 @@
+* public void throwsIllegalArgumentExceptionWithMessageAndCause() {
+* NullPointerException expectedCause = new NullPointerException();
+* thrown.expect(IllegalArgumentException.class);
+- * thrown.expectMessage(&quot;happened?&quot;);
+- * thrown.expectCause(expectedCause);
++ * thrown.expectMessage(&quot;What&quot;);
++ * thrown.expectCause(is(expectedCause));
+* throw new IllegalArgumentException(&quot;What happened?&quot;, cause);
+* }
+* }
+@@ -106,8 +106,12 @@ public void expectMessage(Matcher<String> matcher) {
+expect(hasMessage(matcher));
+}
+
+- public void expectCause(Throwable expectedCause) {
+- expect(causeEquals(expectedCause));
++ /**
++ * Adds {@code matcher} to the list of requirements for the cause of
++ * any thrown exception.
++ */
++ public void expectCause(Matcher<? extends Throwable> expectedCause) {
++ expect(hasCause(expectedCause));
+}
+
+private class ExpectedExceptionStatement extends Statement {
+@@ -147,16 +151,16 @@ public boolean matchesSafely(Throwable item) {
+};
+}
+
+- private Matcher<Throwable> causeEquals(final Throwable expectedCause) {
++ private Matcher<Throwable> hasCause(final Matcher<? extends Throwable> causeMatcher) {
+return new TypeSafeMatcher<Throwable>() {
+- @Override
+- public boolean matchesSafely(Throwable item) {
+- return expectedCause == null ? item.getCause() == null : expectedCause.equals(item.getCause());
+- }
+-
+public void describeTo(Description description) {
+description.appendText(""exception with cause "");
+- description.appendText(expectedCause.toString());
++ description.appendDescriptionOf(causeMatcher);
++ }
++
++ @Override
++ public boolean matchesSafely(Throwable item) {
++ return causeMatcher.matches(item.getCause());
+}
+};
+}""""""
+
+2.
+File: src/test/java/org/junit/tests/experimental/rules/ExpectedExceptionRuleTest.java
+Diff:
+""""""@@ -1,18 +1,21 @@
+package org.junit.tests.experimental.rules;
+
+-import static org.hamcrest.CoreMatchers.any;
+-import static org.junit.Assert.assertThat;
+-import static org.junit.experimental.results.PrintableResult.testResult;
+-import static org.junit.experimental.results.ResultMatchers.hasSingleFailureContaining;
+-import static org.junit.experimental.results.ResultMatchers.isSuccessful;
+-import static org.junit.matchers.JUnitMatchers.both;
++import org.hamcrest.CoreMatchers;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.internal.matchers.TypeSafeMatcher;
+import org.junit.rules.ExpectedException;
+
++import static org.hamcrest.CoreMatchers.any;
++import static org.hamcrest.CoreMatchers.is;
++import static org.junit.Assert.assertThat;
++import static org.junit.experimental.results.PrintableResult.testResult;
++import static org.junit.experimental.results.ResultMatchers.hasSingleFailureContaining;
++import static org.junit.experimental.results.ResultMatchers.isSuccessful;
++import static org.junit.matchers.JUnitMatchers.both;
++
+public class ExpectedExceptionRuleTest {
+public static class HasExpectedException {
+@Rule
+@@ -42,7 +45,7 @@ public void throwsIllegalArgumentExceptionWithCause() {
+
+thrown.expect(IllegalArgumentException.class);
+thrown.expectMessage(""Ack!"");
+- thrown.expectCause(expectedCause);
++ thrown.expectCause(is(expectedCause));
+
+throw new IllegalArgumentException(""Ack!"", expectedCause);
+}
+@@ -51,7 +54,7 @@ public void throwsIllegalArgumentExceptionWithCause() {
+public void throwsIllegalArgumentExceptionWithCauseExplicitlyNull() {
+thrown.expect(IllegalArgumentException.class);
+thrown.expectMessage(""Ack!"");
+- thrown.expectCause(null);
++ thrown.expectCause(CoreMatchers.<Throwable>nullValue());
+
+throw new IllegalArgumentException(""Ack!"");
+}
+@@ -260,7 +263,7 @@ public static class HasWrongCause {
+public void throwWithCause() {
+thrown.expect(IllegalArgumentException.class);
+thrown.expectMessage(""Ack!"");
+- thrown.expectCause(EXPECTED_CAUSE);
++ thrown.expectCause(is(EXPECTED_CAUSE));
+
+throw new IllegalArgumentException(""Ack!"", new NullPointerException(""an unexpected cause""));
+}""""""
+
+## Sentences of the Example Commit 1 (Separated by Source).
+
+The sentences we have already labeled are shown with their corresponding labels. Sentences without any labels (i.e., those that do not contain rationale information) have empty labels.
+
+The following sentences come from the commit message:
+
+Id: 756_1_1_0
+Source: COMMIT_MESSAGE
+Sentence:
+""""""changed the expectedCause() method to accept a Matcher instead of an explicit Throwable and made some documentation changes""""""
+Label: GOAL
+Reason: This sentence describes the changes made in the commit, i.e., (1) updated the expectedCause() method so that it accepts a matcher instead of a throwable, and (2) updated the documentation. Therefore, it is labeled as GOAL. It doesn’t describe why the code change was made, i.e., the reason, motivation, or benefit of the code change. Moreover, it does not describe any other potential solution that could be implemented instead of the current implementation. Hence, it is not labeled as NEED or ALTERNATIVES.
+
+The following sentences come from the Javadoc comments of the class(src/main/java/org/junit/rules/ExpectedException.java#ExpectedException) that were changed:
+
+Id: 756_3_5_0
+Source: CLASS_JAVADOCS
+Sentence:
+""""""The ExpectedException Rule allows in-test specification of expected exception types and messages: <pre> // These tests all pass.""""""
+Label:
+Reason: This sentence describes an exception class’s rule that allows the class's exception types and messages during testing. It is unrelated to the target code change. It doesn’t describe what changes were made or why, nor does it propose alternative solutions to the current implementation. Therefore, it is not labeled as GOAL, NEED, or ALTERNATIVES.
+
+Id: 756_3_2_0
+Source: CLASS_JAVADOCS
+Sentence:
+""""""thrown.expectMessage(&quot;What&quot;); thrown.expectCause(is(expectedCause));""""""
+Label:
+Reason: This sentence contains source code that checks the exception class's cause and messages during testing. It is unrelated to the target code change. It doesn’t describe what changes were made or why, nor does it propose alternative solutions to the current implementation. Therefore, it is not labeled as GOAL, NEED, or ALTERNATIVES.
+
+The following sentences come from the Javadoc comments of the method(src/main/java/org/junit/rules/ExpectedException.java#expectCause) that were changed
+
+Id: 756_4_28_0
+Source: METHOD_JAVADOCS
+Sentence:
+""""""Adds {@code matcher} to the list of requirements for the cause of any thrown exception.""""""
+Label: GOAL
+Reason: This sentence describes what the expectCause() function does. The method adds a matcher requirement for the cause, which aligns with the commit’s goal, i.e., match causes easily using a Matcher instead of an explicit Throwable. Hence, it was labeled as GOAL. It doesn’t describe why the code change was made, i.e., the reason, motivation, or benefit of the code change. Moreover, it does not describe any other potential solution that could be implemented instead of the current implementation. Hence, it is neither labeled as NEED nor ALTERNATIVES.
+
+
+The following sentences come from the pull_request: https://github.com/junit-team/junit4/pull/377, associated with the commit
+
+Id: 756_6_7_0
+Source: PULL_REQUEST
+Sentence:
+""""""Enable ExpectedException to match causes more easily""""""
+Label: NEED
+Reason: This sentence describes the benefit of the code change, i.e., the code change makes it easier for developers to match the causes for expected exceptions. Hence, it is labeled as NEED. It doesn’t describe what changes were made or what exactly was achieved by the code change. It also does not describe any other potential solution that could be implemented instead of the current implementation. Hence, it is neither labeled as GOAL nor ALTERNATIVES.
+
+Id: 756_6_8_0
+Source: PULL_REQUEST
+Sentence:
+""""""When working especially with third-party libraries, it's common to deal with checked exceptions in a way similar to this:
+
+``` java
+try {
+collaborator.something();
+}
+catch (CheckedException e) {
+throw new MyRuntimeException(""failed to do something"", e);
+}
+```
+
+It's common for different instances of MyRuntimeException to be thrown from many possible execution branches, so when testing this, I would like to do something like:
+
+``` java
+@Rule
+ExpectedException thrown= ExpectedException.none();
+
+@Test
+public void aTest() throws Exception {
+CheckedException expected = new CheckedException(""expected"");
+
+Mockito.when(collaborator.something()).thenThrow(expected);
+
+thrown.expect(MyRuntimeException.class);
+thrown.expectMessage(""failed to do something"");
+thrown.expectCause(expected);
+
+myObject.method();
+}""""""
+Label: 
+Reason: This sentence describes a real-world testing scenario, i.e., wrapping checked exceptions into a runtime exception. In this case, during testing, the developer might want to assert the thrown exception’s type, message, and cause using ExpectedException (expect, expectMessage, expectCause). This sentence doesn’t explicitly say what was changed inside the core framework or the benefit of the code change. It also doesn’t propose any other potential solution that could be implemented instead of the current implementation. Hence, it is neither labeled as GOAL, NEED, nor ALTERNATIVES.
+
+Id: 756_6_8_4
+Source: PULL_REQUEST
+Sentence:
+""""""I realise you can do that with a custom matcher as well, but it feels like this is (at least nearly) as fundamental as matching on the message, so it should perhaps be a part of the core framework?""""""
+Label: ALTERNATIVES, NEED
+Reason: This sentence proposes an alternative solution for the problem that the commit intended to solve. Currently, the code change updates the core Junit function to match the causes of the exception. This sentence proposes that this can be done by a custom matcher as well. Hence, it is labeled with ALTERNATIVES. This sentence also describes why the code change was needed, i.e., matching causes are a fundamental feature that should be in the core JUnit framework. Hence, it is also labeled as NEED. It does not describe what was changed in the commit, and hence, it is not labelled as GOAL.
+
+Id: 756_6_9_1
+Source: PULL_REQUEST
+Sentence:
+""""""One concern I have is that many custom exceptions don't have well-defined equals() methods.""""""
+Label:
+Reason: This sentence raises a concern about equals() methods of the custom exceptions, which is not related to the code change’s goal or need. It also does not mention any alternative solution. Therefore, it is not labeled as GOAL, NEED, or ALTERNATIVES.
+
+Id: 756_6_9_2
+Source: PULL_REQUEST
+Sentence:
+""""""What about one of these ideas:
+
+thrown.expectCause(instanceOf(CheckedException.class));
+
+Or, trickier:
+
+thrown.onCause().expectMessage(""failed to do something""), where onCause() returns an ExpectedException itself (haven't thought about how hard this would be).""""""
+Label: ALTERNATIVES
+Reason: This sentence proposes two different alternative solutions for matching the cause through expectCause() or onCause().expectMessage() function. As these are alternative ways to achieve the same functionality for the code change, this sentence is labeled as ALTERNATIVES. However, it doesn’t describe what was changed or why the code was changed in the commit. Hence, it is neither labeled as GOAL nor NEED.
+
+Id: 756_6_10_0
+Source: PULL_REQUEST
+Sentence:
+""""""Hm, in the initial implementation, I actually didn't check equals but ==.""""""
+Label:
+Reason: This sentence describes that in the initial implementation, the developer didn’t check with the equals function, but this is an alternative approach for a small part of the goal of the commit, not an alternative for the whole approach. It also doesn’t describe what was changed or why the code was changed in the commit. Hence, it is neither labeled as GOAL, NEED, nor ALTERNATIVES.
+
+Id: 756_6_10_1
+Source: PULL_REQUEST
+Sentence:
+""""""I can't remember why I changed it now, but using == feels a little better in some ways - I can't think of a scenario where some code would want to do for instance a clone of an exception that was thrown, and wrapping it in another cause would require the comparison to be recursive.""""""
+Label:
+Reason: This sentence explains the reasoning behind only a small part of the whole solution. It states using “==” for exception message matching, but in the solution, there are more changes introduced, i.e.adding a new function. It doesn’t consider the whole approach. It also doesn’t describe what was changed or why the code was changed in the commit. Hence, it is neither labeled as GOAL, NEED, nor ALTERNATIVES.
+
+Id: 756_6_11_1
+Source: PULL_REQUEST
+Sentence:
+""""""I still think that having expectCause take a Matcher means more flexibility for everyone.""""""
+Label: NEED
+Reason: This sentence describes the benefit of the changed code, i.e., using a Matcher gives more flexibility for developers, and hence, it was labeled as NEED. It doesn’t describe what changes were made or what exactly was achieved by this code change. It also does not describe any other potential solution that could be implemented instead of the current implementation. Hence, it is neither labeled as GOAL nor ALTERNATIVES.
+
+Id: 756_6_11_2
+Source: PULL_REQUEST
+Sentence:
+""""""Developers can use thrown.expectCause(is(expected)) when they want the exact exception, and other matchers when they want something more generic.""""""
+Label: NEED
+Reason: This sentence describes the benefit of the changed code, i.e., using a Matcher when they want a generic exception and using the is(expected) function when they want an exact exception. Combined with the previous sentence, this sentence shows how the code change gives more flexibility for developers, so it was labeled with NEED. It doesn’t describe what changes were made or what was achieved by this code change. It also does not describe any other potential solution that could be implemented instead of the current implementation. Hence, it is neither labeled as GOAL nor ALTERNATIVES.
+
+
+## Diff of the Example Commit 2
+1.
+File: src/main/java/org/junit/rules/TemporaryFolder.java
+Diff:
+""""""@@ -61,13 +61,19 @@ public Result invoke(Invocation invocation) throws RpcException {\n asyncResult.get(Integer.MAX_VALUE, TimeUnit.MILLISECONDS);\n }\n } catch (InterruptedException e) {\n- throw new RpcException(\""Interrupted unexpectedly while waiting for remoting result to return! method: \"" + invocation.getMethodName() + \"", provider: \"" + getUrl() + \"", cause: \"" + e.getMessage(), e);\n+ throw new RpcException(\""Interrupted unexpectedly while waiting for remote result to return! method: \"" +\n+ invocation.getMethodName() + \"", provider: \"" + getUrl() + \"", cause: \"" + e.getMessage(), e);\n } catch (ExecutionException e) {\n Throwable t = e.getCause();\n if (t instanceof TimeoutException) {\n- throw new RpcException(RpcException.TIMEOUT_EXCEPTION, \""Invoke remote method timeout. method: \"" + invocation.getMethodName() + \"", provider: \"" + getUrl() + \"", cause: \"" + e.getMessage(), e);\n+ throw new RpcException(RpcException.TIMEOUT_EXCEPTION, \""Invoke remote method timeout. method: \"" +\n+ invocation.getMethodName() + \"", provider: \"" + getUrl() + \"", cause: \"" + e.getMessage(), e);\n } else if (t instanceof RemotingException) {\n- throw new RpcException(RpcException.NETWORK_EXCEPTION, \""Failed to invoke remote method: \"" + invocation.getMethodName() + \"", provider: \"" + getUrl() + \"", cause: \"" + e.getMessage(), e);\n+ throw new RpcException(RpcException.NETWORK_EXCEPTION, \""Failed to invoke remote method: \"" +\n+ invocation.getMethodName() + \"", provider: \"" + getUrl() + \"", cause: \"" + e.getMessage(), e);\n+ } else {\n+ throw new RpcException(RpcException.UNKNOWN_EXCEPTION, \""Fail to invoke remote method: \"" +\n+ invocation.getMethodName() + \"", provider: \"" + getUrl() + \"", cause: \"" + e.getMessage(), e);\n }\n } catch (Throwable e) {\n throw new RpcException(e.getMessage(), e);""""""
+
+
+## Sentences of the Example Commit 2 (Separated by Source).
+
+The sentences we have already labeled are shown with their corresponding labels. Sentences without any labels (i.e., those that do not contain rationale information) have empty labels.
+
+The following sentences come from the commit message
+
+Id: 2653_1_1_0
+Source: COMMIT_MESSAGE
+Sentence:
+""""""throw unknown exception (#5849)""""""
+Label: GOAL
+Reason: This sentence describes what the commit intended to achieve, i.e., exception handling by throwing unknown exceptions. Hence, it is labeled as GOAL. It does not explain why it is needed or suggest any alternative solutions. Hence, it is not labeled as either NEED or ALTERNATIVES.
+
+The following sentences come from the comments of the changed code.
+
+Id: 2653_2_40_0
+Source: CODE_COMMENT
+Sentence: 
+""""""NOTICE! must call {@link java.util.concurrent.CompletableFuture#get(long, TimeUnit)} because {@link java.util.concurrent.CompletableFuture#get()} was proved to have serious performance drop.""""""
+Label:
+Reason: This sentence explains a performance-related issue, calling get() in CompletableFuture instead of get() is proven to drop performance. This is unrelated to the commit’s main purpose, i.e., exception handling. It doesn’t describe what was changed, why the code was changed, or any other potential solutions that could be implemented in the commit. Hence, it is neither labeled as GOAL, NEED, nor ALTERNATIVES.
+
+The following sentences come from the pull request: https://github.com/apache/dubbo/pull/5849, associated with the commit
+
+
+
+Id: 2653_6_4_0
+Source: PULL_REQUEST
+Sentence:
+""""""In `AsyncToSyncInvoker`, when `ExecutionException` happens, only `TimeoutException` and `RemotingException` are handled and wrapped as `RpcException` and re-throw.""""""
+Label: NEED
+Reason: This sentence describes that with the current implementation, only two types of exceptions can be handled. Combinedly with the next sentence, this sentence expresses why the code change is needed, i.e., to handle the unknown exceptions. Hence, it is labeled as NEED. This sentence states that those two handled the exception class. It’s not stating the goal or proposing a different solution, so ALTERNATIVES and GOAL aren’t applied.
+
+Id: 2653_6_4_1
+Source: PULL_REQUEST
+Sentence:
+""""""The problem here is other exception will be swallowed silently.""""""
+Label: NEED
+Reason: This sentence describes the specific problem for which the code change was made. Combinedly with the previous sentence, this sentence implies that the current implementation only handles two exception types; other exceptions are swallowed silently. As this is the motivation for the change, it is labeled as NEED. It’s not stating the goal or proposing a different solution, so ALTERNATIVES and GOAL aren’t applied.
+
+Id: 2653_6_11_0
+Source: PULL_REQUEST
+Sentence:
+""""""fix #5855""""""
+Label:
+Reason: The sentence is an issue reference, not a statement of purpose, motivation, or alternatives for this change.
+
+Id: 2653_6_4_3
+Source: PULL_REQUEST
+Sentence:
+""""""""wrap other exception in `RpcException` and rethrow.""""""
+Label: GOAL
+Reason: This sentence describes what the developer wanted to achieve by this code change, i.e., exception handling by wrapping other unhandled exceptions in `RpcException` and rethrowing those exceptions. Hence, it is labeled as GOAL. It does not explain why the code change is needed or suggest any alternative solutions. Hence, it is not labeled as either NEED or ALTERNATIVES.
+","<index>. <code>: <definintion>
+# Important
+<rule>","<index>. 
+File: <file_name>
+Diff:
+""""""<diff>""""""","Id: <index>
+Source: <source>
+Sentence: 
+""""""<sentence>"""""""
+CI-RFS,Yes,Yes,No,Yes,1.2.0.2,"# Task summary
+
+You are an experienced Java programmer on the <project_name> project. Your task is to analyze a set of sentences, identify whether they express the rationale behind a target code commit, and annotate them according to a taxonomy of rationale components.
+
+You will be provided with:
+* A list of rationale components, each one describing a different aspect that explains why the code was changed the way it was.
+* The diff of the target commit, which shows how one or more code files were changed.
+* A list of sentences extracted from different sources (artifacts) related to the commit, namely the commit message, pull requests, issue reports, code review comments, Javadoc comments, and inline/block code comments of the changed code.
+
+# Instructions
+* Analyze the content of the sentences, identify the rationale components that they describe, and annotate them with those components.
+* Annotate the sentences individually using one or more of the provided rationale components only if the sentence contains information about those components.
+* If a sentence does not describe any of the rationale components, do not include that sentence in your response.
+* In your response, provide only the sentence ID and the component(s); do not include any additional information.
+* Provide your response in CSV format.
+* Provide a short justification (1–2 sentences) for the label(s) chosen for those sentences. The justification should explain how that sentence conveys the rationale.
+
+# Important
+Each sentence ID follows the format: CommitID_SourceID_TextID_LocalSentenceID. The IDs in this format are numbers that we use to identify different artifacts and text snippets within these artifacts. If consecutive sentences share the same CommitID_SourceID_TextID, it means they are logically grouped within the artifacts' text. For labeling the sentences, consider these groups as context (as they may give more information about the sentences), but still label the sentences individually.
+
+# Inputs
+
+## Rationale Components
+<code_information>
+
+## Diff of the Target Commit
+<code_diff_information>
+
+## Sentences to Annotate (Separated by Source)
+<sentences_information>
+
+# Response Format (CSV)
+
+sentence_id, labels, reason
+<ID1>, ""<LABEL1>, ..."", ""<Short reason for choosing the label(s)>""
+
+
+# Example for Illustration Purposes
+
+Below, I am providing 2 example commits with the code diff and extracted sentences for that commit with the expected rationale component labels. Use the examples only for learning purposes.
+
+## Diff of the Example Commit 1
+1.
+File: src/main/java/org/junit/rules/ExpectedException.java
+Diff:
+""""""@@ -43,8 +43,8 @@
+* public void throwsIllegalArgumentExceptionWithMessageAndCause() {
+* NullPointerException expectedCause = new NullPointerException();
+* thrown.expect(IllegalArgumentException.class);
+- * thrown.expectMessage(&quot;happened?&quot;);
+- * thrown.expectCause(expectedCause);
++ * thrown.expectMessage(&quot;What&quot;);
++ * thrown.expectCause(is(expectedCause));
+* throw new IllegalArgumentException(&quot;What happened?&quot;, cause);
+* }
+* }
+@@ -106,8 +106,12 @@ public void expectMessage(Matcher<String> matcher) {
+expect(hasMessage(matcher));
+}
+
+- public void expectCause(Throwable expectedCause) {
+- expect(causeEquals(expectedCause));
++ /**
++ * Adds {@code matcher} to the list of requirements for the cause of
++ * any thrown exception.
++ */
++ public void expectCause(Matcher<? extends Throwable> expectedCause) {
++ expect(hasCause(expectedCause));
+}
+
+private class ExpectedExceptionStatement extends Statement {
+@@ -147,16 +151,16 @@ public boolean matchesSafely(Throwable item) {
+};
+}
+
+- private Matcher<Throwable> causeEquals(final Throwable expectedCause) {
++ private Matcher<Throwable> hasCause(final Matcher<? extends Throwable> causeMatcher) {
+return new TypeSafeMatcher<Throwable>() {
+- @Override
+- public boolean matchesSafely(Throwable item) {
+- return expectedCause == null ? item.getCause() == null : expectedCause.equals(item.getCause());
+- }
+-
+public void describeTo(Description description) {
+description.appendText(""exception with cause "");
+- description.appendText(expectedCause.toString());
++ description.appendDescriptionOf(causeMatcher);
++ }
++
++ @Override
++ public boolean matchesSafely(Throwable item) {
++ return causeMatcher.matches(item.getCause());
+}
+};
+}""""""
+
+2.
+File: src/test/java/org/junit/tests/experimental/rules/ExpectedExceptionRuleTest.java
+Diff:
+""""""@@ -1,18 +1,21 @@
+package org.junit.tests.experimental.rules;
+
+-import static org.hamcrest.CoreMatchers.any;
+-import static org.junit.Assert.assertThat;
+-import static org.junit.experimental.results.PrintableResult.testResult;
+-import static org.junit.experimental.results.ResultMatchers.hasSingleFailureContaining;
+-import static org.junit.experimental.results.ResultMatchers.isSuccessful;
+-import static org.junit.matchers.JUnitMatchers.both;
++import org.hamcrest.CoreMatchers;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.internal.matchers.TypeSafeMatcher;
+import org.junit.rules.ExpectedException;
+
++import static org.hamcrest.CoreMatchers.any;
++import static org.hamcrest.CoreMatchers.is;
++import static org.junit.Assert.assertThat;
++import static org.junit.experimental.results.PrintableResult.testResult;
++import static org.junit.experimental.results.ResultMatchers.hasSingleFailureContaining;
++import static org.junit.experimental.results.ResultMatchers.isSuccessful;
++import static org.junit.matchers.JUnitMatchers.both;
++
+public class ExpectedExceptionRuleTest {
+public static class HasExpectedException {
+@Rule
+@@ -42,7 +45,7 @@ public void throwsIllegalArgumentExceptionWithCause() {
+
+thrown.expect(IllegalArgumentException.class);
+thrown.expectMessage(""Ack!"");
+- thrown.expectCause(expectedCause);
++ thrown.expectCause(is(expectedCause));
+
+throw new IllegalArgumentException(""Ack!"", expectedCause);
+}
+@@ -51,7 +54,7 @@ public void throwsIllegalArgumentExceptionWithCause() {
+public void throwsIllegalArgumentExceptionWithCauseExplicitlyNull() {
+thrown.expect(IllegalArgumentException.class);
+thrown.expectMessage(""Ack!"");
+- thrown.expectCause(null);
++ thrown.expectCause(CoreMatchers.<Throwable>nullValue());
+
+throw new IllegalArgumentException(""Ack!"");
+}
+@@ -260,7 +263,7 @@ public static class HasWrongCause {
+public void throwWithCause() {
+thrown.expect(IllegalArgumentException.class);
+thrown.expectMessage(""Ack!"");
+- thrown.expectCause(EXPECTED_CAUSE);
++ thrown.expectCause(is(EXPECTED_CAUSE));
+
+throw new IllegalArgumentException(""Ack!"", new NullPointerException(""an unexpected cause""));
+}""""""
+
+## Sentences of the Example Commit 1 (Separated by Source).
+
+The sentences we have already labeled are shown with their corresponding labels. Sentences without any labels (i.e., those that do not contain rationale information) have empty labels.
+
+The following sentences come from the commit message:
+
+Id: 756_1_1_0
+Source: COMMIT_MESSAGE
+Sentence:
+""""""changed the expectedCause() method to accept a Matcher instead of an explicit Throwable and made some documentation changes""""""
+Label: GOAL
+Reason: This sentence describes the changes made in the commit, i.e., (1) updated the expectedCause() method so that it accepts a matcher instead of a throwable, and (2) updated the documentation. Therefore, it is labeled as GOAL. It doesn’t describe why the code change was made, i.e., the reason, motivation, or benefit of the code change. Moreover, it does not describe any other potential solution that could be implemented instead of the current implementation. Hence, it is not labeled as NEED or ALTERNATIVES.
+
+The following sentences come from the Javadoc comments of the class(src/main/java/org/junit/rules/ExpectedException.java#ExpectedException) that were changed:
+
+Id: 756_3_5_0
+Source: CLASS_JAVADOCS
+Sentence:
+""""""The ExpectedException Rule allows in-test specification of expected exception types and messages: <pre> // These tests all pass.""""""
+Label:
+Reason: This sentence describes an exception class’s rule that allows the class's exception types and messages during testing. It is unrelated to the target code change. It doesn’t describe what changes were made or why, nor does it propose alternative solutions to the current implementation. Therefore, it is not labeled as GOAL, NEED, or ALTERNATIVES.
+
+Id: 756_3_2_0
+Source: CLASS_JAVADOCS
+Sentence:
+""""""thrown.expectMessage(&quot;What&quot;); thrown.expectCause(is(expectedCause));""""""
+Label:
+Reason: This sentence contains source code that checks the exception class's cause and messages during testing. It is unrelated to the target code change. It doesn’t describe what changes were made or why, nor does it propose alternative solutions to the current implementation. Therefore, it is not labeled as GOAL, NEED, or ALTERNATIVES.
+
+The following sentences come from the Javadoc comments of the method(src/main/java/org/junit/rules/ExpectedException.java#expectCause) that were changed
+
+Id: 756_4_28_0
+Source: METHOD_JAVADOCS
+Sentence:
+""""""Adds {@code matcher} to the list of requirements for the cause of any thrown exception.""""""
+Label: GOAL
+Reason: This sentence describes what the expectCause() function does. The method adds a matcher requirement for the cause, which aligns with the commit’s goal, i.e., match causes easily using a Matcher instead of an explicit Throwable. Hence, it was labeled as GOAL. It doesn’t describe why the code change was made, i.e., the reason, motivation, or benefit of the code change. Moreover, it does not describe any other potential solution that could be implemented instead of the current implementation. Hence, it is neither labeled as NEED nor ALTERNATIVES.
+
+
+The following sentences come from the pull_request: https://github.com/junit-team/junit4/pull/377, associated with the commit
+
+Id: 756_6_7_0
+Source: PULL_REQUEST
+Sentence:
+""""""Enable ExpectedException to match causes more easily""""""
+Label: NEED
+Reason: This sentence describes the benefit of the code change, i.e., the code change makes it easier for developers to match the causes for expected exceptions. Hence, it is labeled as NEED. It doesn’t describe what changes were made or what exactly was achieved by the code change. It also does not describe any other potential solution that could be implemented instead of the current implementation. Hence, it is neither labeled as GOAL nor ALTERNATIVES.
+
+Id: 756_6_8_0
+Source: PULL_REQUEST
+Sentence:
+""""""When working especially with third-party libraries, it's common to deal with checked exceptions in a way similar to this:
+
+``` java
+try {
+collaborator.something();
+}
+catch (CheckedException e) {
+throw new MyRuntimeException(""failed to do something"", e);
+}
+```
+
+It's common for different instances of MyRuntimeException to be thrown from many possible execution branches, so when testing this, I would like to do something like:
+
+``` java
+@Rule
+ExpectedException thrown= ExpectedException.none();
+
+@Test
+public void aTest() throws Exception {
+CheckedException expected = new CheckedException(""expected"");
+
+Mockito.when(collaborator.something()).thenThrow(expected);
+
+thrown.expect(MyRuntimeException.class);
+thrown.expectMessage(""failed to do something"");
+thrown.expectCause(expected);
+
+myObject.method();
+}""""""
+Label: 
+Reason: This sentence describes a real-world testing scenario, i.e., wrapping checked exceptions into a runtime exception. In this case, during testing, the developer might want to assert the thrown exception’s type, message, and cause using ExpectedException (expect, expectMessage, expectCause). This sentence doesn’t explicitly say what was changed inside the core framework or the benefit of the code change. It also doesn’t propose any other potential solution that could be implemented instead of the current implementation. Hence, it is neither labeled as GOAL, NEED, nor ALTERNATIVES.
+
+Id: 756_6_8_4
+Source: PULL_REQUEST
+Sentence:
+""""""I realise you can do that with a custom matcher as well, but it feels like this is (at least nearly) as fundamental as matching on the message, so it should perhaps be a part of the core framework?""""""
+Label: ALTERNATIVES, NEED
+Reason: This sentence proposes an alternative solution for the problem that the commit intended to solve. Currently, the code change updates the core Junit function to match the causes of the exception. This sentence proposes that this can be done by a custom matcher as well. Hence, it is labeled with ALTERNATIVES. This sentence also describes why the code change was needed, i.e., matching causes are a fundamental feature that should be in the core JUnit framework. Hence, it is also labeled as NEED. It does not describe what was changed in the commit, and hence, it is not labelled as GOAL.
+
+Id: 756_6_9_1
+Source: PULL_REQUEST
+Sentence:
+""""""One concern I have is that many custom exceptions don't have well-defined equals() methods.""""""
+Label:
+Reason: This sentence raises a concern about equals() methods of the custom exceptions, which is not related to the code change’s goal or need. It also does not mention any alternative solution. Therefore, it is not labeled as GOAL, NEED, or ALTERNATIVES.
+
+Id: 756_6_9_2
+Source: PULL_REQUEST
+Sentence:
+""""""What about one of these ideas:
+
+thrown.expectCause(instanceOf(CheckedException.class));
+
+Or, trickier:
+
+thrown.onCause().expectMessage(""failed to do something""), where onCause() returns an ExpectedException itself (haven't thought about how hard this would be).""""""
+Label: ALTERNATIVES
+Reason: This sentence proposes two different alternative solutions for matching the cause through expectCause() or onCause().expectMessage() function. As these are alternative ways to achieve the same functionality for the code change, this sentence is labeled as ALTERNATIVES. However, it doesn’t describe what was changed or why the code was changed in the commit. Hence, it is neither labeled as GOAL nor NEED.
+
+Id: 756_6_10_0
+Source: PULL_REQUEST
+Sentence:
+""""""Hm, in the initial implementation, I actually didn't check equals but ==.""""""
+Label:
+Reason: This sentence describes that in the initial implementation, the developer didn’t check with the equals function, but this is an alternative approach for a small part of the goal of the commit, not an alternative for the whole approach. It also doesn’t describe what was changed or why the code was changed in the commit. Hence, it is neither labeled as GOAL, NEED, nor ALTERNATIVES.
+
+Id: 756_6_10_1
+Source: PULL_REQUEST
+Sentence:
+""""""I can't remember why I changed it now, but using == feels a little better in some ways - I can't think of a scenario where some code would want to do for instance a clone of an exception that was thrown, and wrapping it in another cause would require the comparison to be recursive.""""""
+Label:
+Reason: This sentence explains the reasoning behind only a small part of the whole solution. It states using “==” for exception message matching, but in the solution, there are more changes introduced, i.e.adding a new function. It doesn’t consider the whole approach. It also doesn’t describe what was changed or why the code was changed in the commit. Hence, it is neither labeled as GOAL, NEED, nor ALTERNATIVES.
+
+Id: 756_6_11_1
+Source: PULL_REQUEST
+Sentence:
+""""""I still think that having expectCause take a Matcher means more flexibility for everyone.""""""
+Label: NEED
+Reason: This sentence describes the benefit of the changed code, i.e., using a Matcher gives more flexibility for developers, and hence, it was labeled as NEED. It doesn’t describe what changes were made or what exactly was achieved by this code change. It also does not describe any other potential solution that could be implemented instead of the current implementation. Hence, it is neither labeled as GOAL nor ALTERNATIVES.
+
+Id: 756_6_11_2
+Source: PULL_REQUEST
+Sentence:
+""""""Developers can use thrown.expectCause(is(expected)) when they want the exact exception, and other matchers when they want something more generic.""""""
+Label: NEED
+Reason: This sentence describes the benefit of the changed code, i.e., using a Matcher when they want a generic exception and using the is(expected) function when they want an exact exception. Combined with the previous sentence, this sentence shows how the code change gives more flexibility for developers, so it was labeled with NEED. It doesn’t describe what changes were made or what was achieved by this code change. It also does not describe any other potential solution that could be implemented instead of the current implementation. Hence, it is neither labeled as GOAL nor ALTERNATIVES.
+
+
+## Diff of the Example Commit 2
+1.
+File: src/main/java/org/junit/rules/TemporaryFolder.java
+Diff:
+""""""@@ -61,13 +61,19 @@ public Result invoke(Invocation invocation) throws RpcException {\n asyncResult.get(Integer.MAX_VALUE, TimeUnit.MILLISECONDS);\n }\n } catch (InterruptedException e) {\n- throw new RpcException(\""Interrupted unexpectedly while waiting for remoting result to return! method: \"" + invocation.getMethodName() + \"", provider: \"" + getUrl() + \"", cause: \"" + e.getMessage(), e);\n+ throw new RpcException(\""Interrupted unexpectedly while waiting for remote result to return! method: \"" +\n+ invocation.getMethodName() + \"", provider: \"" + getUrl() + \"", cause: \"" + e.getMessage(), e);\n } catch (ExecutionException e) {\n Throwable t = e.getCause();\n if (t instanceof TimeoutException) {\n- throw new RpcException(RpcException.TIMEOUT_EXCEPTION, \""Invoke remote method timeout. method: \"" + invocation.getMethodName() + \"", provider: \"" + getUrl() + \"", cause: \"" + e.getMessage(), e);\n+ throw new RpcException(RpcException.TIMEOUT_EXCEPTION, \""Invoke remote method timeout. method: \"" +\n+ invocation.getMethodName() + \"", provider: \"" + getUrl() + \"", cause: \"" + e.getMessage(), e);\n } else if (t instanceof RemotingException) {\n- throw new RpcException(RpcException.NETWORK_EXCEPTION, \""Failed to invoke remote method: \"" + invocation.getMethodName() + \"", provider: \"" + getUrl() + \"", cause: \"" + e.getMessage(), e);\n+ throw new RpcException(RpcException.NETWORK_EXCEPTION, \""Failed to invoke remote method: \"" +\n+ invocation.getMethodName() + \"", provider: \"" + getUrl() + \"", cause: \"" + e.getMessage(), e);\n+ } else {\n+ throw new RpcException(RpcException.UNKNOWN_EXCEPTION, \""Fail to invoke remote method: \"" +\n+ invocation.getMethodName() + \"", provider: \"" + getUrl() + \"", cause: \"" + e.getMessage(), e);\n }\n } catch (Throwable e) {\n throw new RpcException(e.getMessage(), e);""""""
+
+
+## Sentences of the Example Commit 2 (Separated by Source).
+
+The sentences we have already labeled are shown with their corresponding labels. Sentences without any labels (i.e., those that do not contain rationale information) have empty labels.
+
+The following sentences come from the commit message
+
+Id: 2653_1_1_0
+Source: COMMIT_MESSAGE
+Sentence:
+""""""throw unknown exception (#5849)""""""
+Label: GOAL
+Reason: This sentence describes what the commit intended to achieve, i.e., exception handling by throwing unknown exceptions. Hence, it is labeled as GOAL. It does not explain why it is needed or suggest any alternative solutions. Hence, it is not labeled as either NEED or ALTERNATIVES.
+
+The following sentences come from the comments of the changed code.
+
+Id: 2653_2_40_0
+Source: CODE_COMMENT
+Sentence: 
+""""""NOTICE! must call {@link java.util.concurrent.CompletableFuture#get(long, TimeUnit)} because {@link java.util.concurrent.CompletableFuture#get()} was proved to have serious performance drop.""""""
+Label:
+Reason: This sentence explains a performance-related issue, calling get() in CompletableFuture instead of get() is proven to drop performance. This is unrelated to the commit’s main purpose, i.e., exception handling. It doesn’t describe what was changed, why the code was changed, or any other potential solutions that could be implemented in the commit. Hence, it is neither labeled as GOAL, NEED, nor ALTERNATIVES.
+
+The following sentences come from the pull request: https://github.com/apache/dubbo/pull/5849, associated with the commit
+
+
+
+Id: 2653_6_4_0
+Source: PULL_REQUEST
+Sentence:
+""""""In `AsyncToSyncInvoker`, when `ExecutionException` happens, only `TimeoutException` and `RemotingException` are handled and wrapped as `RpcException` and re-throw.""""""
+Label: NEED
+Reason: This sentence describes that with the current implementation, only two types of exceptions can be handled. Combinedly with the next sentence, this sentence expresses why the code change is needed, i.e., to handle the unknown exceptions. Hence, it is labeled as NEED. This sentence states that those two handled the exception class. It’s not stating the goal or proposing a different solution, so ALTERNATIVES and GOAL aren’t applied.
+
+Id: 2653_6_4_1
+Source: PULL_REQUEST
+Sentence:
+""""""The problem here is other exception will be swallowed silently.""""""
+Label: NEED
+Reason: This sentence describes the specific problem for which the code change was made. Combinedly with the previous sentence, this sentence implies that the current implementation only handles two exception types; other exceptions are swallowed silently. As this is the motivation for the change, it is labeled as NEED. It’s not stating the goal or proposing a different solution, so ALTERNATIVES and GOAL aren’t applied.
+
+Id: 2653_6_11_0
+Source: PULL_REQUEST
+Sentence:
+""""""fix #5855""""""
+Label:
+Reason: The sentence is an issue reference, not a statement of purpose, motivation, or alternatives for this change.
+
+Id: 2653_6_4_3
+Source: PULL_REQUEST
+Sentence:
+""""""""wrap other exception in `RpcException` and rethrow.""""""
+Label: GOAL
+Reason: This sentence describes what the developer wanted to achieve by this code change, i.e., exception handling by wrapping other unhandled exceptions in `RpcException` and rethrowing those exceptions. Hence, it is labeled as GOAL. It does not explain why the code change is needed or suggest any alternative solutions. Hence, it is not labeled as either NEED or ALTERNATIVES.
+",<index>. <code>: <definintion>,"<index>. 
+File: <file_name>
+Diff:
+""""""<diff>""""""","Id: <index>
+Source: <source>
+Sentence: 
+""""""<sentence>"""""""

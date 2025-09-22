@@ -1,3 +1,4 @@
+import argparse
 import csv
 import io
 import multiprocessing as mp
@@ -157,12 +158,12 @@ def base_prompt_design(config, dev_path, output_path, test=False):
     model_names = config['model_names']
 
     data = pd.read_csv(dev_path)
-    prompt_templates = pd.read_csv("dataset/prompts/prompt_templates.csv")
+    prompt_templates = pd.read_csv("data/CIPromptTemplate.csv")
 
-    data['id'] = data.apply(lambda row: f"{row['commit_id']}_{row['source_id']}_{row['text_id']}_{row['sentence_id']}", axis=1)
+    # data['id'] = data.apply(lambda row: f"{row['commit_id']}_{row['source_id']}_{row['text_id']}_{row['sentence_id']}", axis=1)
 
     codes = ["GOAL", "NEED", "ALTERNATIVES"]
-    codebook = pd.read_csv('dataset/prompts/codebook.csv')
+    codebook = pd.read_csv('data/AnnotationCodebook.csv')
     codebook = codebook[codebook['Annotation Labels'].isin(codes)].reset_index(drop=True)
 
     data_json = []
@@ -218,8 +219,6 @@ def base_prompt_design(config, dev_path, output_path, test=False):
     for experiment_id in experminet_ids:
         prompt_records = []
 
-        print("+" * 50)
-        print(f"Experiment ID: {experiment_id}")
         experiment = experiment_id.split('.')
 
         rationale_explanation = 0 if experiment[1] == '0' else 1
@@ -228,7 +227,9 @@ def base_prompt_design(config, dev_path, output_path, test=False):
 
         template = prompt_templates[prompt_templates['version'] == experiment_id].iloc[0]
 
-        print(f"Rationale Explanation: {rationale_explanation}, Rules: {rule}, Example: {example}")
+        # print("+" * 50)
+        # print(f"Experiment ID: {experiment_id}")
+        # print(f"Rationale Explanation: {rationale_explanation}, Rules: {rule}, Example: {example}")
 
         code_information = get_code_information(template['code_information'], codebook)
 
@@ -333,8 +334,6 @@ def get_response_from_prompt(config, input_path, output_path, test=False, max_wo
     if max_workers is None:
         max_workers = max(1, min(mp.cpu_count(), len(tasks)))
 
-    # On some platforms (Windows/macOS), 'spawn' is safer.
-    # If you run this inside a Jupyter notebook, consider moving it to a script.
     ctx = mp.get_context("spawn")
 
     print(f"Starting {len(tasks)} tasks with up to {max_workers} workers...")
@@ -419,8 +418,8 @@ def calculated_voting_result(response_codes_all_runs):
 
 
 def save_response_to_development_data(config, development_path, test=False):
-    result_path = f"dataset/prompts/component_identification{'/test' if test else ''}/all_result.csv"
-    dev_data_path = f"dataset/prompts/component_identification{'/test' if test else ''}/all_{'test' if test else 'dev'}_data.csv"
+    result_path = f"results/CI/{'Test' if test else 'Dev'}Result.csv"
+    dev_data_path = f"data/prompts/component_identification{'/test' if test else ''}/all_{'test' if test else 'dev'}_data.csv"
 
     exp_ids = config['exp_ids']
     model_names = config['model_names']
@@ -460,7 +459,7 @@ def save_response_to_development_data(config, development_path, test=False):
                 dev_label_name = f"response_label_{exp_id}_{model_name}_{run}"
                 dev_reason_column = f"response_reason_{exp_id}_{model_name}_{run}"
 
-                input_path = f"dataset/prompts/component_identification{'/test' if test else ''}/{exp_id}/{model_name}/{run}/prompt_template_with_response.csv"
+                input_path = f"data/prompts/component_identification{'/test' if test else ''}/{exp_id}/{model_name}/{run}/prompt_template_with_response.csv"
                 data = pd.read_csv(input_path)
                 data = data[data['experiment_version'] == exp_id]
 
@@ -956,7 +955,7 @@ def voting_response(config, test=False):
         for model_name in model_names:
             print(f"Processing experiment {exp_id} with model {model_name}...")
 
-            input_path = f"dataset/prompts/component_identification{'/test' if test else ''}/all_{'test' if test else 'dev'}_data.csv"
+            input_path = f"data/prompts/component_identification{'/test' if test else ''}/all_{'test' if test else 'dev'}_data.csv"
             res_col = f'response_label_{exp_id}_{model_name}'
             data = pd.read_csv(input_path)
 
@@ -980,13 +979,18 @@ def voting_response(config, test=False):
                 res.loc[len(res)] = t_row
 
             # save the result to a new file
-            output_path = f"dataset/prompts/component_identification{'/test' if test else ''}/{exp_id}/{model_name}/prompt_template_with_response_runs_combined.csv"
+            output_path = f"data/prompts/component_identification{'/test' if test else ''}/{exp_id}/{model_name}/prompt_template_with_response_runs_combined.csv"
             os.makedirs(os.path.dirname(output_path), exist_ok=True)
             res.to_csv(output_path, index=False)
             print(f"Results saved to {output_path}.")
 
 
 if __name__ == "__main__":
+    # add argparse -t test for test data
+    parser = argparse.ArgumentParser(description="Rationale Component Extractor")
+    parser.add_argument('-t', default="dev", choices=["dev", "test"], type=str, help="Use dev/test data")
+    args = parser.parse_args()
+    
     config = {
         "exp_ids" : [
             "1.0.0.0",
@@ -1004,16 +1008,14 @@ if __name__ == "__main__":
 
     create_development_data(all_data, development_data, test_data)
 
-    # # Development data
-    base_prompt_design(config, development_data, base_prompt_results, test=False)
-    get_response_from_prompt(config, base_prompt_results, prompt_response, test=False)
+    if args.t == "test":
+        base_prompt_design(config, test_data, base_prompt_results, test=True)
+        get_response_from_prompt(config, base_prompt_results, prompt_response, test=True)
+        save_response_to_development_data(config, test_data, test=True)
+        voting_response(config, test=True)
+    else:
+        base_prompt_design(config, development_data, base_prompt_results, test=False)
+        get_response_from_prompt(config, base_prompt_results, prompt_response, test=False)
+        save_response_to_development_data(config, development_data, test=False)
+        voting_response(config, test=False)
     
-    save_response_to_development_data(config, development_data, test=False)
-    voting_response(config, test=False)
-
-    # # Test data
-    # base_prompt_design(config, test_data, base_prompt_results, test=True)
-    # get_response_from_prompt(config, base_prompt_results, prompt_response, test=True)
-    
-    # save_response_to_development_data(config, test_data, test=True)
-    # voting_response(config, test=True)
