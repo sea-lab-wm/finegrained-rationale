@@ -1,8 +1,31 @@
 # Fine-grained Multi-Document Extraction and Generation of Code Change Rationale
 
-This repository contains the replication package of "Fine-grained Multi-Document Extraction and Generation of Code Change Rationale". The contents of this repository can be found in [Directory](#directory) section.
+This repository contains the replication package of "Fine-grained Multi-Document Extraction and Generation of Code Change Rationale". The content description of this repository can be found in ```Directory Structure``` section.
 
-## Directory
+## Running *ARGUS*
+
+![*ARGUS* Workflow](argus.png)
+
+### Prerequisite
+- Python 3.10
+- OpenAI Api Key
+- Github Access Token
+
+### Environment Set-Up
+1. Create a virtual environment: ```python -m venv venv```
+2. Activate the environment: ```source venv/bin/activate```
+3. Install required packages: ```pip install -r requirements.txt```
+4. Add OpenAI API key as the environment variable: ```export OPENAI_TOKEN=<Your OpenAI Api Key>```
+5. Add Github Access Token as the environment variable: ```export GITHUB_TOKEN=<Your Github Access Token>```
+
+### Execution
+Run the following commands sequentially from the root directory:
+1. ```python scripts/a_DatasetPreprocessor.py```: Preprocess & sample commits from original dataset.
+2. ```python scripts/b_ArtifactRetriever.py```: Retrieve information from artifacts for each commit. By default this script parse the information into sentences.
+3. ```python scripts/c_RationaleComponentExtractor.py```: Produce the results of component identification(*CI*) for different prompts using developement data. To generate the results of *ARGUS*'s CI, run ```python scripts/c_RationaleComponentExtractor.py -t test```.
+4. ```python scripts/d_RationaleComponentGenerator.py```: Produce the results of component generation(*CG*) for different prompts using developement data. To generate the results of *ARGUS*'s CG, run ```python scripts/d_RationaleComponentGenerator.py -t test```. The manual evaluation results can be found at ```results/CG/ManualEvaluationResult.csv```
+
+## Directory Structure
 
 ### Data
 - **data/AnnotatedSentenceData.csv**: Code change rationale dataset with manually annotated rationale components. (Referenced in *Section 1 - Introduction*)
@@ -30,23 +53,3 @@ This repository contains the replication package of "Fine-grained Multi-Document
 - **results/CI/TestResult.csv**: This table shows the results of *ARGUS* on test data in component identification task.
 - **results/CG/ManualEvaluationResult.csv**: This table shows the manual evaluation results of generated components on both development data and test data. Development data can filtered by ```Data > Dev``` and test data can filtered by ```Data > Test```. Both annotators' evaluation can be found by filtering ```annotator > [annotator1/annotator2]``` and the resolved evaluation can be found by ```annotator > resolved``` filters.
 
-## Reproducibility Steps
-
-### Prerequisite
-- Python 3.10
-- OpenAI Api Key
-- Github Access Token
-
-### Environment Set-Up
-1. Create a virtual environment: ```python -m venv venv```
-2. Activate the environment: ```source venv/bin/activate```
-3. Install required packages: ```pip install -r requirements.txt```
-4. Add OpenAI API key as the environment variable: ```export OPENAI_TOKEN=<Your OpenAI Api Key>```
-5. Add Github Access Token as the environment variable: ```export GITHUB_TOKEN=<Your Github Access Token>```
-
-### Execution
-Run the following commands sequentially from the root directory:
-1. ```python scripts/a_DatasetPreprocessor.py```: Preprocess & sample commits from original dataset.
-2. ```python scripts/b_ArtifactRetriever.py```: Retrieve information from artifacts for each commit. By default this script parse the information into sentences.
-3. ```python scripts/c_RationaleComponentExtractor.py```: Produce the results of component identification(*CI*) for different prompts using developement data. To generate the results of *ARGUS*'s CI, run ```python scripts/c_RationaleComponentExtractor.py -t test```.
-4. ```python scripts/d_RationaleComponentGenerator.py```: Produce the results of component generation(*CG*) for different prompts using developement data. To generate the results of *ARGUS*'s CG, run ```python scripts/d_RationaleComponentGenerator.py -t test```. The manual evaluation results can be found at ```results/CG/ManualEvaluationResult.csv```
