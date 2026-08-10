@@ -1,6 +1,6 @@
-# Fine-grained Multi-Document Extraction and Generation of Code Change Rationale
+# Recovering Fine-Grained Code Change Rationale from Multiple Software Artifacts
 
-This repository contains the replication package of "Fine-grained Multi-Document Extraction and Generation of Code Change Rationale". The content description of this repository can be found in ```Directory Structure``` section.
+This repository contains the replication package of "Recovering Fine-Grained Code Change Rationale from Multiple Software Artifacts". The content description of this repository can be found in ```Directory Structure``` section.
 
 ## Running *ARGUS*
 
