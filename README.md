@@ -1,61 +1,70 @@
 # Recovering Fine-Grained Code Change Rationale from Multiple Software Artifacts
 
-This repository contains the replication package of "Recovering Fine-Grained Code Change Rationale from Multiple Software Artifacts". The content description of this repository can be found in ```Directory Structure``` section.
+This repository is the replication package for *Recovering Fine-Grained Code Change Rationale from Multiple Software Artifacts*. It contains the dataset, annotation codebook, prompt templates, *ARGUS* implementation, reported experiment results, and user-study instruments used in the paper.
 
-## Running *ARGUS*
+*ARGUS* retrieves artifacts associated with a Java commit, identifies sentences that express **Goal**, **Need**, and **Alternatives**, and synthesizes concise rationale summaries from those sentences.
 
 ![*ARGUS* Workflow](argus.png)
 
-### Prerequisite
-- Python 3.10
-- OpenAI Api Key
-- Github Access Token
-
-### Environment Set-Up
-1. Create a virtual environment: ```python -m venv venv```
-2. Activate the environment: ```source venv/bin/activate```
-3. Install required packages: ```pip install -r requirements.txt```
-4. Add OpenAI API key as the environment variable: ```export OPENAI_TOKEN=<Your OpenAI Api Key>```
-5. Add Github Access Token as the environment variable: ```export GITHUB_TOKEN=<Your Github Access Token>```
-
-### Execution
-Run the following commands sequentially from the root directory:
-1. ```python scripts/a_DatasetPreprocessor.py```: Preprocess & sample commits from original dataset.
-2. ```python scripts/b_ArtifactRetriever.py```: Retrieve information from artifacts for each commit. By default this script parse the information into sentences.
-3. ```python scripts/c_RationaleComponentExtractor.py```: Produce the results of component identification(*CI*) for different prompts using developement data. To generate the results of *ARGUS*'s CI, run ```python scripts/c_RationaleComponentExtractor.py -t test```.
-4. ```python scripts/d_RationaleComponentGenerator.py```: Produce the results of component generation(*CG*) for different prompts using developement data. To generate the results of *ARGUS*'s CG, run ```python scripts/d_RationaleComponentGenerator.py -t test```. The manual evaluation results can be found at ```results/CG/ManualEvaluationResult.csv```
-
-## Directory Structure
+## Package contents
 
 ### Data
-- **data/AnnotatedSentenceData.csv**: Code change rationale dataset with manually annotated rationale components. (Referenced in *Section 1 - Introduction*)
-- **data/AnnotationCodebook.csv**: The annotation codebook shared between the annotators.
-- **data/CGPromptTemplate.csv**: All prompt templates for component generation.
-- **data/CIPromptTemplate.csv**: All prompt templates for component identification.
-- **data/FilteredCommits.csv**: Full list of commits after the applied exclusion criteria. (Referenced in *Section 3.1 - Commit Collection*)
-- **data/sampled messages.csv**: Original dataset from Tian et al.(https://dl.acm.org/doi/10.1145/3510003.3510205)
 
-### Scripts
-- **scripts/utils/consts.py**: This script holds the common constants used for artifact retrival, component identification & component generation.
-- **scripts/utils/functions.py**: This script holds the common functions used for artifact retrival, component identification & component generation.
-- **scripts/a_DatasetPreprocessor.py**: This script filter commits and prepare the data for artifacts collection.
-- **scripts/b_ArtifactRetriever.py**: This script collect artifacts sentences from different source for each commit.
-- **scripts/c_RationaleComponentExtractor.py**: This script is used for prompt development and evaluation of component identionfication for *ARGUS*
-- **scripts/d_RationaleComponentGenerator.py**: This script is used for prompt development and evaluation of component generation for *ARGUS*
+- `data/sampled messages.csv` — the original commit-message dataset from Tian et al. (*referenced in Section 3.1: Commit Collection*)
+- `data/FilteredCommits.csv` — 830 candidate commits retained after language, atomicity, and size filtering. It includes the sampling indicator for the 63-study-commit sample. (*referenced in Section 3.1: Commit Collection*)
+- `data/AnnotatedSentenceData.csv` — sentence-level, multi-label annotations for the 63 sampled commits, including source metadata, relevance labels, development/evaluation-set indicators, and reference rationale summaries. (*referenced in Section 1: Introduction - contribution#6*)
+- `data/AnnotationCodebook.csv` — final annotation codebook and decision rules. (*referenced in Section 3.3.2: Rationale Annotation Process*)
+- `data/CIPromptTemplate.csv` — rationale-component-identification prompt templates. (*referenced in Section 5.2.1: Prompt Design and Section: 5.5.5 Impact of the LLM on Argus’s Performance*)
+- `data/CGPromptTemplate.csv` — rationale-component-generation prompt templates. (*referenced in Section 5.2.1: Prompt Design*)
+
+### Implementation
+
+- `scripts/a_DatasetPreprocessor.py` — filters the original population and prepares the commit input data.
+- `scripts/b_ArtifactRetriever.py` — retrieves GitHub artifacts, extracts Javadocs and inline comments, and segments text into sentences.
+- `scripts/c_RationaleComponentExtractor.py` — creates and executes component-identification prompts.
+- `scripts/d_RationaleComponentGenerator.py` — creates and executes component-generation prompts.
+- `scripts/utils/` — shared configuration and helper functions.
 
 ### Results
-- **results/AnnotatorAgreement.csv**: This csv shows the agreement rate and accuracy of the annotations in each annotation session. (Referenced in *Section 3.4 - Results and Analysis*)
-- **results/CommitWiseArtifactCount.csv**: This csv shows the number of Artifact we collected for each commit. (Referenced in *Section 3.4 - Results and Analysis*)
-- **results/ProjectWiseArtifactCount.csv**: This csv shows the number of Artifact we collected for each project. (Referenced in *Section 3.4 - Results and Analysis*)
-- **results/PromptDevelopmentPerformanceComparisonIndividualVSVoting.pdf**: This table shows performance comparison between voting and individual response of a model. (Referenced in *Section 5.3 - Prompt Development Results*)
-- **results/CI/DevResult.csv**: This table shows the prompt development results of component identification task.
-- **results/CI/EvaluationResult.csv**: This table shows all the results of *ARGUS* (only *GPT-o4-mini*) on evaluaion data in component identification task.
-- **results/CI/CrossModelEvaluationResult.csv**: This table shows the results of *ARGUS* using 3 models including *GPT-5.2* and *Gemini-3-Flash* models on evaluaion data in component identification task. 
-- **results/CG/DevResult.csv**: This table shows the manual dev results of generated rationale components used for *ARGUS*.
-- **results/CG/EvaluationResult.csv**: This table shows all the manual evaluations of generated rationale components used for *ARGUS* including the evaluations of *GPT-5.2* and *Gemini-3-Flash*.
-- **results/consistency/CrossPromptIdentificationConsistancy.csv**: 
-- **results/RationaleGenerationSimilarity.csv**:
 
-### User Study
-- **user-study/UserStudyCommitDistribution.pdf**: This table shows the distribution of commits used in user study. (Referenced in *Section 6.1 - Methodology*)
-- **user-study/FinalQuestionnaire.docx**: This table shows the distribution of commits used in user study. (Referenced in *Section 6.1 - Methodology*)
+- `results/AnnotatorAgreement.csv` — agreement by annotation round.
+- `results/DetailedAnnotationAgreement.csv` — component-level agreement details.
+- `results/CommitWiseArtifactCount.csv` and `results/ProjectWiseArtifactCount.csv` — artifact counts after relevance validation.
+- `results/ProjectWiseArtifactCount_IrrelevantIncluded.csv` — artifact counts before excluding irrelevant artifacts.
+- `results/PromptDevelopmentPerformanceComparisonIndividualVSVoting.pdf` — individual-run versus voting comparison for component identification.
+- `results/CI/DevResult.csv` — component-identification prompt-development results.
+- `results/CI/EvaluationResult.csv` — component-identification evaluation results for GPT-o4-mini.
+- `results/CI/CrossModelEvaluationResult.csv` — cross-model component-identification results.
+- `results/CG/DevResult.csv` — component-generation development evaluations.
+- `results/CG/EvaluationResult.csv` — component-generation evaluations, including the cross-model evaluations.
+- `results/RationaleGenerationSimilarity.csv` — similarity among repeated rationale-generation runs.
+
+### User study 
+
+- `user-study/FinalQuestionnaire.docx` — consent form, demographics questions, commit-evaluation questions, and post-study questions. (*referenced in Section 6.1 Study Design*)
+- `user-study/UserStudyCommitDistribution.pdf` — distribution summary for the user-study commit set. (*referenced in Section 6.1 Study Design*)
+
+## Environment setup
+
+The scripts were developed with Python 3.10. They use live GitHub data and LLM APIs, so a GitHub access token and an OpenAI API key are required.
+
+```bash
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+export OPENAI_TOKEN=<your-openai-api-key>
+export GITHUB_TOKEN=<your-github-access-token>
+```
+
+Run commands from the repository root (`finegrained-rationale/`).
+
+## Running the pipeline
+
+The pipeline is ordered as follows:
+
+```bash
+python scripts/a_DatasetPreprocessor.py
+python scripts/b_ArtifactRetriever.py
+python scripts/c_RationaleComponentExtractor.py -t test
+python scripts/d_RationaleComponentGenerator.py -t test
+```
