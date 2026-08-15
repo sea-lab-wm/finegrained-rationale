@@ -30,8 +30,8 @@ Run the following commands sequentially from the root directory:
 ### Data
 - **data/AnnotatedSentenceData.csv**: Code change rationale dataset with manually annotated rationale components. (Referenced in *Section 1 - Introduction*)
 - **data/AnnotationCodebook.csv**: The annotation codebook shared between the annotators.
-- **data/CGPromptTemplate.csv**: Promt templates for component generation.
-- **data/CIPromptTemplate.csv**: Promt templates for component identification.
+- **data/CGPromptTemplate.csv**: All prompt templates for component generation.
+- **data/CIPromptTemplate.csv**: All prompt templates for component identification.
 - **data/FilteredCommits.csv**: Full list of commits after the applied exclusion criteria. (Referenced in *Section 3.1 - Commit Collection*)
 - **data/sampled messages.csv**: Original dataset from Tian et al.(https://dl.acm.org/doi/10.1145/3510003.3510205)
 
@@ -48,8 +48,14 @@ Run the following commands sequentially from the root directory:
 - **results/CommitWiseArtifactCount.csv**: This csv shows the number of Artifact we collected for each commit. (Referenced in *Section 3.4 - Results and Analysis*)
 - **results/ProjectWiseArtifactCount.csv**: This csv shows the number of Artifact we collected for each project. (Referenced in *Section 3.4 - Results and Analysis*)
 - **results/PromptDevelopmentPerformanceComparisonIndividualVSVoting.pdf**: This table shows performance comparison between voting and individual response of a model. (Referenced in *Section 5.3 - Prompt Development Results*)
-- **results/UserStudyCommitDistribution.pdf**: This table shows the distribution of commits used in user study. (Referenced in *Section 6.1 - Methodology*)
 - **results/CI/DevResult.csv**: This table shows the prompt development results of component identification task.
-- **results/CI/TestResult.csv**: This table shows the results of *ARGUS* on test data in component identification task.
-- **results/CG/ManualEvaluationResult.csv**: This table shows the manual evaluation results of generated components on both development data and test data. Development data can filtered by ```Data > Dev``` and test data can filtered by ```Data > Test```. Both annotators' evaluation can be found by filtering ```annotator > [annotator1/annotator2]``` and the resolved evaluation can be found by ```annotator > resolved``` filters.
+- **results/CI/EvaluationResult.csv**: This table shows all the results of *ARGUS* (only *GPT-o4-mini*) on evaluaion data in component identification task.
+- **results/CI/CrossModelEvaluationResult.csv**: This table shows the results of *ARGUS* using 3 models including *GPT-5.2* and *Gemini-3-Flash* models on evaluaion data in component identification task. 
+- **results/CG/DevResult.csv**: This table shows the manual dev results of generated rationale components used for *ARGUS*.
+- **results/CG/EvaluationResult.csv**: This table shows all the manual evaluations of generated rationale components used for *ARGUS* including the evaluations of *GPT-5.2* and *Gemini-3-Flash*.
+- **results/consistency/CrossPromptIdentificationConsistancy.csv**: 
+- **results/RationaleGenerationSimilarity.csv**:
 
+### User Study
+- **user-study/UserStudyCommitDistribution.pdf**: This table shows the distribution of commits used in user study. (Referenced in *Section 6.1 - Methodology*)
+- **user-study/FinalQuestionnaire.docx**: This table shows the distribution of commits used in user study. (Referenced in *Section 6.1 - Methodology*)

@@ -693,8 +693,8 @@ def save_response_to_development_data(config, development_path, test=False):
 def create_development_data(input_path, dev_path, test_path):
     data = pd.read_csv(input_path)
 
-    development_commit_id = data[data['dev_set?']==1]['commit_id'].unique()
-    test_commit_id = data[(data['dev_set?']!=1) & (data['example_set?']!=1)]['commit_id'].unique()
+    development_commit_id = data[data['dev_set']==1]['commit_id'].unique()
+    test_commit_id = data[(data['dev_set']!=1) & (data['example_set']!=1)]['commit_id'].unique()
 
     development_data = data[data['commit_id'].isin(development_commit_id)].reset_index(drop=True)
     test_data = data[data['commit_id'].isin(test_commit_id)].reset_index(drop=True)
@@ -993,15 +993,14 @@ if __name__ == "__main__":
     
     config = {
         "exp_ids" : [
-            "1.0.0.0",
-            "1.0.0.2",
-            "1.1.0.2",
+            "1.0.0.0", #CI-ZS
+            "1.0.0.2", #CI-FS
+            # "1.1.0.2",
             # "1.2.0.2",
-            "1.1.1.2" # Best Prompt Type in test
+            "1.1.1.2" # Best Prompt Type in test #CI-RFS
         ],
         "model_names" : [
             "o4-mini",
-            # "gpt-5"
         ],
         "runs": 3
     }

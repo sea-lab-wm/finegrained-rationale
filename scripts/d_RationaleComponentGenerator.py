@@ -183,8 +183,6 @@ def base_prompt_design(config, dev_path, output_path, test):
 
     data_json = []
     for index, commit_id in enumerate(data['commit_id'].unique()):
-        if commit_id != 8083:
-            continue
         temp_data = {}
 
         commit_df = data[(data['commit_id'] == commit_id)].copy().reset_index(drop=True)
