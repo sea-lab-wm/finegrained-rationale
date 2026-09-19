@@ -1,0 +1,1040 @@
+# Task summary
+
+You are an experienced Java programmer on the spring-projects/spring-boot project. Your task is to analyze a set of sentences, identify whether they express the rationale behind a target code commit, and annotate them according to a taxonomy of rationale components.
+
+You will be provided with:
+* A list of rationale components, each one describing a different aspect that explains why the code was changed the way it was.
+* The diff of the target commit, which shows how one or more code files were changed.
+* A list of sentences extracted from different sources (artifacts) related to the commit, namely the commit message, pull requests, issue reports, code review comments, Javadoc comments, and inline/block code comments of the changed code.
+
+# Instructions
+* Analyze the content of the sentences, identify the rationale components that they describe, and annotate them with those components.
+* Annotate the sentences individually using one or more of the provided rationale components only if the sentence contains information about those components.
+* If a sentence does not describe any of the rationale components, do not include that sentence in your response.
+* In your response, provide only the sentence ID and the component(s); do not include any additional information.
+* Provide your response in CSV format.
+
+# Important
+Each sentence ID follows the format: CommitID_SourceID_TextID_LocalSentenceID. The IDs in this format are numbers that we use to identify different artifacts and text snippets within these artifacts. If consecutive sentences share the same CommitID_SourceID_TextID, it means they are logically grouped within the artifacts' text. For labeling the sentences, consider these groups as context (as they may give more information about the sentences), but still label the sentences individually.
+
+# Inputs
+
+## Rationale Components
+1. GOAL: Describes what changes have been made by the developer in the code change. This is a high-level or low-level description of the code change, indicating what the developer aims to achieve with the code change.
+
+2. NEED: Describes the specific reason, motivation, or benefit of the code change. This indicates why the developer wants to make the code change.
+
+3. ALTERNATIVES: Describes other potential solutions considered by the developers before making the final code change. This indicates the alternative solutions discussed by the developers, but not implemented for the code change.
+
+## Diff of the Target Commit
+1. 
+File: module/spring-boot-cloudfoundry/src/main/java/org/springframework/boot/cloudfoundry/autoconfigure/actuate/endpoint/reactive/CloudFoundryReactiveActuatorAutoConfiguration.java
+Diff:
+"""@@ -24,9 +24,7 @@
+ 
+ import org.jspecify.annotations.Nullable;
+ 
+-import org.springframework.beans.BeansException;
+ import org.springframework.beans.factory.ObjectProvider;
+-import org.springframework.beans.factory.config.BeanPostProcessor;
+ import org.springframework.boot.actuate.autoconfigure.endpoint.condition.ConditionalOnAvailableEndpoint;
+ import org.springframework.boot.actuate.autoconfigure.info.InfoEndpointAutoConfiguration;
+ import org.springframework.boot.actuate.endpoint.ExposableEndpoint;
+@@ -56,22 +54,25 @@
+ import org.springframework.context.ApplicationContext;
+ import org.springframework.context.annotation.Bean;
+ import org.springframework.context.annotation.Configuration;
++import org.springframework.core.Ordered;
++import org.springframework.core.annotation.Order;
+ import org.springframework.core.env.Environment;
+ import org.springframework.http.HttpHeaders;
+ import org.springframework.http.HttpMethod;
+-import org.springframework.security.web.server.MatcherSecurityWebFilterChain;
++import org.springframework.security.config.web.server.ServerHttpSecurity;
++import org.springframework.security.web.server.SecurityWebFilterChain;
+ import org.springframework.security.web.server.WebFilterChainProxy;
+ import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatcher;
+ import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers;
+ import org.springframework.web.cors.CorsConfiguration;
+ import org.springframework.web.reactive.function.client.WebClient;
+-import org.springframework.web.server.WebFilter;
+ 
+ /**
+  * {@link EnableAutoConfiguration Auto-configuration} to expose actuator endpoints for
+  * Cloud Foundry to use in a reactive environment.
+  *
+  * @author Madhura Bhave
++ * @author Aashikant Kumar
+  * @since 4.0.0
+  */
+ @AutoConfiguration(after = InfoEndpointAutoConfiguration.class,
+@@ -133,7 +134,7 @@ private SecurityInterceptor getSecurityInterceptor(WebClient.Builder webClientBu
+ 				? new SecurityService(webClientBuilder, cloudControllerUrl, skipSslValidation) : null;
+ 	}
+ 
+-	private CorsConfiguration getCorsConfiguration() {
++	private static CorsConfiguration getCorsConfiguration() {
+ 		CorsConfiguration corsConfiguration = new CorsConfiguration();
+ 		corsConfiguration.addAllowedOrigin(CorsConfiguration.ALL);
+ 		corsConfiguration.setAllowedMethods(Arrays.asList(HttpMethod.GET.name(), HttpMethod.POST.name()));
+@@ -158,38 +159,21 @@ CloudFoundryReactiveHealthEndpointWebExtension cloudFoundryReactiveHealthEndpoin
+ 	}
+ 
+ 	@Configuration(proxyBeanMethods = false)
+-	@ConditionalOnClass(MatcherSecurityWebFilterChain.class)
+-	static class IgnoredPathsSecurityConfiguration {
++	@ConditionalOnClass({ ServerHttpSecurity.class, SecurityWebFilterChain.class, WebFilterChainProxy.class })
++	static class PermitAllCloudFoundrySecurityConfiguration {
+ 
+-		@Bean
+-		static WebFilterChainPostProcessor webFilterChainPostProcessor() {
+-			return new WebFilterChainPostProcessor();
+-		}
+-
+-	}
+-
+-	static class WebFilterChainPostProcessor implements BeanPostProcessor {
++		private static final int FILTER_CHAIN_ORDER = Ordered.HIGHEST_PRECEDENCE;
+ 
+-		WebFilterChainPostProcessor() {
+-		}
+-
+-		@Override
+-		public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+-			if (bean instanceof WebFilterChainProxy webFilterChainProxy) {
+-				return postProcess(webFilterChainProxy);
+-			}
+-			return bean;
+-		}
+-
+-		private WebFilterChainProxy postProcess(WebFilterChainProxy existing) {
+-			ServerWebExchangeMatcher cloudFoundryRequestMatcher = ServerWebExchangeMatchers
+-				.pathMatchers(BASE_PATH + "/**");
+-			WebFilter noOpFilter = (exchange, chain) -> chain.filter(exchange);
+-			MatcherSecurityWebFilterChain ignoredRequestFilterChain = new MatcherSecurityWebFilterChain(
+-					cloudFoundryRequestMatcher, Collections.singletonList(noOpFilter));
+-			MatcherSecurityWebFilterChain allRequestsFilterChain = new MatcherSecurityWebFilterChain(
+-					ServerWebExchangeMatchers.anyExchange(), Collections.singletonList(existing));
+-			return new WebFilterChainProxy(ignoredRequestFilterChain, allRequestsFilterChain);
++		@Bean
++		@Order(FILTER_CHAIN_ORDER)
++		SecurityWebFilterChain cloudFoundrySecurityWebFilterChain(ServerHttpSecurity http) {
++			ServerWebExchangeMatcher cloudFoundryRequest = ServerWebExchangeMatchers.pathMatchers(BASE_PATH + "/**");
++			http.securityMatcher(cloudFoundryRequest);
++			http.authorizeExchange((exchanges) -> exchanges.anyExchange().permitAll());
++			http.csrf((csrf) -> csrf.disable());
++			CorsConfiguration corsConfiguration = getCorsConfiguration();
++			http.cors((cors) -> cors.configurationSource((exchange) -> corsConfiguration));
++			return http.build();
+ 		}
+ 
+ 	}"""
+
+2. 
+File: module/spring-boot-cloudfoundry/src/test/java/org/springframework/boot/cloudfoundry/autoconfigure/actuate/endpoint/reactive/CloudFoundryReactiveActuatorAutoConfigurationTests.java
+Diff:
+"""@@ -42,6 +42,7 @@
+ import org.springframework.boot.actuate.endpoint.EndpointId;
+ import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
+ import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
++import org.springframework.boot.actuate.endpoint.annotation.WriteOperation;
+ import org.springframework.boot.actuate.endpoint.web.ExposableWebEndpoint;
+ import org.springframework.boot.actuate.endpoint.web.WebOperation;
+ import org.springframework.boot.actuate.endpoint.web.WebOperationRequestPredicate;
+@@ -66,27 +67,35 @@
+ import org.springframework.context.ApplicationContext;
+ import org.springframework.context.annotation.Bean;
+ import org.springframework.context.annotation.Configuration;
++import org.springframework.http.HttpHeaders;
+ import org.springframework.http.HttpMethod;
++import org.springframework.http.HttpStatus;
+ import org.springframework.http.HttpStatusCode;
++import org.springframework.http.MediaType;
+ import org.springframework.http.ResponseEntity;
+ import org.springframework.mock.http.server.reactive.MockServerHttpRequest;
+ import org.springframework.mock.web.server.MockServerWebExchange;
++import org.springframework.security.config.web.server.ServerHttpSecurity;
+ import org.springframework.security.core.userdetails.MapReactiveUserDetailsService;
+ import org.springframework.security.core.userdetails.User;
+ import org.springframework.security.web.server.SecurityWebFilterChain;
+ import org.springframework.security.web.server.WebFilterChainProxy;
+ import org.springframework.test.web.reactive.server.WebTestClient;
+ import org.springframework.web.cors.CorsConfiguration;
++import org.springframework.web.cors.reactive.CorsConfigurationSource;
++import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
+ import org.springframework.web.reactive.function.client.WebClient;
+ 
+ import static org.assertj.core.api.Assertions.assertThat;
+ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
++import static org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.springSecurity;
+ 
+ /**
+  * Tests for {@link CloudFoundryReactiveActuatorAutoConfiguration}.
+  *
+  * @author Madhura Bhave
+  * @author Moritz Halbritter
++ * @author Aashikant Kumar
+  */
+ class CloudFoundryReactiveActuatorAutoConfigurationTests {
+ 
+@@ -186,8 +195,9 @@ void cloudFoundryPlatformActiveAndCloudControllerUrlNotPresent() {
+ 
+ 	@Test
+ 	@SuppressWarnings("unchecked")
+-	void cloudFoundryPathsIgnoredBySpringSecurity() {
+-		this.contextRunner.withBean(TestEndpoint.class, TestEndpoint::new)
++	void cloudFoundryPathsPermittedBySpringSecurity() {
++		this.contextRunner.withUserConfiguration(SecurityConfiguration.class)
++			.withBean(TestEndpoint.class, TestEndpoint::new)
+ 			.withPropertyValues("VCAP_APPLICATION:---", "vcap.application.application_id:my-app-id",
+ 					"vcap.application.cf_api:https://my-cloud-controller.com")
+ 			.run((context) -> {
+@@ -206,14 +216,64 @@ void cloudFoundryPathsIgnoredBySpringSecurity() {
+ 						assertThat(cfRequestWithAdditionalPathMatches).isTrue();
+ 						assertThat(otherCfRequestMatches).isTrue();
+ 						assertThat(otherRequestMatches).isFalse();
+-						otherRequestMatches = filters.get(1)
+-							.matches(MockServerWebExchange.from(MockServerHttpRequest.get("/some-other-path").build()))
+-							.block(Duration.ofSeconds(30));
+-						assertThat(otherRequestMatches).isTrue();
+ 					});
+ 			});
+ 	}
+ 
++	@Test
++	void cloudFoundryPathsPermittedWithCsrfBySpringSecurity() {
++		this.contextRunner.withUserConfiguration(SecurityConfiguration.class)
++			.withBean(TestEndpoint.class, TestEndpoint::new)
++			.withPropertyValues("VCAP_APPLICATION:---", "vcap.application.application_id:my-app-id")
++			.run((context) -> {
++				WebTestClient client = WebTestClient.bindToApplicationContext(context).apply(springSecurity()).build();
++				client.post()
++					.uri(BASE_PATH + "/test?name=test")
++					.contentType(MediaType.APPLICATION_JSON)
++					.exchange()
++					.expectStatus()
++					.isEqualTo(HttpStatus.SERVICE_UNAVAILABLE);
++				// If CSRF fails we'll get a 403, if it works we get service unavailable
++				// because of "Cloud controller URL is not available"
++			});
++	}
++
++	@Test
++	void crossOriginRequestToCloudFoundryPathsPermittedBySpringSecurity() {
++		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
++		source.registerCorsConfiguration("/**", new CorsConfiguration());
++		this.contextRunner.withUserConfiguration(SecurityConfiguration.class)
++			.withBean(TestEndpoint.class, TestEndpoint::new)
++			.withBean("corsConfigurationSource", CorsConfigurationSource.class, () -> source)
++			.withPropertyValues("VCAP_APPLICATION:---", "vcap.application.application_id:my-app-id")
++			.run((context) -> {
++				WebTestClient client = WebTestClient.bindToApplicationContext(context)
++					.apply(springSecurity())
++					.configureClient()
++					.baseUrl("https://app.example.com")
++					.build();
++				client.get()
++					.uri(BASE_PATH + "/test")
++					.header(HttpHeaders.ORIGIN, "elsewhere.example.com")
++					.exchange()
++					.expectStatus()
++					.isEqualTo(HttpStatus.SERVICE_UNAVAILABLE);
++				// If CORS fails we'll get a 403, if it works we get service unavailable
++				// because of "Cloud controller URL is not available"
++			});
++	}
++
++	@Test
++	void otherPathsRejectedBySpringSecurity() {
++		this.contextRunner.withUserConfiguration(SecurityConfiguration.class)
++			.withBean(TestEndpoint.class, TestEndpoint::new)
++			.withPropertyValues("VCAP_APPLICATION:---", "vcap.application.application_id:my-app-id")
++			.run((context) -> {
++				WebTestClient client = WebTestClient.bindToApplicationContext(context).apply(springSecurity()).build();
++				client.get().uri("/test").exchange().expectStatus().isEqualTo(HttpStatus.UNAUTHORIZED);
++			});
++	}
++
+ 	private static @Nullable Boolean getMatches(List<? extends SecurityWebFilterChain> filters, String urlTemplate) {
+ 		return filters.get(0)
+ 			.matches(MockServerWebExchange.from(MockServerHttpRequest.get(urlTemplate).build()))
+@@ -257,7 +317,7 @@ void endpointPathCustomizationIsNotApplied() {
+ 					.filter((candidate) -> EndpointId.of("test").equals(candidate.getEndpointId()))
+ 					.findFirst()
+ 					.get();
+-				assertThat(endpoint.getOperations()).hasSize(1);
++				assertThat(endpoint.getOperations()).hasSize(2);
+ 				WebOperation operation = endpoint.getOperations().iterator().next();
+ 				assertThat(operation.getRequestPredicate().getPath()).isEqualTo("test");
+ 			});
+@@ -387,6 +447,10 @@ String hello() {
+ 			return "hello world";
+ 		}
+ 
++		@WriteOperation
++		void update(String name) {
++		}
++
+ 	}
+ 
+ 	@Configuration(proxyBeanMethods = false)
+@@ -400,4 +464,14 @@ MapReactiveUserDetailsService userDetailsService() {
+ 
+ 	}
+ 
++	@Configuration(proxyBeanMethods = false)
++	static class SecurityConfiguration {
++
++		@Bean
++		SecurityWebFilterChain appSecurity(ServerHttpSecurity httpSecurity) {
++			return httpSecurity.authorizeExchange((spec) -> spec.anyExchange().denyAll()).build();
++		}
++
++	}
++
+ }"""
+
+## Sentences to Annotate (Separated by Source)
+
+
+The following sentences come from the commit message
+
+Id: 42645850_1_1_0
+Source: COMMIT_MESSAGE
+Sentence: 
+"""Merge pull request #51549 from aashikantkumar"""
+
+Id: 42645850_1_1_1
+Source: COMMIT_MESSAGE
+Sentence: 
+"""Closes gh-51549"""
+
+Id: 42645850_1_1_2
+Source: COMMIT_MESSAGE
+Sentence: 
+"""* gh-51549:
+  Polish "Preserve firewall in reactive CF security auto-configuration"
+  Preserve firewall in reactive CF security auto-configuration"""
+
+The following sentences come from the comments of the changed code.
+
+Id: 42645850_2_1_0
+Source: CODE_COMMENT
+Sentence: 
+"""[ADD]: @author Aashikant Kumar"""
+
+Id: 42645850_2_2_0
+Source: CODE_COMMENT
+Sentence: 
+"""[ADD]: @author Aashikant Kumar"""
+
+Id: 42645850_2_3_0
+Source: CODE_COMMENT
+Sentence: 
+"""[ADD]: If CSRF fails we'll get a 403, if it works we get service unavailable because of "Cloud controller URL is not available""""
+
+Id: 42645850_2_4_0
+Source: CODE_COMMENT
+Sentence: 
+"""[ADD]: app.example.com")"""
+
+Id: 42645850_2_5_0
+Source: CODE_COMMENT
+Sentence: 
+"""[ADD]: If CORS fails we'll get a 403, if it works we get service unavailable because of "Cloud controller URL is not available""""
+
+The following sentences come from the Javadoc comments of the class(CloudFoundryReactiveActuatorAutoConfigurationTests) that were changed
+
+Id: 42645850_3_1_0
+Source: CLASS_JAVADOCS
+Sentence: 
+"""Tests for {@link CloudFoundryReactiveActuatorAutoConfiguration}."""
+
+Id: 42645850_3_1_1
+Source: CLASS_JAVADOCS
+Sentence: 
+"""@author Madhura Bhave @author Moritz Halbritter @author Aashikant Kumar"""
+
+The following sentences come from the issue: https://github.com/spring-projects/spring-boot/issues/45377, associated with the commit
+
+Id: 42645850_5_1_0
+Source: ISSUE
+Sentence: 
+"""Custom Spring Security firewall is lost when using spring-boot-cloudfoundry and Actuator in a reactive web application"""
+
+Id: 42645850_5_2_0
+Source: ISSUE
+Sentence: 
+"""Spring security fixed an issue in WebFilterChainProxy by allowing clients to override the default instance of the firewall field (ServerWebExchangeFirewall) with whatever client wants to or adjust the behavior of the default StrictServerWebExchangeFirewall instance:
+
+https://github.com/spring-projects/spring-security/issues/15974
+
+However ReactiveCloudFoundryActuatorAutoConfiguration in the postProcess method overrides the default WebFilterChainProxy bean with new instance and ignoring any overrides of firewall the old bean had.
+
+This causes apps that run on cloud foundry to not run the same way as they would outside of cloud foundry, and require my to disable cloud foundry management endpoints."""
+
+Id: 42645850_5_2_1
+Source: ISSUE
+Sentence: 
+"""I think that's a bug
+
+```
+management:
+  cloudfoundry:
+    enabled: false
+```
+
+To test this behavior localy, set the VCAP_APPLICATION environment variable to something, json like."""
+
+Id: 42645850_5_3_0
+Source: ISSUE
+Sentence: 
+"""It looks like we might be quite limited in how we can fix this without some Spring Security updates."""
+
+Id: 42645850_5_3_1
+Source: ISSUE
+Sentence: 
+"""It doesn't look like we can get the existing value of the `firewall` field."""
+
+Id: 42645850_5_3_2
+Source: ISSUE
+Sentence: 
+"""The `setFilterChainDecorator` looks like it might be useful, but I don't think we can use it because it replaces the existing decorator."""
+
+Id: 42645850_5_3_3
+Source: ISSUE
+Sentence: 
+"""@jzheaux Do you have any suggestions?"""
+
+Id: 42645850_5_4_0
+Source: ISSUE
+Sentence: 
+"""@philwebb , can you not do same as the security folks?"""
+
+Id: 42645850_5_4_1
+Source: ISSUE
+Sentence: 
+"""``"""
+
+Id: 42645850_5_4_2
+Source: ISSUE
+Sentence: 
+"""`
+	@Bean(SPRING_SECURITY_WEBFILTERCHAINFILTER_BEAN_NAME)
+	@Order(WEB_FILTER_CHAIN_FILTER_ORDER)
+	WebFilterChainProxy springSecurityWebFilterChainFilter(ObjectProvider<ServerWebExchangeFirewall> firewall) {
+		WebFilterChainProxy webFilterChainProxy = new WebFilterChainProxy(getSecurityWebFilterChains());
+		firewall.ifUnique(webFilterChainProxy::setFirewall);
+		return webFilterChainProxy;
+	}
+```"""
+
+Id: 42645850_5_5_0
+Source: ISSUE
+Sentence: 
+"""That will work if the `ServerWebExchangeFirewall` is set from a bean, but if the user has called `WebFilterChainProxy.setFirewall` directly (or via a post processor), it won't work."""
+
+Id: 42645850_5_6_0
+Source: ISSUE
+Sentence: 
+"""I think that's that was the way to override the firewall in spring security: https://github.com/spring-projects/spring-security/commit/e48d6b039baf104a6c56f4e62e0c2ff4d35a22bb"""
+
+Id: 42645850_5_7_0
+Source: ISSUE
+Sentence: 
+"""It's probably the most typical way, but I don't think it's the only way it could happen."""
+
+Id: 42645850_5_8_0
+Source: ISSUE
+Sentence: 
+"""Generally speaking, Spring Security interprets the declaration of a bean to mean that all filter chains should pick it up."""
+
+Id: 42645850_5_8_1
+Source: ISSUE
+Sentence: 
+"""Otherwise, an application uses `ServerHttpSecurity` or constructs a `WebFilterChainProxy` directly so that a given configuration applies only to that filter chain."""
+
+Id: 42645850_5_8_2
+Source: ISSUE
+Sentence: 
+"""If the firewall is set in this way, then it wouldn't be the concern of any other `WebFilterChainProxy`, like the one created [here](https://github.com/spring-projects/spring-boot/blob/main/module/spring-boot-cloudfoundry/src/main/java/org/springframework/boot/cloudfoundry/autoconfigure/actuate/endpoint/reactive/CloudFoundryReactiveActuatorAutoConfiguration.java#L182):
+
+```java
+MatcherSecurityWebFilterChain ignoredRequestFilterChain = new MatcherSecurityWebFilterChain(
+		cloudFoundryRequestMatcher, Collections.singletonList(noOpFilter));
+MatcherSecurityWebFilterChain allRequestsFilterChain = new MatcherSecurityWebFilterChain(
+		ServerWebExchangeMatchers.anyExchange(), Collections.singletonList(existing));
+return new WebFilterChainProxy(ignoredRequestFilterChain, allRequestsFilterChain);
+```
+
+So, I believe it follows that if the firewall is declared as a bean as @alfein mentioned, the intent of the application is that it be applied to all `WebFilterChainProxy` instances and can otherwise be ignored."""
+
+Id: 42645850_5_8_3
+Source: ISSUE
+Sentence: 
+"""Are there other cases you have in mind, @philwebb?"""
+
+Id: 42645850_5_9_0
+Source: ISSUE
+Sentence: 
+"""We'd like to explore taking a similar approach to how IgnoredCloudFoundryPathsWebSecurityConfiguration does it on the servlet side by defining a new chain with higher precedence that opens up `/cloudfoundryapplication` while leaving everything else untouched."""
+
+Id: 42645850_5_10_0
+Source: ISSUE
+Sentence: 
+"""For consistency with the Servlet-based approach, we want the `SecurityWebFilterChain` for `/cloudfoundryapplication/**` to have an order of `-1`."""
+
+Id: 42645850_5_10_1
+Source: ISSUE
+Sentence: 
+"""If an application has an existing `SecurityWebFilterChain` that has both higher precedence and matches paths beneath `/cloudfoundryapplication`, it will be used to control access to `/cloudfoundryapplication`."""
+
+Id: 42645850_5_10_2
+Source: ISSUE
+Sentence: 
+"""This is a change from the current approach where the auto-configured chain that allows access to `/cloudfoundryapplication` would always be queried first."""
+
+Id: 42645850_5_10_3
+Source: ISSUE
+Sentence: 
+"""At worst, this change in behavior will prevent access to `/cloudfoundryapplication` and can be addressed by changing the filter ordering."""
+
+Id: 42645850_5_10_4
+Source: ISSUE
+Sentence: 
+"""Given this risk, we could delay the fix until 4.2.0, however that would also leave people with firewall customization problems until November at the earliest."""
+
+Id: 42645850_5_10_5
+Source: ISSUE
+Sentence: 
+"""I'll discuss our preferred timing for fixing this with the team."""
+
+Id: 42645850_5_11_0
+Source: ISSUE
+Sentence: 
+"""We're going to use highest precedence for the order."""
+
+Id: 42645850_5_11_1
+Source: ISSUE
+Sentence: 
+"""That's what was used on the servlet side prior to it switching from ignoring to permitting all."""
+
+The following sentences come from the pull_request: https://github.com/spring-projects/spring-boot/pull/51549, associated with the commit
+
+Id: 42645850_6_1_0
+Source: PULL_REQUEST
+Sentence: 
+"""Custom Spring Security firewall is lost when using spring-boot-cloudfoundry and Actuator in a reactive web application"""
+
+Id: 42645850_6_2_0
+Source: PULL_REQUEST
+Sentence: 
+"""Fixes #45377"""
+
+Id: 42645850_6_2_1
+Source: PULL_REQUEST
+Sentence: 
+"""Hi team,
+
+This PR addresses an issue where custom ServerWebExchangeFirewall configurations are lost when running reactive applications on Cloud Foundry."""
+
+Id: 42645850_6_2_2
+Source: PULL_REQUEST
+Sentence: 
+"""What was happening?"""
+
+Id: 42645850_6_2_3
+Source: PULL_REQUEST
+Sentence: 
+"""When VCAP_APPLICATION is present, CloudFoundryReactiveActuatorAutoConfiguration used a BeanPostProcessor (WebFilterChainPostProcessor) to wrap WebFilterChainProxy."""
+
+Id: 42645850_6_2_4
+Source: PULL_REQUEST
+Sentence: 
+"""The trouble with that approach is that instantiating a new WebFilterChainProxy creates a fresh instance with its private firewall field defaulting to new StrictServerWebExchangeFirewall()."""
+
+Id: 42645850_6_2_5
+Source: PULL_REQUEST
+Sentence: 
+"""As a result:
+
+Any custom ServerWebExchangeFirewall bean declared by the user was discarded."""
+
+Id: 42645850_6_2_6
+Source: PULL_REQUEST
+Sentence: 
+"""Direct customizations (e.g. calling setFirewall(...) on the proxy) were also lost."""
+
+Id: 42645850_6_2_7
+Source: PULL_REQUEST
+Sentence: 
+"""Incoming requests were evaluated by the new proxy's strict firewall at the perimeter, rejecting valid requests that rely on customized firewall rules (like matrix parameters or specific URI encodings)."""
+
+Id: 42645850_6_2_8
+Source: PULL_REQUEST
+Sentence: 
+"""The Fix
+Following @wilkinsona's suggestion in #45377, we aligned the reactive configuration with how the servlet side already handles this in IgnoredCloudFoundryPathsWebSecurityConfiguration:
+
+Removed WebFilterChainPostProcessor.
+Added a dedicated @Order(-1) SecurityWebFilterChain bean matching /cloudfoundryapplication/** with permitAll(), csrf.disable(), and CORS configuration.
+This allows Spring Security's native ServerHttpSecurityConfiguration to create and keep the single WebFilterChainProxy."""
+
+Id: 42645850_6_2_9
+Source: PULL_REQUEST
+Sentence: 
+"""Cloud Foundry routes are given higher precedence to bypass authentication, while the rest of the application's security configuration and the user's custom firewall remain completely untouched."""
+
+Id: 42645850_6_2_10
+Source: PULL_REQUEST
+Sentence: 
+"""How this was verified
+Added regression tests in CloudFoundryReactiveActuatorAutoConfigurationTests:
+
+customFirewallBeanIsPreserved: Asserts that a custom ServerWebExchangeFirewall @Bean stays on WebFilterChainProxy.
+directlyConfiguredFirewallIsPreserved: Asserts that firewalls set directly via proxy.setFirewall(...) in a post-processor survive.
+customFirewallIsInvokedOnRequests: Verifies runtime execution of firewall.getFirewalledExchange(...)."""
+
+Id: 42645850_6_2_11
+Source: PULL_REQUEST
+Sentence: 
+"""userSecurityWebFilterChainIsPreserved: Confirms that user-defined SecurityWebFilterChain beans coexist alongside the Cloud Foundry chain with correct ordering."""
+
+Id: 42645850_6_2_12
+Source: PULL_REQUEST
+Sentence: 
+"""Ran:
+
+bash
+./gradlew :module:spring-boot-cloudfoundry:test
+./gradlew :module:"""
+
+Id: 42645850_6_2_13
+Source: PULL_REQUEST
+Sentence: 
+"""spring"""
+
+Id: 42645850_6_2_14
+Source: PULL_REQUEST
+Sentence: 
+"""-"""
+
+Id: 42645850_6_2_15
+Source: PULL_REQUEST
+Sentence: 
+"""boot"""
+
+Id: 42645850_6_2_16
+Source: PULL_REQUEST
+Sentence: 
+"""-cloudfoundry:"""
+
+Id: 42645850_6_2_17
+Source: PULL_REQUEST
+Sentence: 
+"""check"""
+
+Id: 42645850_6_2_18
+Source: PULL_REQUEST
+Sentence: 
+"""All reactive tests, servlet tests, checkstyle, and Spring JavaFormat checks pass cleanly."""
+
+Id: 42645850_6_2_19
+Source: PULL_REQUEST
+Sentence: 
+"""Contributor Checklist
+ Signed-off-by trailer included in commit for DCO
+ Code formatted with Spring JavaFormat
+ Checkstyle checks pass
+ @author tag added
+ Unit/slice regression tests added"""
+
+Id: 42645850_6_3_0
+Source: PULL_REQUEST
+Sentence: 
+"""Thanks very much, @aashikantkumar."""
+
+Id: 42645850_6_4_0
+Source: PULL_REQUEST
+Sentence: 
+"""This one needs a little more thought so I've reverted the changes in d9abd902f5affe24cdea2b822ba0f2e2d4eb611b."""
+
+Id: 42645850_6_5_0
+Source: PULL_REQUEST
+Sentence: 
+"""Thanks for the update, @wilkinsona."""
+
+Id: 42645850_6_5_1
+Source: PULL_REQUEST
+Sentence: 
+"""I understand."""
+
+Id: 42645850_6_5_2
+Source: PULL_REQUEST
+Sentence: 
+"""Could you please share the specific concerns or areas that need further consideration?"""
+
+Id: 42645850_6_5_3
+Source: PULL_REQUEST
+Sentence: 
+"""I’d be happy to investigate them and help work toward a better solution"""
+
+The following sentences come from the code_review_comment: https://github.com/spring-projects/spring-boot/pull/51549, associated with the commit
+
+Id: 42645850_7_1_0
+Source: CODE_REVIEW_COMMENT
+Sentence: 
+"""I don't think these tests are necessary as the potential to cause problems with the firewall is removed entirely by the new approach."""
+
+Id: 42645850_7_1_1
+Source: CODE_REVIEW_COMMENT
+Sentence: 
+"""See also the equivalent servlet-based tests where we don't consider the firewall either."""
+
+Id: 42645850_7_1_2
+Source: CODE_REVIEW_COMMENT
+Sentence: 
+"""Please remove."""
+
+Id: 42645850_7_2_0
+Source: CODE_REVIEW_COMMENT
+Sentence: 
+"""This test should be renamed as the paths are now permitted rather than being ignored."""
+
+Id: 42645850_7_2_1
+Source: CODE_REVIEW_COMMENT
+Sentence: 
+"""New tests should be added to test CSRF and cross-origin requests."""
+
+Id: 42645850_7_2_2
+Source: CODE_REVIEW_COMMENT
+Sentence: 
+"""See `cloudFoundryPathsPermittedWithCsrfBySpringSecurity` and `crossOriginRequestToCloudFoundryPathsPermittedBySpringSecurity` in `CloudFoundryActuatorAutoConfigurationTests` for inspiration."""
+
+Id: 42645850_7_3_0
+Source: CODE_REVIEW_COMMENT
+Sentence: 
+"""Makes total sense."""
+
+Id: 42645850_7_3_1
+Source: CODE_REVIEW_COMMENT
+Sentence: 
+"""Since we're no longer touching WebFilterChainProxy, the firewall isn't impacted anymore."""
+
+Id: 42645850_7_3_2
+Source: CODE_REVIEW_COMMENT
+Sentence: 
+"""I've removed these three tests and cleaned up the unused imports."""
+
+Id: 42645850_7_4_0
+Source: CODE_REVIEW_COMMENT
+Sentence: 
+"""Updated!"""
+
+Id: 42645850_7_4_1
+Source: CODE_REVIEW_COMMENT
+Sentence: 
+"""I've renamed the test to cloudFoundryPathsPermittedBySpringSecurity and added both cloudFoundryPathsPermittedWithCsrfBySpringSecurity and crossOriginRequestToCloudFoundryPathsPermittedBySpringSecurity mirroring the servlet test suite."""
+
+# Response Format (CSV)
+
+sentence_id, labels
+<ID1>, "<LABEL1>, ..."
+
+
+# Example for Illustration Purposes
+
+Below, I am providing 2 example commits with the code diff and extracted sentences for that commit with the expected rationale component labels. Use the examples only for learning purposes.
+
+## Diff of the Example Commit 1
+1.
+File: src/main/java/org/junit/rules/ExpectedException.java
+Diff:
+"""@@ -43,8 +43,8 @@
+* public void throwsIllegalArgumentExceptionWithMessageAndCause() {
+* NullPointerException expectedCause = new NullPointerException();
+* thrown.expect(IllegalArgumentException.class);
+- * thrown.expectMessage(&quot;happened?&quot;);
+- * thrown.expectCause(expectedCause);
++ * thrown.expectMessage(&quot;What&quot;);
++ * thrown.expectCause(is(expectedCause));
+* throw new IllegalArgumentException(&quot;What happened?&quot;, cause);
+* }
+* }
+@@ -106,8 +106,12 @@ public void expectMessage(Matcher<String> matcher) {
+expect(hasMessage(matcher));
+}
+
+- public void expectCause(Throwable expectedCause) {
+- expect(causeEquals(expectedCause));
++ /**
++ * Adds {@code matcher} to the list of requirements for the cause of
++ * any thrown exception.
++ */
++ public void expectCause(Matcher<? extends Throwable> expectedCause) {
++ expect(hasCause(expectedCause));
+}
+
+private class ExpectedExceptionStatement extends Statement {
+@@ -147,16 +151,16 @@ public boolean matchesSafely(Throwable item) {
+};
+}
+
+- private Matcher<Throwable> causeEquals(final Throwable expectedCause) {
++ private Matcher<Throwable> hasCause(final Matcher<? extends Throwable> causeMatcher) {
+return new TypeSafeMatcher<Throwable>() {
+- @Override
+- public boolean matchesSafely(Throwable item) {
+- return expectedCause == null ? item.getCause() == null : expectedCause.equals(item.getCause());
+- }
+-
+public void describeTo(Description description) {
+description.appendText("exception with cause ");
+- description.appendText(expectedCause.toString());
++ description.appendDescriptionOf(causeMatcher);
++ }
++
++ @Override
++ public boolean matchesSafely(Throwable item) {
++ return causeMatcher.matches(item.getCause());
+}
+};
+}"""
+
+2.
+File: src/test/java/org/junit/tests/experimental/rules/ExpectedExceptionRuleTest.java
+Diff:
+"""@@ -1,18 +1,21 @@
+package org.junit.tests.experimental.rules;
+
+-import static org.hamcrest.CoreMatchers.any;
+-import static org.junit.Assert.assertThat;
+-import static org.junit.experimental.results.PrintableResult.testResult;
+-import static org.junit.experimental.results.ResultMatchers.hasSingleFailureContaining;
+-import static org.junit.experimental.results.ResultMatchers.isSuccessful;
+-import static org.junit.matchers.JUnitMatchers.both;
++import org.hamcrest.CoreMatchers;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.internal.matchers.TypeSafeMatcher;
+import org.junit.rules.ExpectedException;
+
++import static org.hamcrest.CoreMatchers.any;
++import static org.hamcrest.CoreMatchers.is;
++import static org.junit.Assert.assertThat;
++import static org.junit.experimental.results.PrintableResult.testResult;
++import static org.junit.experimental.results.ResultMatchers.hasSingleFailureContaining;
++import static org.junit.experimental.results.ResultMatchers.isSuccessful;
++import static org.junit.matchers.JUnitMatchers.both;
++
+public class ExpectedExceptionRuleTest {
+public static class HasExpectedException {
+@Rule
+@@ -42,7 +45,7 @@ public void throwsIllegalArgumentExceptionWithCause() {
+
+thrown.expect(IllegalArgumentException.class);
+thrown.expectMessage("Ack!");
+- thrown.expectCause(expectedCause);
++ thrown.expectCause(is(expectedCause));
+
+throw new IllegalArgumentException("Ack!", expectedCause);
+}
+@@ -51,7 +54,7 @@ public void throwsIllegalArgumentExceptionWithCause() {
+public void throwsIllegalArgumentExceptionWithCauseExplicitlyNull() {
+thrown.expect(IllegalArgumentException.class);
+thrown.expectMessage("Ack!");
+- thrown.expectCause(null);
++ thrown.expectCause(CoreMatchers.<Throwable>nullValue());
+
+throw new IllegalArgumentException("Ack!");
+}
+@@ -260,7 +263,7 @@ public static class HasWrongCause {
+public void throwWithCause() {
+thrown.expect(IllegalArgumentException.class);
+thrown.expectMessage("Ack!");
+- thrown.expectCause(EXPECTED_CAUSE);
++ thrown.expectCause(is(EXPECTED_CAUSE));
+
+throw new IllegalArgumentException("Ack!", new NullPointerException("an unexpected cause"));
+}"""
+
+## Sentences of the Example Commit 1 (Separated by Source).
+
+The sentences we have already labeled are shown with their corresponding labels. Sentences without any labels (i.e., those that do not contain rationale information) have empty labels.
+
+The following sentences come from the commit message:
+
+Id: 756_1_1_0
+Source: COMMIT_MESSAGE
+Sentence:
+"""changed the expectedCause() method to accept a Matcher instead of an explicit Throwable and made some documentation changes"""
+Label: GOAL
+
+The following sentences come from the Javadoc comments of the class(src/main/java/org/junit/rules/ExpectedException.java#ExpectedException) that were changed:
+
+Id: 756_3_5_0
+Source: CLASS_JAVADOCS
+Sentence:
+"""The ExpectedException Rule allows in-test specification of expected exception types and messages: <pre> // These tests all pass."""
+Label:
+
+Id: 756_3_2_0
+Source: CLASS_JAVADOCS
+Sentence:
+"""thrown.expectMessage(&quot;What&quot;); thrown.expectCause(is(expectedCause));"""
+Label:
+Reason: This sentence contains source code that checks the exception class's cause and messages during testing. It is unrelated to the target code change. It doesn‚Äôt describe what changes were made or why, nor does it propose alternative solutions to the current implementation. Therefore, it is not labeled as GOAL, NEED, or ALTERNATIVES.
+
+The following sentences come from the Javadoc comments of the method(src/main/java/org/junit/rules/ExpectedException.java#expectCause) that were changed
+
+Id: 756_4_28_0
+Source: METHOD_JAVADOCS
+Sentence:
+"""Adds {@code matcher} to the list of requirements for the cause of any thrown exception."""
+Label: GOAL
+
+The following sentences come from the pull_request: https://github.com/junit-team/junit4/pull/377, associated with the commit
+
+Id: 756_6_7_0
+Source: PULL_REQUEST
+Sentence:
+"""Enable ExpectedException to match causes more easily"""
+Label: NEED
+
+Id: 756_6_8_0
+Source: PULL_REQUEST
+Sentence:
+"""When working especially with third-party libraries, it's common to deal with checked exceptions in a way similar to this:
+
+``` java
+try {
+collaborator.something();
+}
+catch (CheckedException e) {
+throw new MyRuntimeException("failed to do something", e);
+}
+```
+
+It's common for different instances of MyRuntimeException to be thrown from many possible execution branches, so when testing this, I would like to do something like:
+
+``` java
+@Rule
+ExpectedException thrown= ExpectedException.none();
+
+@Test
+public void aTest() throws Exception {
+CheckedException expected = new CheckedException("expected");
+
+Mockito.when(collaborator.something()).thenThrow(expected);
+
+thrown.expect(MyRuntimeException.class);
+thrown.expectMessage("failed to do something");
+thrown.expectCause(expected);
+
+myObject.method();
+}"""
+Label: 
+
+Id: 756_6_8_4
+Source: PULL_REQUEST
+Sentence:
+"""I realise you can do that with a custom matcher as well, but it feels like this is (at least nearly) as fundamental as matching on the message, so it should perhaps be a part of the core framework?"""
+Label: ALTERNATIVES, NEED
+
+Id: 756_6_9_1
+Source: PULL_REQUEST
+Sentence:
+"""One concern I have is that many custom exceptions don't have well-defined equals() methods."""
+Label:
+
+Id: 756_6_9_2
+Source: PULL_REQUEST
+Sentence:
+"""What about one of these ideas:
+
+thrown.expectCause(instanceOf(CheckedException.class));
+
+Or, trickier:
+
+thrown.onCause().expectMessage("failed to do something"), where onCause() returns an ExpectedException itself (haven't thought about how hard this would be)."""
+Label: ALTERNATIVES
+
+Id: 756_6_10_0
+Source: PULL_REQUEST
+Sentence:
+"""Hm, in the initial implementation, I actually didn't check equals but ==."""
+Label:
+
+Id: 756_6_10_1
+Source: PULL_REQUEST
+Sentence:
+"""I can't remember why I changed it now, but using == feels a little better in some ways - I can't think of a scenario where some code would want to do for instance a clone of an exception that was thrown, and wrapping it in another cause would require the comparison to be recursive."""
+Label:
+
+Id: 756_6_11_1
+Source: PULL_REQUEST
+Sentence:
+"""I still think that having expectCause take a Matcher means more flexibility for everyone."""
+Label: NEED
+
+Id: 756_6_11_2
+Source: PULL_REQUEST
+Sentence:
+"""Developers can use thrown.expectCause(is(expected)) when they want the exact exception, and other matchers when they want something more generic."""
+Label: NEED
+
+## Diff of the Example Commit 2
+1.
+File: src/main/java/org/junit/rules/TemporaryFolder.java
+Diff:
+"""@@ -61,13 +61,19 @@ public Result invoke(Invocation invocation) throws RpcException {\n asyncResult.get(Integer.MAX_VALUE, TimeUnit.MILLISECONDS);\n }\n } catch (InterruptedException e) {\n- throw new RpcException(\"Interrupted unexpectedly while waiting for remoting result to return! method: \" + invocation.getMethodName() + \", provider: \" + getUrl() + \", cause: \" + e.getMessage(), e);\n+ throw new RpcException(\"Interrupted unexpectedly while waiting for remote result to return! method: \" +\n+ invocation.getMethodName() + \", provider: \" + getUrl() + \", cause: \" + e.getMessage(), e);\n } catch (ExecutionException e) {\n Throwable t = e.getCause();\n if (t instanceof TimeoutException) {\n- throw new RpcException(RpcException.TIMEOUT_EXCEPTION, \"Invoke remote method timeout. method: \" + invocation.getMethodName() + \", provider: \" + getUrl() + \", cause: \" + e.getMessage(), e);\n+ throw new RpcException(RpcException.TIMEOUT_EXCEPTION, \"Invoke remote method timeout. method: \" +\n+ invocation.getMethodName() + \", provider: \" + getUrl() + \", cause: \" + e.getMessage(), e);\n } else if (t instanceof RemotingException) {\n- throw new RpcException(RpcException.NETWORK_EXCEPTION, \"Failed to invoke remote method: \" + invocation.getMethodName() + \", provider: \" + getUrl() + \", cause: \" + e.getMessage(), e);\n+ throw new RpcException(RpcException.NETWORK_EXCEPTION, \"Failed to invoke remote method: \" +\n+ invocation.getMethodName() + \", provider: \" + getUrl() + \", cause: \" + e.getMessage(), e);\n+ } else {\n+ throw new RpcException(RpcException.UNKNOWN_EXCEPTION, \"Fail to invoke remote method: \" +\n+ invocation.getMethodName() + \", provider: \" + getUrl() + \", cause: \" + e.getMessage(), e);\n }\n } catch (Throwable e) {\n throw new RpcException(e.getMessage(), e);"""
+
+
+## Sentences of the Example Commit 2 (Separated by Source).
+
+The sentences we have already labeled are shown with their corresponding labels. Sentences without any labels (i.e., those that do not contain rationale information) have empty labels.
+
+The following sentences come from the commit message
+
+Id: 2653_1_1_0
+Source: COMMIT_MESSAGE
+Sentence:
+"""throw unknown exception (#5849)"""
+Label: GOAL
+
+The following sentences come from the comments of the changed code.
+
+Id: 2653_2_40_0
+Source: CODE_COMMENT
+Sentence: 
+"""NOTICE! must call {@link java.util.concurrent.CompletableFuture#get(long, TimeUnit)} because {@link java.util.concurrent.CompletableFuture#get()} was proved to have serious performance drop."""
+Label:
+
+The following sentences come from the pull request: https://github.com/apache/dubbo/pull/5849, associated with the commit
+
+
+Id: 2653_6_4_0
+Source: PULL_REQUEST
+Sentence:
+"""In `AsyncToSyncInvoker`, when `ExecutionException` happens, only `TimeoutException` and `RemotingException` are handled and wrapped as `RpcException` and re-throw."""
+Label: NEED
+
+Id: 2653_6_4_1
+Source: PULL_REQUEST
+Sentence:
+"""The problem here is other exception will be swallowed silently."""
+Label: NEED
+
+Id: 2653_6_11_0
+Source: PULL_REQUEST
+Sentence:
+"""fix #5855"""
+Label:
+
+Id: 2653_6_4_3
+Source: PULL_REQUEST
+Sentence:
+""""wrap other exception in `RpcException` and rethrow."""
+Label: GOAL

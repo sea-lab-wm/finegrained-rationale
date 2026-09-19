@@ -1,0 +1,1101 @@
+id,commit_id,commit_url,owner,repo,sha,source_id,text_id,sentence_id,source,source_url,artifact_kind,artifact_number,class_name,text,sentence,run_labels,final_labels
+42645850_1_1_0,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,1,1,0,COMMIT_MESSAGE,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,commit_message,,,"Merge pull request #51549 from aashikantkumar
+
+Closes gh-51549
+
+* gh-51549:
+  Polish ""Preserve firewall in reactive CF security auto-configuration""
+  Preserve firewall in reactive CF security auto-configuration",Merge pull request #51549 from aashikantkumar,"['', '', '']",
+42645850_1_1_1,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,1,1,1,COMMIT_MESSAGE,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,commit_message,,,"Merge pull request #51549 from aashikantkumar
+
+Closes gh-51549
+
+* gh-51549:
+  Polish ""Preserve firewall in reactive CF security auto-configuration""
+  Preserve firewall in reactive CF security auto-configuration",Closes gh-51549,"['', '', '']",
+42645850_1_1_2,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,1,1,2,COMMIT_MESSAGE,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,commit_message,,,"Merge pull request #51549 from aashikantkumar
+
+Closes gh-51549
+
+* gh-51549:
+  Polish ""Preserve firewall in reactive CF security auto-configuration""
+  Preserve firewall in reactive CF security auto-configuration","* gh-51549:
+  Polish ""Preserve firewall in reactive CF security auto-configuration""
+  Preserve firewall in reactive CF security auto-configuration","['GOAL', 'GOAL', 'GOAL']",GOAL
+42645850_2_1_0,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,2,1,0,CODE_COMMENT,https://github.com/spring-projects/spring-boot/blob/ad8f14e7855aaf71063f6ae200064c6c6185be00/module%2Fspring-boot-cloudfoundry%2Fsrc%2Fmain%2Fjava%2Forg%2Fspringframework%2Fboot%2Fcloudfoundry%2Fautoconfigure%2Factuate%2Fendpoint%2Freactive%2FCloudFoundryReactiveActuatorAutoConfiguration.java,code_comment_added,,,[ADD]: @author Aashikant Kumar,[ADD]: @author Aashikant Kumar,"['', '', '']",
+42645850_2_2_0,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,2,2,0,CODE_COMMENT,https://github.com/spring-projects/spring-boot/blob/ad8f14e7855aaf71063f6ae200064c6c6185be00/module%2Fspring-boot-cloudfoundry%2Fsrc%2Ftest%2Fjava%2Forg%2Fspringframework%2Fboot%2Fcloudfoundry%2Fautoconfigure%2Factuate%2Fendpoint%2Freactive%2FCloudFoundryReactiveActuatorAutoConfigurationTests.java,code_comment_added,,,[ADD]: @author Aashikant Kumar,[ADD]: @author Aashikant Kumar,"['', '', '']",
+42645850_2_3_0,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,2,3,0,CODE_COMMENT,https://github.com/spring-projects/spring-boot/blob/ad8f14e7855aaf71063f6ae200064c6c6185be00/module%2Fspring-boot-cloudfoundry%2Fsrc%2Ftest%2Fjava%2Forg%2Fspringframework%2Fboot%2Fcloudfoundry%2Fautoconfigure%2Factuate%2Fendpoint%2Freactive%2FCloudFoundryReactiveActuatorAutoConfigurationTests.java,code_comment_added,,,"[ADD]: If CSRF fails we'll get a 403, if it works we get service unavailable because of ""Cloud controller URL is not available""","[ADD]: If CSRF fails we'll get a 403, if it works we get service unavailable because of ""Cloud controller URL is not available""","['', '', '']",
+42645850_2_4_0,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,2,4,0,CODE_COMMENT,https://github.com/spring-projects/spring-boot/blob/ad8f14e7855aaf71063f6ae200064c6c6185be00/module%2Fspring-boot-cloudfoundry%2Fsrc%2Ftest%2Fjava%2Forg%2Fspringframework%2Fboot%2Fcloudfoundry%2Fautoconfigure%2Factuate%2Fendpoint%2Freactive%2FCloudFoundryReactiveActuatorAutoConfigurationTests.java,code_comment_added,,,"[ADD]: app.example.com"")","[ADD]: app.example.com"")","['', '', '']",
+42645850_2_5_0,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,2,5,0,CODE_COMMENT,https://github.com/spring-projects/spring-boot/blob/ad8f14e7855aaf71063f6ae200064c6c6185be00/module%2Fspring-boot-cloudfoundry%2Fsrc%2Ftest%2Fjava%2Forg%2Fspringframework%2Fboot%2Fcloudfoundry%2Fautoconfigure%2Factuate%2Fendpoint%2Freactive%2FCloudFoundryReactiveActuatorAutoConfigurationTests.java,code_comment_added,,,"[ADD]: If CORS fails we'll get a 403, if it works we get service unavailable because of ""Cloud controller URL is not available""","[ADD]: If CORS fails we'll get a 403, if it works we get service unavailable because of ""Cloud controller URL is not available""","['', '', '']",
+42645850_3_1_0,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,3,1,0,CLASS_JAVADOCS,https://github.com/spring-projects/spring-boot/blob/ad8f14e7855aaf71063f6ae200064c6c6185be00/module%2Fspring-boot-cloudfoundry%2Fsrc%2Ftest%2Fjava%2Forg%2Fspringframework%2Fboot%2Fcloudfoundry%2Fautoconfigure%2Factuate%2Fendpoint%2Freactive%2FCloudFoundryReactiveActuatorAutoConfigurationTests.java,class_javadocs,,CloudFoundryReactiveActuatorAutoConfigurationTests,Tests for {@link CloudFoundryReactiveActuatorAutoConfiguration}. @author Madhura Bhave @author Moritz Halbritter @author Aashikant Kumar,Tests for {@link CloudFoundryReactiveActuatorAutoConfiguration}.,"['', '', '']",
+42645850_3_1_1,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,3,1,1,CLASS_JAVADOCS,https://github.com/spring-projects/spring-boot/blob/ad8f14e7855aaf71063f6ae200064c6c6185be00/module%2Fspring-boot-cloudfoundry%2Fsrc%2Ftest%2Fjava%2Forg%2Fspringframework%2Fboot%2Fcloudfoundry%2Fautoconfigure%2Factuate%2Fendpoint%2Freactive%2FCloudFoundryReactiveActuatorAutoConfigurationTests.java,class_javadocs,,CloudFoundryReactiveActuatorAutoConfigurationTests,Tests for {@link CloudFoundryReactiveActuatorAutoConfiguration}. @author Madhura Bhave @author Moritz Halbritter @author Aashikant Kumar,@author Madhura Bhave @author Moritz Halbritter @author Aashikant Kumar,"['', '', '']",
+42645850_5_1_0,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,5,1,0,ISSUE,https://github.com/spring-projects/spring-boot/issues/45377#title,add_ref_issue_info_title,45377.0,,Custom Spring Security firewall is lost when using spring-boot-cloudfoundry and Actuator in a reactive web application,Custom Spring Security firewall is lost when using spring-boot-cloudfoundry and Actuator in a reactive web application,"['NEED', 'NEED', 'NEED']",NEED
+42645850_5_2_0,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,5,2,0,ISSUE,https://github.com/spring-projects/spring-boot/issues/45377#body,add_ref_issue_info_body,45377.0,,"Spring security fixed an issue in WebFilterChainProxy by allowing clients to override the default instance of the firewall field (ServerWebExchangeFirewall) with whatever client wants to or adjust the behavior of the default StrictServerWebExchangeFirewall instance:
+
+https://github.com/spring-projects/spring-security/issues/15974
+
+However ReactiveCloudFoundryActuatorAutoConfiguration in the postProcess method overrides the default WebFilterChainProxy bean with new instance and ignoring any overrides of firewall the old bean had.
+
+This causes apps that run on cloud foundry to not run the same way as they would outside of cloud foundry, and require my to disable cloud foundry management endpoints.
+
+I think that's a bug
+
+```
+management:
+  cloudfoundry:
+    enabled: false
+```
+
+To test this behavior localy, set the VCAP_APPLICATION environment variable to something, json like.","Spring security fixed an issue in WebFilterChainProxy by allowing clients to override the default instance of the firewall field (ServerWebExchangeFirewall) with whatever client wants to or adjust the behavior of the default StrictServerWebExchangeFirewall instance:
+
+https://github.com/spring-projects/spring-security/issues/15974
+
+However ReactiveCloudFoundryActuatorAutoConfiguration in the postProcess method overrides the default WebFilterChainProxy bean with new instance and ignoring any overrides of firewall the old bean had.
+
+This causes apps that run on cloud foundry to not run the same way as they would outside of cloud foundry, and require my to disable cloud foundry management endpoints.","['NEED', 'NEED', 'NEED']",NEED
+42645850_5_2_1,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,5,2,1,ISSUE,https://github.com/spring-projects/spring-boot/issues/45377#body,add_ref_issue_info_body,45377.0,,"Spring security fixed an issue in WebFilterChainProxy by allowing clients to override the default instance of the firewall field (ServerWebExchangeFirewall) with whatever client wants to or adjust the behavior of the default StrictServerWebExchangeFirewall instance:
+
+https://github.com/spring-projects/spring-security/issues/15974
+
+However ReactiveCloudFoundryActuatorAutoConfiguration in the postProcess method overrides the default WebFilterChainProxy bean with new instance and ignoring any overrides of firewall the old bean had.
+
+This causes apps that run on cloud foundry to not run the same way as they would outside of cloud foundry, and require my to disable cloud foundry management endpoints.
+
+I think that's a bug
+
+```
+management:
+  cloudfoundry:
+    enabled: false
+```
+
+To test this behavior localy, set the VCAP_APPLICATION environment variable to something, json like.","I think that's a bug
+
+```
+management:
+  cloudfoundry:
+    enabled: false
+```
+
+To test this behavior localy, set the VCAP_APPLICATION environment variable to something, json like.","['NEED', '', '']",
+42645850_5_3_0,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,5,3,0,ISSUE,https://github.com/spring-projects/spring-boot/issues/45377#issuecomment-2855645638,add_ref_issue_info_comment,45377.0,,"It looks like we might be quite limited in how we can fix this without some Spring Security updates. It doesn't look like we can get the existing value of the `firewall` field. The `setFilterChainDecorator` looks like it might be useful, but I don't think we can use it because it replaces the existing decorator.
+
+@jzheaux Do you have any suggestions?",It looks like we might be quite limited in how we can fix this without some Spring Security updates.,"['ALTERNATIVES', 'ALTERNATIVES', 'ALTERNATIVES']",ALTERNATIVES
+42645850_5_3_1,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,5,3,1,ISSUE,https://github.com/spring-projects/spring-boot/issues/45377#issuecomment-2855645638,add_ref_issue_info_comment,45377.0,,"It looks like we might be quite limited in how we can fix this without some Spring Security updates. It doesn't look like we can get the existing value of the `firewall` field. The `setFilterChainDecorator` looks like it might be useful, but I don't think we can use it because it replaces the existing decorator.
+
+@jzheaux Do you have any suggestions?",It doesn't look like we can get the existing value of the `firewall` field.,"['ALTERNATIVES', 'ALTERNATIVES', 'ALTERNATIVES']",ALTERNATIVES
+42645850_5_3_2,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,5,3,2,ISSUE,https://github.com/spring-projects/spring-boot/issues/45377#issuecomment-2855645638,add_ref_issue_info_comment,45377.0,,"It looks like we might be quite limited in how we can fix this without some Spring Security updates. It doesn't look like we can get the existing value of the `firewall` field. The `setFilterChainDecorator` looks like it might be useful, but I don't think we can use it because it replaces the existing decorator.
+
+@jzheaux Do you have any suggestions?","The `setFilterChainDecorator` looks like it might be useful, but I don't think we can use it because it replaces the existing decorator.","['ALTERNATIVES', 'ALTERNATIVES', 'ALTERNATIVES']",ALTERNATIVES
+42645850_5_3_3,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,5,3,3,ISSUE,https://github.com/spring-projects/spring-boot/issues/45377#issuecomment-2855645638,add_ref_issue_info_comment,45377.0,,"It looks like we might be quite limited in how we can fix this without some Spring Security updates. It doesn't look like we can get the existing value of the `firewall` field. The `setFilterChainDecorator` looks like it might be useful, but I don't think we can use it because it replaces the existing decorator.
+
+@jzheaux Do you have any suggestions?",@jzheaux Do you have any suggestions?,"['', '', '']",
+42645850_5_4_0,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,5,4,0,ISSUE,https://github.com/spring-projects/spring-boot/issues/45377#issuecomment-2855763075,add_ref_issue_info_comment,45377.0,,"@philwebb , can you not do same as the security folks?
+
+```
+	@Bean(SPRING_SECURITY_WEBFILTERCHAINFILTER_BEAN_NAME)
+	@Order(WEB_FILTER_CHAIN_FILTER_ORDER)
+	WebFilterChainProxy springSecurityWebFilterChainFilter(ObjectProvider<ServerWebExchangeFirewall> firewall) {
+		WebFilterChainProxy webFilterChainProxy = new WebFilterChainProxy(getSecurityWebFilterChains());
+		firewall.ifUnique(webFilterChainProxy::setFirewall);
+		return webFilterChainProxy;
+	}
+```","@philwebb , can you not do same as the security folks?","['', '', '']",
+42645850_5_4_1,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,5,4,1,ISSUE,https://github.com/spring-projects/spring-boot/issues/45377#issuecomment-2855763075,add_ref_issue_info_comment,45377.0,,"@philwebb , can you not do same as the security folks?
+
+```
+	@Bean(SPRING_SECURITY_WEBFILTERCHAINFILTER_BEAN_NAME)
+	@Order(WEB_FILTER_CHAIN_FILTER_ORDER)
+	WebFilterChainProxy springSecurityWebFilterChainFilter(ObjectProvider<ServerWebExchangeFirewall> firewall) {
+		WebFilterChainProxy webFilterChainProxy = new WebFilterChainProxy(getSecurityWebFilterChains());
+		firewall.ifUnique(webFilterChainProxy::setFirewall);
+		return webFilterChainProxy;
+	}
+```",``,"['', '', '']",
+42645850_5_4_2,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,5,4,2,ISSUE,https://github.com/spring-projects/spring-boot/issues/45377#issuecomment-2855763075,add_ref_issue_info_comment,45377.0,,"@philwebb , can you not do same as the security folks?
+
+```
+	@Bean(SPRING_SECURITY_WEBFILTERCHAINFILTER_BEAN_NAME)
+	@Order(WEB_FILTER_CHAIN_FILTER_ORDER)
+	WebFilterChainProxy springSecurityWebFilterChainFilter(ObjectProvider<ServerWebExchangeFirewall> firewall) {
+		WebFilterChainProxy webFilterChainProxy = new WebFilterChainProxy(getSecurityWebFilterChains());
+		firewall.ifUnique(webFilterChainProxy::setFirewall);
+		return webFilterChainProxy;
+	}
+```","`
+	@Bean(SPRING_SECURITY_WEBFILTERCHAINFILTER_BEAN_NAME)
+	@Order(WEB_FILTER_CHAIN_FILTER_ORDER)
+	WebFilterChainProxy springSecurityWebFilterChainFilter(ObjectProvider<ServerWebExchangeFirewall> firewall) {
+		WebFilterChainProxy webFilterChainProxy = new WebFilterChainProxy(getSecurityWebFilterChains());
+		firewall.ifUnique(webFilterChainProxy::setFirewall);
+		return webFilterChainProxy;
+	}
+```","['ALTERNATIVES', 'ALTERNATIVES', 'ALTERNATIVES']",ALTERNATIVES
+42645850_5_5_0,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,5,5,0,ISSUE,https://github.com/spring-projects/spring-boot/issues/45377#issuecomment-2855780950,add_ref_issue_info_comment,45377.0,,"That will work if the `ServerWebExchangeFirewall` is set from a bean, but if the user has called `WebFilterChainProxy.setFirewall` directly (or via a post processor), it won't work.","That will work if the `ServerWebExchangeFirewall` is set from a bean, but if the user has called `WebFilterChainProxy.setFirewall` directly (or via a post processor), it won't work.","['ALTERNATIVES', 'ALTERNATIVES', 'ALTERNATIVES']",ALTERNATIVES
+42645850_5_6_0,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,5,6,0,ISSUE,https://github.com/spring-projects/spring-boot/issues/45377#issuecomment-2855805803,add_ref_issue_info_comment,45377.0,,"I think that's that was the way to override the firewall in spring security: https://github.com/spring-projects/spring-security/commit/e48d6b039baf104a6c56f4e62e0c2ff4d35a22bb
+",I think that's that was the way to override the firewall in spring security: https://github.com/spring-projects/spring-security/commit/e48d6b039baf104a6c56f4e62e0c2ff4d35a22bb,"['ALTERNATIVES', 'ALTERNATIVES', 'ALTERNATIVES']",ALTERNATIVES
+42645850_5_7_0,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,5,7,0,ISSUE,https://github.com/spring-projects/spring-boot/issues/45377#issuecomment-2855835647,add_ref_issue_info_comment,45377.0,,"It's probably the most typical way, but I don't think it's the only way it could happen.","It's probably the most typical way, but I don't think it's the only way it could happen.","['ALTERNATIVES', 'ALTERNATIVES', 'ALTERNATIVES']",ALTERNATIVES
+42645850_5_8_0,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,5,8,0,ISSUE,https://github.com/spring-projects/spring-boot/issues/45377#issuecomment-4144105813,add_ref_issue_info_comment,45377.0,,"Generally speaking, Spring Security interprets the declaration of a bean to mean that all filter chains should pick it up. 
+
+Otherwise, an application uses `ServerHttpSecurity` or constructs a `WebFilterChainProxy` directly so that a given configuration applies only to that filter chain. If the firewall is set in this way, then it wouldn't be the concern of any other `WebFilterChainProxy`, like the one created [here](https://github.com/spring-projects/spring-boot/blob/main/module/spring-boot-cloudfoundry/src/main/java/org/springframework/boot/cloudfoundry/autoconfigure/actuate/endpoint/reactive/CloudFoundryReactiveActuatorAutoConfiguration.java#L182):
+
+```java
+MatcherSecurityWebFilterChain ignoredRequestFilterChain = new MatcherSecurityWebFilterChain(
+		cloudFoundryRequestMatcher, Collections.singletonList(noOpFilter));
+MatcherSecurityWebFilterChain allRequestsFilterChain = new MatcherSecurityWebFilterChain(
+		ServerWebExchangeMatchers.anyExchange(), Collections.singletonList(existing));
+return new WebFilterChainProxy(ignoredRequestFilterChain, allRequestsFilterChain);
+```
+
+So, I believe it follows that if the firewall is declared as a bean as @alfein mentioned, the intent of the application is that it be applied to all `WebFilterChainProxy` instances and can otherwise be ignored. Are there other cases you have in mind, @philwebb?","Generally speaking, Spring Security interprets the declaration of a bean to mean that all filter chains should pick it up.","['', '', '']",
+42645850_5_8_1,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,5,8,1,ISSUE,https://github.com/spring-projects/spring-boot/issues/45377#issuecomment-4144105813,add_ref_issue_info_comment,45377.0,,"Generally speaking, Spring Security interprets the declaration of a bean to mean that all filter chains should pick it up. 
+
+Otherwise, an application uses `ServerHttpSecurity` or constructs a `WebFilterChainProxy` directly so that a given configuration applies only to that filter chain. If the firewall is set in this way, then it wouldn't be the concern of any other `WebFilterChainProxy`, like the one created [here](https://github.com/spring-projects/spring-boot/blob/main/module/spring-boot-cloudfoundry/src/main/java/org/springframework/boot/cloudfoundry/autoconfigure/actuate/endpoint/reactive/CloudFoundryReactiveActuatorAutoConfiguration.java#L182):
+
+```java
+MatcherSecurityWebFilterChain ignoredRequestFilterChain = new MatcherSecurityWebFilterChain(
+		cloudFoundryRequestMatcher, Collections.singletonList(noOpFilter));
+MatcherSecurityWebFilterChain allRequestsFilterChain = new MatcherSecurityWebFilterChain(
+		ServerWebExchangeMatchers.anyExchange(), Collections.singletonList(existing));
+return new WebFilterChainProxy(ignoredRequestFilterChain, allRequestsFilterChain);
+```
+
+So, I believe it follows that if the firewall is declared as a bean as @alfein mentioned, the intent of the application is that it be applied to all `WebFilterChainProxy` instances and can otherwise be ignored. Are there other cases you have in mind, @philwebb?","Otherwise, an application uses `ServerHttpSecurity` or constructs a `WebFilterChainProxy` directly so that a given configuration applies only to that filter chain.","['', '', '']",
+42645850_5_8_2,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,5,8,2,ISSUE,https://github.com/spring-projects/spring-boot/issues/45377#issuecomment-4144105813,add_ref_issue_info_comment,45377.0,,"Generally speaking, Spring Security interprets the declaration of a bean to mean that all filter chains should pick it up. 
+
+Otherwise, an application uses `ServerHttpSecurity` or constructs a `WebFilterChainProxy` directly so that a given configuration applies only to that filter chain. If the firewall is set in this way, then it wouldn't be the concern of any other `WebFilterChainProxy`, like the one created [here](https://github.com/spring-projects/spring-boot/blob/main/module/spring-boot-cloudfoundry/src/main/java/org/springframework/boot/cloudfoundry/autoconfigure/actuate/endpoint/reactive/CloudFoundryReactiveActuatorAutoConfiguration.java#L182):
+
+```java
+MatcherSecurityWebFilterChain ignoredRequestFilterChain = new MatcherSecurityWebFilterChain(
+		cloudFoundryRequestMatcher, Collections.singletonList(noOpFilter));
+MatcherSecurityWebFilterChain allRequestsFilterChain = new MatcherSecurityWebFilterChain(
+		ServerWebExchangeMatchers.anyExchange(), Collections.singletonList(existing));
+return new WebFilterChainProxy(ignoredRequestFilterChain, allRequestsFilterChain);
+```
+
+So, I believe it follows that if the firewall is declared as a bean as @alfein mentioned, the intent of the application is that it be applied to all `WebFilterChainProxy` instances and can otherwise be ignored. Are there other cases you have in mind, @philwebb?","If the firewall is set in this way, then it wouldn't be the concern of any other `WebFilterChainProxy`, like the one created [here](https://github.com/spring-projects/spring-boot/blob/main/module/spring-boot-cloudfoundry/src/main/java/org/springframework/boot/cloudfoundry/autoconfigure/actuate/endpoint/reactive/CloudFoundryReactiveActuatorAutoConfiguration.java#L182):
+
+```java
+MatcherSecurityWebFilterChain ignoredRequestFilterChain = new MatcherSecurityWebFilterChain(
+		cloudFoundryRequestMatcher, Collections.singletonList(noOpFilter));
+MatcherSecurityWebFilterChain allRequestsFilterChain = new MatcherSecurityWebFilterChain(
+		ServerWebExchangeMatchers.anyExchange(), Collections.singletonList(existing));
+return new WebFilterChainProxy(ignoredRequestFilterChain, allRequestsFilterChain);
+```
+
+So, I believe it follows that if the firewall is declared as a bean as @alfein mentioned, the intent of the application is that it be applied to all `WebFilterChainProxy` instances and can otherwise be ignored.","['', 'NEED', '']",
+42645850_5_8_3,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,5,8,3,ISSUE,https://github.com/spring-projects/spring-boot/issues/45377#issuecomment-4144105813,add_ref_issue_info_comment,45377.0,,"Generally speaking, Spring Security interprets the declaration of a bean to mean that all filter chains should pick it up. 
+
+Otherwise, an application uses `ServerHttpSecurity` or constructs a `WebFilterChainProxy` directly so that a given configuration applies only to that filter chain. If the firewall is set in this way, then it wouldn't be the concern of any other `WebFilterChainProxy`, like the one created [here](https://github.com/spring-projects/spring-boot/blob/main/module/spring-boot-cloudfoundry/src/main/java/org/springframework/boot/cloudfoundry/autoconfigure/actuate/endpoint/reactive/CloudFoundryReactiveActuatorAutoConfiguration.java#L182):
+
+```java
+MatcherSecurityWebFilterChain ignoredRequestFilterChain = new MatcherSecurityWebFilterChain(
+		cloudFoundryRequestMatcher, Collections.singletonList(noOpFilter));
+MatcherSecurityWebFilterChain allRequestsFilterChain = new MatcherSecurityWebFilterChain(
+		ServerWebExchangeMatchers.anyExchange(), Collections.singletonList(existing));
+return new WebFilterChainProxy(ignoredRequestFilterChain, allRequestsFilterChain);
+```
+
+So, I believe it follows that if the firewall is declared as a bean as @alfein mentioned, the intent of the application is that it be applied to all `WebFilterChainProxy` instances and can otherwise be ignored. Are there other cases you have in mind, @philwebb?","Are there other cases you have in mind, @philwebb?","['', '', '']",
+42645850_5_9_0,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,5,9,0,ISSUE,https://github.com/spring-projects/spring-boot/issues/45377#issuecomment-5441520943,add_ref_issue_info_comment,45377.0,,We'd like to explore taking a similar approach to how IgnoredCloudFoundryPathsWebSecurityConfiguration does it on the servlet side by defining a new chain with higher precedence that opens up `/cloudfoundryapplication` while leaving everything else untouched.,We'd like to explore taking a similar approach to how IgnoredCloudFoundryPathsWebSecurityConfiguration does it on the servlet side by defining a new chain with higher precedence that opens up `/cloudfoundryapplication` while leaving everything else untouched.,"['ALTERNATIVES', 'ALTERNATIVES', 'ALTERNATIVES']",ALTERNATIVES
+42645850_5_10_0,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,5,10,0,ISSUE,https://github.com/spring-projects/spring-boot/issues/45377#issuecomment-5572425518,add_ref_issue_info_comment,45377.0,,"For consistency with the Servlet-based approach, we want the `SecurityWebFilterChain` for `/cloudfoundryapplication/**` to have an order of `-1`. If an application has an existing `SecurityWebFilterChain` that has both higher precedence and matches paths beneath `/cloudfoundryapplication`, it will be used to control access to `/cloudfoundryapplication`. This is a change from the current approach where the auto-configured chain that allows access to `/cloudfoundryapplication` would always be queried first.
+
+At worst, this change in behavior will prevent access to `/cloudfoundryapplication` and can be addressed by changing the filter ordering. Given this risk, we could delay the fix until 4.2.0, however that would also leave people with firewall customization problems until November at the earliest. I'll discuss our preferred timing for fixing this with the team.","For consistency with the Servlet-based approach, we want the `SecurityWebFilterChain` for `/cloudfoundryapplication/**` to have an order of `-1`.","['GOAL, NEED', 'NEED', 'GOAL']","GOAL, NEED"
+42645850_5_10_1,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,5,10,1,ISSUE,https://github.com/spring-projects/spring-boot/issues/45377#issuecomment-5572425518,add_ref_issue_info_comment,45377.0,,"For consistency with the Servlet-based approach, we want the `SecurityWebFilterChain` for `/cloudfoundryapplication/**` to have an order of `-1`. If an application has an existing `SecurityWebFilterChain` that has both higher precedence and matches paths beneath `/cloudfoundryapplication`, it will be used to control access to `/cloudfoundryapplication`. This is a change from the current approach where the auto-configured chain that allows access to `/cloudfoundryapplication` would always be queried first.
+
+At worst, this change in behavior will prevent access to `/cloudfoundryapplication` and can be addressed by changing the filter ordering. Given this risk, we could delay the fix until 4.2.0, however that would also leave people with firewall customization problems until November at the earliest. I'll discuss our preferred timing for fixing this with the team.","If an application has an existing `SecurityWebFilterChain` that has both higher precedence and matches paths beneath `/cloudfoundryapplication`, it will be used to control access to `/cloudfoundryapplication`.","['', '', '']",
+42645850_5_10_2,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,5,10,2,ISSUE,https://github.com/spring-projects/spring-boot/issues/45377#issuecomment-5572425518,add_ref_issue_info_comment,45377.0,,"For consistency with the Servlet-based approach, we want the `SecurityWebFilterChain` for `/cloudfoundryapplication/**` to have an order of `-1`. If an application has an existing `SecurityWebFilterChain` that has both higher precedence and matches paths beneath `/cloudfoundryapplication`, it will be used to control access to `/cloudfoundryapplication`. This is a change from the current approach where the auto-configured chain that allows access to `/cloudfoundryapplication` would always be queried first.
+
+At worst, this change in behavior will prevent access to `/cloudfoundryapplication` and can be addressed by changing the filter ordering. Given this risk, we could delay the fix until 4.2.0, however that would also leave people with firewall customization problems until November at the earliest. I'll discuss our preferred timing for fixing this with the team.",This is a change from the current approach where the auto-configured chain that allows access to `/cloudfoundryapplication` would always be queried first.,"['GOAL', 'GOAL', 'GOAL']",GOAL
+42645850_5_10_3,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,5,10,3,ISSUE,https://github.com/spring-projects/spring-boot/issues/45377#issuecomment-5572425518,add_ref_issue_info_comment,45377.0,,"For consistency with the Servlet-based approach, we want the `SecurityWebFilterChain` for `/cloudfoundryapplication/**` to have an order of `-1`. If an application has an existing `SecurityWebFilterChain` that has both higher precedence and matches paths beneath `/cloudfoundryapplication`, it will be used to control access to `/cloudfoundryapplication`. This is a change from the current approach where the auto-configured chain that allows access to `/cloudfoundryapplication` would always be queried first.
+
+At worst, this change in behavior will prevent access to `/cloudfoundryapplication` and can be addressed by changing the filter ordering. Given this risk, we could delay the fix until 4.2.0, however that would also leave people with firewall customization problems until November at the earliest. I'll discuss our preferred timing for fixing this with the team.","At worst, this change in behavior will prevent access to `/cloudfoundryapplication` and can be addressed by changing the filter ordering.","['', '', '']",
+42645850_5_10_4,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,5,10,4,ISSUE,https://github.com/spring-projects/spring-boot/issues/45377#issuecomment-5572425518,add_ref_issue_info_comment,45377.0,,"For consistency with the Servlet-based approach, we want the `SecurityWebFilterChain` for `/cloudfoundryapplication/**` to have an order of `-1`. If an application has an existing `SecurityWebFilterChain` that has both higher precedence and matches paths beneath `/cloudfoundryapplication`, it will be used to control access to `/cloudfoundryapplication`. This is a change from the current approach where the auto-configured chain that allows access to `/cloudfoundryapplication` would always be queried first.
+
+At worst, this change in behavior will prevent access to `/cloudfoundryapplication` and can be addressed by changing the filter ordering. Given this risk, we could delay the fix until 4.2.0, however that would also leave people with firewall customization problems until November at the earliest. I'll discuss our preferred timing for fixing this with the team.","Given this risk, we could delay the fix until 4.2.0, however that would also leave people with firewall customization problems until November at the earliest.","['ALTERNATIVES', 'ALTERNATIVES', 'ALTERNATIVES']",ALTERNATIVES
+42645850_5_10_5,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,5,10,5,ISSUE,https://github.com/spring-projects/spring-boot/issues/45377#issuecomment-5572425518,add_ref_issue_info_comment,45377.0,,"For consistency with the Servlet-based approach, we want the `SecurityWebFilterChain` for `/cloudfoundryapplication/**` to have an order of `-1`. If an application has an existing `SecurityWebFilterChain` that has both higher precedence and matches paths beneath `/cloudfoundryapplication`, it will be used to control access to `/cloudfoundryapplication`. This is a change from the current approach where the auto-configured chain that allows access to `/cloudfoundryapplication` would always be queried first.
+
+At worst, this change in behavior will prevent access to `/cloudfoundryapplication` and can be addressed by changing the filter ordering. Given this risk, we could delay the fix until 4.2.0, however that would also leave people with firewall customization problems until November at the earliest. I'll discuss our preferred timing for fixing this with the team.",I'll discuss our preferred timing for fixing this with the team.,"['', '', '']",
+42645850_5_11_0,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,5,11,0,ISSUE,https://github.com/spring-projects/spring-boot/issues/45377#issuecomment-5572927990,add_ref_issue_info_comment,45377.0,,We're going to use highest precedence for the order. That's what was used on the servlet side prior to it switching from ignoring to permitting all.,We're going to use highest precedence for the order.,"['GOAL', 'GOAL', 'GOAL']",GOAL
+42645850_5_11_1,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,5,11,1,ISSUE,https://github.com/spring-projects/spring-boot/issues/45377#issuecomment-5572927990,add_ref_issue_info_comment,45377.0,,We're going to use highest precedence for the order. That's what was used on the servlet side prior to it switching from ignoring to permitting all.,That's what was used on the servlet side prior to it switching from ignoring to permitting all.,"['NEED', 'NEED', '']",NEED
+42645850_6_1_0,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,6,1,0,PULL_REQUEST,https://github.com/spring-projects/spring-boot/pull/51549#title,pr_info_title,51549.0,,Custom Spring Security firewall is lost when using spring-boot-cloudfoundry and Actuator in a reactive web application,Custom Spring Security firewall is lost when using spring-boot-cloudfoundry and Actuator in a reactive web application,"['NEED', 'NEED', 'NEED']",NEED
+42645850_6_2_0,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,6,2,0,PULL_REQUEST,https://github.com/spring-projects/spring-boot/pull/51549#body,pr_info_body,51549.0,,"Fixes #45377
+
+Hi team,
+
+This PR addresses an issue where custom ServerWebExchangeFirewall configurations are lost when running reactive applications on Cloud Foundry.
+
+What was happening?
+When VCAP_APPLICATION is present, CloudFoundryReactiveActuatorAutoConfiguration used a BeanPostProcessor (WebFilterChainPostProcessor) to wrap WebFilterChainProxy.
+
+The trouble with that approach is that instantiating a new WebFilterChainProxy creates a fresh instance with its private firewall field defaulting to new StrictServerWebExchangeFirewall(). As a result:
+
+Any custom ServerWebExchangeFirewall bean declared by the user was discarded.
+Direct customizations (e.g. calling setFirewall(...) on the proxy) were also lost.
+Incoming requests were evaluated by the new proxy's strict firewall at the perimeter, rejecting valid requests that rely on customized firewall rules (like matrix parameters or specific URI encodings).
+The Fix
+Following @wilkinsona's suggestion in #45377, we aligned the reactive configuration with how the servlet side already handles this in IgnoredCloudFoundryPathsWebSecurityConfiguration:
+
+Removed WebFilterChainPostProcessor.
+Added a dedicated @Order(-1) SecurityWebFilterChain bean matching /cloudfoundryapplication/** with permitAll(), csrf.disable(), and CORS configuration.
+This allows Spring Security's native ServerHttpSecurityConfiguration to create and keep the single WebFilterChainProxy. Cloud Foundry routes are given higher precedence to bypass authentication, while the rest of the application's security configuration and the user's custom firewall remain completely untouched.
+
+How this was verified
+Added regression tests in CloudFoundryReactiveActuatorAutoConfigurationTests:
+
+customFirewallBeanIsPreserved: Asserts that a custom ServerWebExchangeFirewall @Bean stays on WebFilterChainProxy.
+directlyConfiguredFirewallIsPreserved: Asserts that firewalls set directly via proxy.setFirewall(...) in a post-processor survive.
+customFirewallIsInvokedOnRequests: Verifies runtime execution of firewall.getFirewalledExchange(...).
+userSecurityWebFilterChainIsPreserved: Confirms that user-defined SecurityWebFilterChain beans coexist alongside the Cloud Foundry chain with correct ordering.
+Ran:
+
+bash
+./gradlew :module:spring-boot-cloudfoundry:test
+./gradlew :module:spring-boot-cloudfoundry:check
+All reactive tests, servlet tests, checkstyle, and Spring JavaFormat checks pass cleanly.
+
+Contributor Checklist
+ Signed-off-by trailer included in commit for DCO
+ Code formatted with Spring JavaFormat
+ Checkstyle checks pass
+ @author tag added
+ Unit/slice regression tests added
+",Fixes #45377,"['', '', '']",
+42645850_6_2_1,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,6,2,1,PULL_REQUEST,https://github.com/spring-projects/spring-boot/pull/51549#body,pr_info_body,51549.0,,"Fixes #45377
+
+Hi team,
+
+This PR addresses an issue where custom ServerWebExchangeFirewall configurations are lost when running reactive applications on Cloud Foundry.
+
+What was happening?
+When VCAP_APPLICATION is present, CloudFoundryReactiveActuatorAutoConfiguration used a BeanPostProcessor (WebFilterChainPostProcessor) to wrap WebFilterChainProxy.
+
+The trouble with that approach is that instantiating a new WebFilterChainProxy creates a fresh instance with its private firewall field defaulting to new StrictServerWebExchangeFirewall(). As a result:
+
+Any custom ServerWebExchangeFirewall bean declared by the user was discarded.
+Direct customizations (e.g. calling setFirewall(...) on the proxy) were also lost.
+Incoming requests were evaluated by the new proxy's strict firewall at the perimeter, rejecting valid requests that rely on customized firewall rules (like matrix parameters or specific URI encodings).
+The Fix
+Following @wilkinsona's suggestion in #45377, we aligned the reactive configuration with how the servlet side already handles this in IgnoredCloudFoundryPathsWebSecurityConfiguration:
+
+Removed WebFilterChainPostProcessor.
+Added a dedicated @Order(-1) SecurityWebFilterChain bean matching /cloudfoundryapplication/** with permitAll(), csrf.disable(), and CORS configuration.
+This allows Spring Security's native ServerHttpSecurityConfiguration to create and keep the single WebFilterChainProxy. Cloud Foundry routes are given higher precedence to bypass authentication, while the rest of the application's security configuration and the user's custom firewall remain completely untouched.
+
+How this was verified
+Added regression tests in CloudFoundryReactiveActuatorAutoConfigurationTests:
+
+customFirewallBeanIsPreserved: Asserts that a custom ServerWebExchangeFirewall @Bean stays on WebFilterChainProxy.
+directlyConfiguredFirewallIsPreserved: Asserts that firewalls set directly via proxy.setFirewall(...) in a post-processor survive.
+customFirewallIsInvokedOnRequests: Verifies runtime execution of firewall.getFirewalledExchange(...).
+userSecurityWebFilterChainIsPreserved: Confirms that user-defined SecurityWebFilterChain beans coexist alongside the Cloud Foundry chain with correct ordering.
+Ran:
+
+bash
+./gradlew :module:spring-boot-cloudfoundry:test
+./gradlew :module:spring-boot-cloudfoundry:check
+All reactive tests, servlet tests, checkstyle, and Spring JavaFormat checks pass cleanly.
+
+Contributor Checklist
+ Signed-off-by trailer included in commit for DCO
+ Code formatted with Spring JavaFormat
+ Checkstyle checks pass
+ @author tag added
+ Unit/slice regression tests added
+","Hi team,
+
+This PR addresses an issue where custom ServerWebExchangeFirewall configurations are lost when running reactive applications on Cloud Foundry.","['GOAL', 'NEED', 'NEED']",NEED
+42645850_6_2_2,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,6,2,2,PULL_REQUEST,https://github.com/spring-projects/spring-boot/pull/51549#body,pr_info_body,51549.0,,"Fixes #45377
+
+Hi team,
+
+This PR addresses an issue where custom ServerWebExchangeFirewall configurations are lost when running reactive applications on Cloud Foundry.
+
+What was happening?
+When VCAP_APPLICATION is present, CloudFoundryReactiveActuatorAutoConfiguration used a BeanPostProcessor (WebFilterChainPostProcessor) to wrap WebFilterChainProxy.
+
+The trouble with that approach is that instantiating a new WebFilterChainProxy creates a fresh instance with its private firewall field defaulting to new StrictServerWebExchangeFirewall(). As a result:
+
+Any custom ServerWebExchangeFirewall bean declared by the user was discarded.
+Direct customizations (e.g. calling setFirewall(...) on the proxy) were also lost.
+Incoming requests were evaluated by the new proxy's strict firewall at the perimeter, rejecting valid requests that rely on customized firewall rules (like matrix parameters or specific URI encodings).
+The Fix
+Following @wilkinsona's suggestion in #45377, we aligned the reactive configuration with how the servlet side already handles this in IgnoredCloudFoundryPathsWebSecurityConfiguration:
+
+Removed WebFilterChainPostProcessor.
+Added a dedicated @Order(-1) SecurityWebFilterChain bean matching /cloudfoundryapplication/** with permitAll(), csrf.disable(), and CORS configuration.
+This allows Spring Security's native ServerHttpSecurityConfiguration to create and keep the single WebFilterChainProxy. Cloud Foundry routes are given higher precedence to bypass authentication, while the rest of the application's security configuration and the user's custom firewall remain completely untouched.
+
+How this was verified
+Added regression tests in CloudFoundryReactiveActuatorAutoConfigurationTests:
+
+customFirewallBeanIsPreserved: Asserts that a custom ServerWebExchangeFirewall @Bean stays on WebFilterChainProxy.
+directlyConfiguredFirewallIsPreserved: Asserts that firewalls set directly via proxy.setFirewall(...) in a post-processor survive.
+customFirewallIsInvokedOnRequests: Verifies runtime execution of firewall.getFirewalledExchange(...).
+userSecurityWebFilterChainIsPreserved: Confirms that user-defined SecurityWebFilterChain beans coexist alongside the Cloud Foundry chain with correct ordering.
+Ran:
+
+bash
+./gradlew :module:spring-boot-cloudfoundry:test
+./gradlew :module:spring-boot-cloudfoundry:check
+All reactive tests, servlet tests, checkstyle, and Spring JavaFormat checks pass cleanly.
+
+Contributor Checklist
+ Signed-off-by trailer included in commit for DCO
+ Code formatted with Spring JavaFormat
+ Checkstyle checks pass
+ @author tag added
+ Unit/slice regression tests added
+",What was happening?,"['', '', '']",
+42645850_6_2_3,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,6,2,3,PULL_REQUEST,https://github.com/spring-projects/spring-boot/pull/51549#body,pr_info_body,51549.0,,"Fixes #45377
+
+Hi team,
+
+This PR addresses an issue where custom ServerWebExchangeFirewall configurations are lost when running reactive applications on Cloud Foundry.
+
+What was happening?
+When VCAP_APPLICATION is present, CloudFoundryReactiveActuatorAutoConfiguration used a BeanPostProcessor (WebFilterChainPostProcessor) to wrap WebFilterChainProxy.
+
+The trouble with that approach is that instantiating a new WebFilterChainProxy creates a fresh instance with its private firewall field defaulting to new StrictServerWebExchangeFirewall(). As a result:
+
+Any custom ServerWebExchangeFirewall bean declared by the user was discarded.
+Direct customizations (e.g. calling setFirewall(...) on the proxy) were also lost.
+Incoming requests were evaluated by the new proxy's strict firewall at the perimeter, rejecting valid requests that rely on customized firewall rules (like matrix parameters or specific URI encodings).
+The Fix
+Following @wilkinsona's suggestion in #45377, we aligned the reactive configuration with how the servlet side already handles this in IgnoredCloudFoundryPathsWebSecurityConfiguration:
+
+Removed WebFilterChainPostProcessor.
+Added a dedicated @Order(-1) SecurityWebFilterChain bean matching /cloudfoundryapplication/** with permitAll(), csrf.disable(), and CORS configuration.
+This allows Spring Security's native ServerHttpSecurityConfiguration to create and keep the single WebFilterChainProxy. Cloud Foundry routes are given higher precedence to bypass authentication, while the rest of the application's security configuration and the user's custom firewall remain completely untouched.
+
+How this was verified
+Added regression tests in CloudFoundryReactiveActuatorAutoConfigurationTests:
+
+customFirewallBeanIsPreserved: Asserts that a custom ServerWebExchangeFirewall @Bean stays on WebFilterChainProxy.
+directlyConfiguredFirewallIsPreserved: Asserts that firewalls set directly via proxy.setFirewall(...) in a post-processor survive.
+customFirewallIsInvokedOnRequests: Verifies runtime execution of firewall.getFirewalledExchange(...).
+userSecurityWebFilterChainIsPreserved: Confirms that user-defined SecurityWebFilterChain beans coexist alongside the Cloud Foundry chain with correct ordering.
+Ran:
+
+bash
+./gradlew :module:spring-boot-cloudfoundry:test
+./gradlew :module:spring-boot-cloudfoundry:check
+All reactive tests, servlet tests, checkstyle, and Spring JavaFormat checks pass cleanly.
+
+Contributor Checklist
+ Signed-off-by trailer included in commit for DCO
+ Code formatted with Spring JavaFormat
+ Checkstyle checks pass
+ @author tag added
+ Unit/slice regression tests added
+","When VCAP_APPLICATION is present, CloudFoundryReactiveActuatorAutoConfiguration used a BeanPostProcessor (WebFilterChainPostProcessor) to wrap WebFilterChainProxy.","['', 'NEED', '']",
+42645850_6_2_4,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,6,2,4,PULL_REQUEST,https://github.com/spring-projects/spring-boot/pull/51549#body,pr_info_body,51549.0,,"Fixes #45377
+
+Hi team,
+
+This PR addresses an issue where custom ServerWebExchangeFirewall configurations are lost when running reactive applications on Cloud Foundry.
+
+What was happening?
+When VCAP_APPLICATION is present, CloudFoundryReactiveActuatorAutoConfiguration used a BeanPostProcessor (WebFilterChainPostProcessor) to wrap WebFilterChainProxy.
+
+The trouble with that approach is that instantiating a new WebFilterChainProxy creates a fresh instance with its private firewall field defaulting to new StrictServerWebExchangeFirewall(). As a result:
+
+Any custom ServerWebExchangeFirewall bean declared by the user was discarded.
+Direct customizations (e.g. calling setFirewall(...) on the proxy) were also lost.
+Incoming requests were evaluated by the new proxy's strict firewall at the perimeter, rejecting valid requests that rely on customized firewall rules (like matrix parameters or specific URI encodings).
+The Fix
+Following @wilkinsona's suggestion in #45377, we aligned the reactive configuration with how the servlet side already handles this in IgnoredCloudFoundryPathsWebSecurityConfiguration:
+
+Removed WebFilterChainPostProcessor.
+Added a dedicated @Order(-1) SecurityWebFilterChain bean matching /cloudfoundryapplication/** with permitAll(), csrf.disable(), and CORS configuration.
+This allows Spring Security's native ServerHttpSecurityConfiguration to create and keep the single WebFilterChainProxy. Cloud Foundry routes are given higher precedence to bypass authentication, while the rest of the application's security configuration and the user's custom firewall remain completely untouched.
+
+How this was verified
+Added regression tests in CloudFoundryReactiveActuatorAutoConfigurationTests:
+
+customFirewallBeanIsPreserved: Asserts that a custom ServerWebExchangeFirewall @Bean stays on WebFilterChainProxy.
+directlyConfiguredFirewallIsPreserved: Asserts that firewalls set directly via proxy.setFirewall(...) in a post-processor survive.
+customFirewallIsInvokedOnRequests: Verifies runtime execution of firewall.getFirewalledExchange(...).
+userSecurityWebFilterChainIsPreserved: Confirms that user-defined SecurityWebFilterChain beans coexist alongside the Cloud Foundry chain with correct ordering.
+Ran:
+
+bash
+./gradlew :module:spring-boot-cloudfoundry:test
+./gradlew :module:spring-boot-cloudfoundry:check
+All reactive tests, servlet tests, checkstyle, and Spring JavaFormat checks pass cleanly.
+
+Contributor Checklist
+ Signed-off-by trailer included in commit for DCO
+ Code formatted with Spring JavaFormat
+ Checkstyle checks pass
+ @author tag added
+ Unit/slice regression tests added
+",The trouble with that approach is that instantiating a new WebFilterChainProxy creates a fresh instance with its private firewall field defaulting to new StrictServerWebExchangeFirewall().,"['NEED', 'NEED', 'NEED']",NEED
+42645850_6_2_5,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,6,2,5,PULL_REQUEST,https://github.com/spring-projects/spring-boot/pull/51549#body,pr_info_body,51549.0,,"Fixes #45377
+
+Hi team,
+
+This PR addresses an issue where custom ServerWebExchangeFirewall configurations are lost when running reactive applications on Cloud Foundry.
+
+What was happening?
+When VCAP_APPLICATION is present, CloudFoundryReactiveActuatorAutoConfiguration used a BeanPostProcessor (WebFilterChainPostProcessor) to wrap WebFilterChainProxy.
+
+The trouble with that approach is that instantiating a new WebFilterChainProxy creates a fresh instance with its private firewall field defaulting to new StrictServerWebExchangeFirewall(). As a result:
+
+Any custom ServerWebExchangeFirewall bean declared by the user was discarded.
+Direct customizations (e.g. calling setFirewall(...) on the proxy) were also lost.
+Incoming requests were evaluated by the new proxy's strict firewall at the perimeter, rejecting valid requests that rely on customized firewall rules (like matrix parameters or specific URI encodings).
+The Fix
+Following @wilkinsona's suggestion in #45377, we aligned the reactive configuration with how the servlet side already handles this in IgnoredCloudFoundryPathsWebSecurityConfiguration:
+
+Removed WebFilterChainPostProcessor.
+Added a dedicated @Order(-1) SecurityWebFilterChain bean matching /cloudfoundryapplication/** with permitAll(), csrf.disable(), and CORS configuration.
+This allows Spring Security's native ServerHttpSecurityConfiguration to create and keep the single WebFilterChainProxy. Cloud Foundry routes are given higher precedence to bypass authentication, while the rest of the application's security configuration and the user's custom firewall remain completely untouched.
+
+How this was verified
+Added regression tests in CloudFoundryReactiveActuatorAutoConfigurationTests:
+
+customFirewallBeanIsPreserved: Asserts that a custom ServerWebExchangeFirewall @Bean stays on WebFilterChainProxy.
+directlyConfiguredFirewallIsPreserved: Asserts that firewalls set directly via proxy.setFirewall(...) in a post-processor survive.
+customFirewallIsInvokedOnRequests: Verifies runtime execution of firewall.getFirewalledExchange(...).
+userSecurityWebFilterChainIsPreserved: Confirms that user-defined SecurityWebFilterChain beans coexist alongside the Cloud Foundry chain with correct ordering.
+Ran:
+
+bash
+./gradlew :module:spring-boot-cloudfoundry:test
+./gradlew :module:spring-boot-cloudfoundry:check
+All reactive tests, servlet tests, checkstyle, and Spring JavaFormat checks pass cleanly.
+
+Contributor Checklist
+ Signed-off-by trailer included in commit for DCO
+ Code formatted with Spring JavaFormat
+ Checkstyle checks pass
+ @author tag added
+ Unit/slice regression tests added
+","As a result:
+
+Any custom ServerWebExchangeFirewall bean declared by the user was discarded.","['NEED', 'NEED', 'NEED']",NEED
+42645850_6_2_6,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,6,2,6,PULL_REQUEST,https://github.com/spring-projects/spring-boot/pull/51549#body,pr_info_body,51549.0,,"Fixes #45377
+
+Hi team,
+
+This PR addresses an issue where custom ServerWebExchangeFirewall configurations are lost when running reactive applications on Cloud Foundry.
+
+What was happening?
+When VCAP_APPLICATION is present, CloudFoundryReactiveActuatorAutoConfiguration used a BeanPostProcessor (WebFilterChainPostProcessor) to wrap WebFilterChainProxy.
+
+The trouble with that approach is that instantiating a new WebFilterChainProxy creates a fresh instance with its private firewall field defaulting to new StrictServerWebExchangeFirewall(). As a result:
+
+Any custom ServerWebExchangeFirewall bean declared by the user was discarded.
+Direct customizations (e.g. calling setFirewall(...) on the proxy) were also lost.
+Incoming requests were evaluated by the new proxy's strict firewall at the perimeter, rejecting valid requests that rely on customized firewall rules (like matrix parameters or specific URI encodings).
+The Fix
+Following @wilkinsona's suggestion in #45377, we aligned the reactive configuration with how the servlet side already handles this in IgnoredCloudFoundryPathsWebSecurityConfiguration:
+
+Removed WebFilterChainPostProcessor.
+Added a dedicated @Order(-1) SecurityWebFilterChain bean matching /cloudfoundryapplication/** with permitAll(), csrf.disable(), and CORS configuration.
+This allows Spring Security's native ServerHttpSecurityConfiguration to create and keep the single WebFilterChainProxy. Cloud Foundry routes are given higher precedence to bypass authentication, while the rest of the application's security configuration and the user's custom firewall remain completely untouched.
+
+How this was verified
+Added regression tests in CloudFoundryReactiveActuatorAutoConfigurationTests:
+
+customFirewallBeanIsPreserved: Asserts that a custom ServerWebExchangeFirewall @Bean stays on WebFilterChainProxy.
+directlyConfiguredFirewallIsPreserved: Asserts that firewalls set directly via proxy.setFirewall(...) in a post-processor survive.
+customFirewallIsInvokedOnRequests: Verifies runtime execution of firewall.getFirewalledExchange(...).
+userSecurityWebFilterChainIsPreserved: Confirms that user-defined SecurityWebFilterChain beans coexist alongside the Cloud Foundry chain with correct ordering.
+Ran:
+
+bash
+./gradlew :module:spring-boot-cloudfoundry:test
+./gradlew :module:spring-boot-cloudfoundry:check
+All reactive tests, servlet tests, checkstyle, and Spring JavaFormat checks pass cleanly.
+
+Contributor Checklist
+ Signed-off-by trailer included in commit for DCO
+ Code formatted with Spring JavaFormat
+ Checkstyle checks pass
+ @author tag added
+ Unit/slice regression tests added
+",Direct customizations (e.g. calling setFirewall(...) on the proxy) were also lost.,"['NEED', 'NEED', 'NEED']",NEED
+42645850_6_2_7,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,6,2,7,PULL_REQUEST,https://github.com/spring-projects/spring-boot/pull/51549#body,pr_info_body,51549.0,,"Fixes #45377
+
+Hi team,
+
+This PR addresses an issue where custom ServerWebExchangeFirewall configurations are lost when running reactive applications on Cloud Foundry.
+
+What was happening?
+When VCAP_APPLICATION is present, CloudFoundryReactiveActuatorAutoConfiguration used a BeanPostProcessor (WebFilterChainPostProcessor) to wrap WebFilterChainProxy.
+
+The trouble with that approach is that instantiating a new WebFilterChainProxy creates a fresh instance with its private firewall field defaulting to new StrictServerWebExchangeFirewall(). As a result:
+
+Any custom ServerWebExchangeFirewall bean declared by the user was discarded.
+Direct customizations (e.g. calling setFirewall(...) on the proxy) were also lost.
+Incoming requests were evaluated by the new proxy's strict firewall at the perimeter, rejecting valid requests that rely on customized firewall rules (like matrix parameters or specific URI encodings).
+The Fix
+Following @wilkinsona's suggestion in #45377, we aligned the reactive configuration with how the servlet side already handles this in IgnoredCloudFoundryPathsWebSecurityConfiguration:
+
+Removed WebFilterChainPostProcessor.
+Added a dedicated @Order(-1) SecurityWebFilterChain bean matching /cloudfoundryapplication/** with permitAll(), csrf.disable(), and CORS configuration.
+This allows Spring Security's native ServerHttpSecurityConfiguration to create and keep the single WebFilterChainProxy. Cloud Foundry routes are given higher precedence to bypass authentication, while the rest of the application's security configuration and the user's custom firewall remain completely untouched.
+
+How this was verified
+Added regression tests in CloudFoundryReactiveActuatorAutoConfigurationTests:
+
+customFirewallBeanIsPreserved: Asserts that a custom ServerWebExchangeFirewall @Bean stays on WebFilterChainProxy.
+directlyConfiguredFirewallIsPreserved: Asserts that firewalls set directly via proxy.setFirewall(...) in a post-processor survive.
+customFirewallIsInvokedOnRequests: Verifies runtime execution of firewall.getFirewalledExchange(...).
+userSecurityWebFilterChainIsPreserved: Confirms that user-defined SecurityWebFilterChain beans coexist alongside the Cloud Foundry chain with correct ordering.
+Ran:
+
+bash
+./gradlew :module:spring-boot-cloudfoundry:test
+./gradlew :module:spring-boot-cloudfoundry:check
+All reactive tests, servlet tests, checkstyle, and Spring JavaFormat checks pass cleanly.
+
+Contributor Checklist
+ Signed-off-by trailer included in commit for DCO
+ Code formatted with Spring JavaFormat
+ Checkstyle checks pass
+ @author tag added
+ Unit/slice regression tests added
+","Incoming requests were evaluated by the new proxy's strict firewall at the perimeter, rejecting valid requests that rely on customized firewall rules (like matrix parameters or specific URI encodings).","['NEED', 'NEED', 'NEED']",NEED
+42645850_6_2_8,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,6,2,8,PULL_REQUEST,https://github.com/spring-projects/spring-boot/pull/51549#body,pr_info_body,51549.0,,"Fixes #45377
+
+Hi team,
+
+This PR addresses an issue where custom ServerWebExchangeFirewall configurations are lost when running reactive applications on Cloud Foundry.
+
+What was happening?
+When VCAP_APPLICATION is present, CloudFoundryReactiveActuatorAutoConfiguration used a BeanPostProcessor (WebFilterChainPostProcessor) to wrap WebFilterChainProxy.
+
+The trouble with that approach is that instantiating a new WebFilterChainProxy creates a fresh instance with its private firewall field defaulting to new StrictServerWebExchangeFirewall(). As a result:
+
+Any custom ServerWebExchangeFirewall bean declared by the user was discarded.
+Direct customizations (e.g. calling setFirewall(...) on the proxy) were also lost.
+Incoming requests were evaluated by the new proxy's strict firewall at the perimeter, rejecting valid requests that rely on customized firewall rules (like matrix parameters or specific URI encodings).
+The Fix
+Following @wilkinsona's suggestion in #45377, we aligned the reactive configuration with how the servlet side already handles this in IgnoredCloudFoundryPathsWebSecurityConfiguration:
+
+Removed WebFilterChainPostProcessor.
+Added a dedicated @Order(-1) SecurityWebFilterChain bean matching /cloudfoundryapplication/** with permitAll(), csrf.disable(), and CORS configuration.
+This allows Spring Security's native ServerHttpSecurityConfiguration to create and keep the single WebFilterChainProxy. Cloud Foundry routes are given higher precedence to bypass authentication, while the rest of the application's security configuration and the user's custom firewall remain completely untouched.
+
+How this was verified
+Added regression tests in CloudFoundryReactiveActuatorAutoConfigurationTests:
+
+customFirewallBeanIsPreserved: Asserts that a custom ServerWebExchangeFirewall @Bean stays on WebFilterChainProxy.
+directlyConfiguredFirewallIsPreserved: Asserts that firewalls set directly via proxy.setFirewall(...) in a post-processor survive.
+customFirewallIsInvokedOnRequests: Verifies runtime execution of firewall.getFirewalledExchange(...).
+userSecurityWebFilterChainIsPreserved: Confirms that user-defined SecurityWebFilterChain beans coexist alongside the Cloud Foundry chain with correct ordering.
+Ran:
+
+bash
+./gradlew :module:spring-boot-cloudfoundry:test
+./gradlew :module:spring-boot-cloudfoundry:check
+All reactive tests, servlet tests, checkstyle, and Spring JavaFormat checks pass cleanly.
+
+Contributor Checklist
+ Signed-off-by trailer included in commit for DCO
+ Code formatted with Spring JavaFormat
+ Checkstyle checks pass
+ @author tag added
+ Unit/slice regression tests added
+","The Fix
+Following @wilkinsona's suggestion in #45377, we aligned the reactive configuration with how the servlet side already handles this in IgnoredCloudFoundryPathsWebSecurityConfiguration:
+
+Removed WebFilterChainPostProcessor.
+Added a dedicated @Order(-1) SecurityWebFilterChain bean matching /cloudfoundryapplication/** with permitAll(), csrf.disable(), and CORS configuration.
+This allows Spring Security's native ServerHttpSecurityConfiguration to create and keep the single WebFilterChainProxy.","['GOAL', 'GOAL', 'GOAL']",GOAL
+42645850_6_2_9,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,6,2,9,PULL_REQUEST,https://github.com/spring-projects/spring-boot/pull/51549#body,pr_info_body,51549.0,,"Fixes #45377
+
+Hi team,
+
+This PR addresses an issue where custom ServerWebExchangeFirewall configurations are lost when running reactive applications on Cloud Foundry.
+
+What was happening?
+When VCAP_APPLICATION is present, CloudFoundryReactiveActuatorAutoConfiguration used a BeanPostProcessor (WebFilterChainPostProcessor) to wrap WebFilterChainProxy.
+
+The trouble with that approach is that instantiating a new WebFilterChainProxy creates a fresh instance with its private firewall field defaulting to new StrictServerWebExchangeFirewall(). As a result:
+
+Any custom ServerWebExchangeFirewall bean declared by the user was discarded.
+Direct customizations (e.g. calling setFirewall(...) on the proxy) were also lost.
+Incoming requests were evaluated by the new proxy's strict firewall at the perimeter, rejecting valid requests that rely on customized firewall rules (like matrix parameters or specific URI encodings).
+The Fix
+Following @wilkinsona's suggestion in #45377, we aligned the reactive configuration with how the servlet side already handles this in IgnoredCloudFoundryPathsWebSecurityConfiguration:
+
+Removed WebFilterChainPostProcessor.
+Added a dedicated @Order(-1) SecurityWebFilterChain bean matching /cloudfoundryapplication/** with permitAll(), csrf.disable(), and CORS configuration.
+This allows Spring Security's native ServerHttpSecurityConfiguration to create and keep the single WebFilterChainProxy. Cloud Foundry routes are given higher precedence to bypass authentication, while the rest of the application's security configuration and the user's custom firewall remain completely untouched.
+
+How this was verified
+Added regression tests in CloudFoundryReactiveActuatorAutoConfigurationTests:
+
+customFirewallBeanIsPreserved: Asserts that a custom ServerWebExchangeFirewall @Bean stays on WebFilterChainProxy.
+directlyConfiguredFirewallIsPreserved: Asserts that firewalls set directly via proxy.setFirewall(...) in a post-processor survive.
+customFirewallIsInvokedOnRequests: Verifies runtime execution of firewall.getFirewalledExchange(...).
+userSecurityWebFilterChainIsPreserved: Confirms that user-defined SecurityWebFilterChain beans coexist alongside the Cloud Foundry chain with correct ordering.
+Ran:
+
+bash
+./gradlew :module:spring-boot-cloudfoundry:test
+./gradlew :module:spring-boot-cloudfoundry:check
+All reactive tests, servlet tests, checkstyle, and Spring JavaFormat checks pass cleanly.
+
+Contributor Checklist
+ Signed-off-by trailer included in commit for DCO
+ Code formatted with Spring JavaFormat
+ Checkstyle checks pass
+ @author tag added
+ Unit/slice regression tests added
+","Cloud Foundry routes are given higher precedence to bypass authentication, while the rest of the application's security configuration and the user's custom firewall remain completely untouched.","['NEED', 'GOAL', 'GOAL']",GOAL
+42645850_6_2_10,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,6,2,10,PULL_REQUEST,https://github.com/spring-projects/spring-boot/pull/51549#body,pr_info_body,51549.0,,"Fixes #45377
+
+Hi team,
+
+This PR addresses an issue where custom ServerWebExchangeFirewall configurations are lost when running reactive applications on Cloud Foundry.
+
+What was happening?
+When VCAP_APPLICATION is present, CloudFoundryReactiveActuatorAutoConfiguration used a BeanPostProcessor (WebFilterChainPostProcessor) to wrap WebFilterChainProxy.
+
+The trouble with that approach is that instantiating a new WebFilterChainProxy creates a fresh instance with its private firewall field defaulting to new StrictServerWebExchangeFirewall(). As a result:
+
+Any custom ServerWebExchangeFirewall bean declared by the user was discarded.
+Direct customizations (e.g. calling setFirewall(...) on the proxy) were also lost.
+Incoming requests were evaluated by the new proxy's strict firewall at the perimeter, rejecting valid requests that rely on customized firewall rules (like matrix parameters or specific URI encodings).
+The Fix
+Following @wilkinsona's suggestion in #45377, we aligned the reactive configuration with how the servlet side already handles this in IgnoredCloudFoundryPathsWebSecurityConfiguration:
+
+Removed WebFilterChainPostProcessor.
+Added a dedicated @Order(-1) SecurityWebFilterChain bean matching /cloudfoundryapplication/** with permitAll(), csrf.disable(), and CORS configuration.
+This allows Spring Security's native ServerHttpSecurityConfiguration to create and keep the single WebFilterChainProxy. Cloud Foundry routes are given higher precedence to bypass authentication, while the rest of the application's security configuration and the user's custom firewall remain completely untouched.
+
+How this was verified
+Added regression tests in CloudFoundryReactiveActuatorAutoConfigurationTests:
+
+customFirewallBeanIsPreserved: Asserts that a custom ServerWebExchangeFirewall @Bean stays on WebFilterChainProxy.
+directlyConfiguredFirewallIsPreserved: Asserts that firewalls set directly via proxy.setFirewall(...) in a post-processor survive.
+customFirewallIsInvokedOnRequests: Verifies runtime execution of firewall.getFirewalledExchange(...).
+userSecurityWebFilterChainIsPreserved: Confirms that user-defined SecurityWebFilterChain beans coexist alongside the Cloud Foundry chain with correct ordering.
+Ran:
+
+bash
+./gradlew :module:spring-boot-cloudfoundry:test
+./gradlew :module:spring-boot-cloudfoundry:check
+All reactive tests, servlet tests, checkstyle, and Spring JavaFormat checks pass cleanly.
+
+Contributor Checklist
+ Signed-off-by trailer included in commit for DCO
+ Code formatted with Spring JavaFormat
+ Checkstyle checks pass
+ @author tag added
+ Unit/slice regression tests added
+","How this was verified
+Added regression tests in CloudFoundryReactiveActuatorAutoConfigurationTests:
+
+customFirewallBeanIsPreserved: Asserts that a custom ServerWebExchangeFirewall @Bean stays on WebFilterChainProxy.
+directlyConfiguredFirewallIsPreserved: Asserts that firewalls set directly via proxy.setFirewall(...) in a post-processor survive.
+customFirewallIsInvokedOnRequests: Verifies runtime execution of firewall.getFirewalledExchange(...).","['', 'GOAL', 'GOAL']",GOAL
+42645850_6_2_11,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,6,2,11,PULL_REQUEST,https://github.com/spring-projects/spring-boot/pull/51549#body,pr_info_body,51549.0,,"Fixes #45377
+
+Hi team,
+
+This PR addresses an issue where custom ServerWebExchangeFirewall configurations are lost when running reactive applications on Cloud Foundry.
+
+What was happening?
+When VCAP_APPLICATION is present, CloudFoundryReactiveActuatorAutoConfiguration used a BeanPostProcessor (WebFilterChainPostProcessor) to wrap WebFilterChainProxy.
+
+The trouble with that approach is that instantiating a new WebFilterChainProxy creates a fresh instance with its private firewall field defaulting to new StrictServerWebExchangeFirewall(). As a result:
+
+Any custom ServerWebExchangeFirewall bean declared by the user was discarded.
+Direct customizations (e.g. calling setFirewall(...) on the proxy) were also lost.
+Incoming requests were evaluated by the new proxy's strict firewall at the perimeter, rejecting valid requests that rely on customized firewall rules (like matrix parameters or specific URI encodings).
+The Fix
+Following @wilkinsona's suggestion in #45377, we aligned the reactive configuration with how the servlet side already handles this in IgnoredCloudFoundryPathsWebSecurityConfiguration:
+
+Removed WebFilterChainPostProcessor.
+Added a dedicated @Order(-1) SecurityWebFilterChain bean matching /cloudfoundryapplication/** with permitAll(), csrf.disable(), and CORS configuration.
+This allows Spring Security's native ServerHttpSecurityConfiguration to create and keep the single WebFilterChainProxy. Cloud Foundry routes are given higher precedence to bypass authentication, while the rest of the application's security configuration and the user's custom firewall remain completely untouched.
+
+How this was verified
+Added regression tests in CloudFoundryReactiveActuatorAutoConfigurationTests:
+
+customFirewallBeanIsPreserved: Asserts that a custom ServerWebExchangeFirewall @Bean stays on WebFilterChainProxy.
+directlyConfiguredFirewallIsPreserved: Asserts that firewalls set directly via proxy.setFirewall(...) in a post-processor survive.
+customFirewallIsInvokedOnRequests: Verifies runtime execution of firewall.getFirewalledExchange(...).
+userSecurityWebFilterChainIsPreserved: Confirms that user-defined SecurityWebFilterChain beans coexist alongside the Cloud Foundry chain with correct ordering.
+Ran:
+
+bash
+./gradlew :module:spring-boot-cloudfoundry:test
+./gradlew :module:spring-boot-cloudfoundry:check
+All reactive tests, servlet tests, checkstyle, and Spring JavaFormat checks pass cleanly.
+
+Contributor Checklist
+ Signed-off-by trailer included in commit for DCO
+ Code formatted with Spring JavaFormat
+ Checkstyle checks pass
+ @author tag added
+ Unit/slice regression tests added
+",userSecurityWebFilterChainIsPreserved: Confirms that user-defined SecurityWebFilterChain beans coexist alongside the Cloud Foundry chain with correct ordering.,"['', 'GOAL', 'GOAL']",GOAL
+42645850_6_2_12,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,6,2,12,PULL_REQUEST,https://github.com/spring-projects/spring-boot/pull/51549#body,pr_info_body,51549.0,,"Fixes #45377
+
+Hi team,
+
+This PR addresses an issue where custom ServerWebExchangeFirewall configurations are lost when running reactive applications on Cloud Foundry.
+
+What was happening?
+When VCAP_APPLICATION is present, CloudFoundryReactiveActuatorAutoConfiguration used a BeanPostProcessor (WebFilterChainPostProcessor) to wrap WebFilterChainProxy.
+
+The trouble with that approach is that instantiating a new WebFilterChainProxy creates a fresh instance with its private firewall field defaulting to new StrictServerWebExchangeFirewall(). As a result:
+
+Any custom ServerWebExchangeFirewall bean declared by the user was discarded.
+Direct customizations (e.g. calling setFirewall(...) on the proxy) were also lost.
+Incoming requests were evaluated by the new proxy's strict firewall at the perimeter, rejecting valid requests that rely on customized firewall rules (like matrix parameters or specific URI encodings).
+The Fix
+Following @wilkinsona's suggestion in #45377, we aligned the reactive configuration with how the servlet side already handles this in IgnoredCloudFoundryPathsWebSecurityConfiguration:
+
+Removed WebFilterChainPostProcessor.
+Added a dedicated @Order(-1) SecurityWebFilterChain bean matching /cloudfoundryapplication/** with permitAll(), csrf.disable(), and CORS configuration.
+This allows Spring Security's native ServerHttpSecurityConfiguration to create and keep the single WebFilterChainProxy. Cloud Foundry routes are given higher precedence to bypass authentication, while the rest of the application's security configuration and the user's custom firewall remain completely untouched.
+
+How this was verified
+Added regression tests in CloudFoundryReactiveActuatorAutoConfigurationTests:
+
+customFirewallBeanIsPreserved: Asserts that a custom ServerWebExchangeFirewall @Bean stays on WebFilterChainProxy.
+directlyConfiguredFirewallIsPreserved: Asserts that firewalls set directly via proxy.setFirewall(...) in a post-processor survive.
+customFirewallIsInvokedOnRequests: Verifies runtime execution of firewall.getFirewalledExchange(...).
+userSecurityWebFilterChainIsPreserved: Confirms that user-defined SecurityWebFilterChain beans coexist alongside the Cloud Foundry chain with correct ordering.
+Ran:
+
+bash
+./gradlew :module:spring-boot-cloudfoundry:test
+./gradlew :module:spring-boot-cloudfoundry:check
+All reactive tests, servlet tests, checkstyle, and Spring JavaFormat checks pass cleanly.
+
+Contributor Checklist
+ Signed-off-by trailer included in commit for DCO
+ Code formatted with Spring JavaFormat
+ Checkstyle checks pass
+ @author tag added
+ Unit/slice regression tests added
+","Ran:
+
+bash
+./gradlew :module:spring-boot-cloudfoundry:test
+./gradlew :module:","['', '', '']",
+42645850_6_2_13,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,6,2,13,PULL_REQUEST,https://github.com/spring-projects/spring-boot/pull/51549#body,pr_info_body,51549.0,,"Fixes #45377
+
+Hi team,
+
+This PR addresses an issue where custom ServerWebExchangeFirewall configurations are lost when running reactive applications on Cloud Foundry.
+
+What was happening?
+When VCAP_APPLICATION is present, CloudFoundryReactiveActuatorAutoConfiguration used a BeanPostProcessor (WebFilterChainPostProcessor) to wrap WebFilterChainProxy.
+
+The trouble with that approach is that instantiating a new WebFilterChainProxy creates a fresh instance with its private firewall field defaulting to new StrictServerWebExchangeFirewall(). As a result:
+
+Any custom ServerWebExchangeFirewall bean declared by the user was discarded.
+Direct customizations (e.g. calling setFirewall(...) on the proxy) were also lost.
+Incoming requests were evaluated by the new proxy's strict firewall at the perimeter, rejecting valid requests that rely on customized firewall rules (like matrix parameters or specific URI encodings).
+The Fix
+Following @wilkinsona's suggestion in #45377, we aligned the reactive configuration with how the servlet side already handles this in IgnoredCloudFoundryPathsWebSecurityConfiguration:
+
+Removed WebFilterChainPostProcessor.
+Added a dedicated @Order(-1) SecurityWebFilterChain bean matching /cloudfoundryapplication/** with permitAll(), csrf.disable(), and CORS configuration.
+This allows Spring Security's native ServerHttpSecurityConfiguration to create and keep the single WebFilterChainProxy. Cloud Foundry routes are given higher precedence to bypass authentication, while the rest of the application's security configuration and the user's custom firewall remain completely untouched.
+
+How this was verified
+Added regression tests in CloudFoundryReactiveActuatorAutoConfigurationTests:
+
+customFirewallBeanIsPreserved: Asserts that a custom ServerWebExchangeFirewall @Bean stays on WebFilterChainProxy.
+directlyConfiguredFirewallIsPreserved: Asserts that firewalls set directly via proxy.setFirewall(...) in a post-processor survive.
+customFirewallIsInvokedOnRequests: Verifies runtime execution of firewall.getFirewalledExchange(...).
+userSecurityWebFilterChainIsPreserved: Confirms that user-defined SecurityWebFilterChain beans coexist alongside the Cloud Foundry chain with correct ordering.
+Ran:
+
+bash
+./gradlew :module:spring-boot-cloudfoundry:test
+./gradlew :module:spring-boot-cloudfoundry:check
+All reactive tests, servlet tests, checkstyle, and Spring JavaFormat checks pass cleanly.
+
+Contributor Checklist
+ Signed-off-by trailer included in commit for DCO
+ Code formatted with Spring JavaFormat
+ Checkstyle checks pass
+ @author tag added
+ Unit/slice regression tests added
+",spring,"['', '', '']",
+42645850_6_2_14,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,6,2,14,PULL_REQUEST,https://github.com/spring-projects/spring-boot/pull/51549#body,pr_info_body,51549.0,,"Fixes #45377
+
+Hi team,
+
+This PR addresses an issue where custom ServerWebExchangeFirewall configurations are lost when running reactive applications on Cloud Foundry.
+
+What was happening?
+When VCAP_APPLICATION is present, CloudFoundryReactiveActuatorAutoConfiguration used a BeanPostProcessor (WebFilterChainPostProcessor) to wrap WebFilterChainProxy.
+
+The trouble with that approach is that instantiating a new WebFilterChainProxy creates a fresh instance with its private firewall field defaulting to new StrictServerWebExchangeFirewall(). As a result:
+
+Any custom ServerWebExchangeFirewall bean declared by the user was discarded.
+Direct customizations (e.g. calling setFirewall(...) on the proxy) were also lost.
+Incoming requests were evaluated by the new proxy's strict firewall at the perimeter, rejecting valid requests that rely on customized firewall rules (like matrix parameters or specific URI encodings).
+The Fix
+Following @wilkinsona's suggestion in #45377, we aligned the reactive configuration with how the servlet side already handles this in IgnoredCloudFoundryPathsWebSecurityConfiguration:
+
+Removed WebFilterChainPostProcessor.
+Added a dedicated @Order(-1) SecurityWebFilterChain bean matching /cloudfoundryapplication/** with permitAll(), csrf.disable(), and CORS configuration.
+This allows Spring Security's native ServerHttpSecurityConfiguration to create and keep the single WebFilterChainProxy. Cloud Foundry routes are given higher precedence to bypass authentication, while the rest of the application's security configuration and the user's custom firewall remain completely untouched.
+
+How this was verified
+Added regression tests in CloudFoundryReactiveActuatorAutoConfigurationTests:
+
+customFirewallBeanIsPreserved: Asserts that a custom ServerWebExchangeFirewall @Bean stays on WebFilterChainProxy.
+directlyConfiguredFirewallIsPreserved: Asserts that firewalls set directly via proxy.setFirewall(...) in a post-processor survive.
+customFirewallIsInvokedOnRequests: Verifies runtime execution of firewall.getFirewalledExchange(...).
+userSecurityWebFilterChainIsPreserved: Confirms that user-defined SecurityWebFilterChain beans coexist alongside the Cloud Foundry chain with correct ordering.
+Ran:
+
+bash
+./gradlew :module:spring-boot-cloudfoundry:test
+./gradlew :module:spring-boot-cloudfoundry:check
+All reactive tests, servlet tests, checkstyle, and Spring JavaFormat checks pass cleanly.
+
+Contributor Checklist
+ Signed-off-by trailer included in commit for DCO
+ Code formatted with Spring JavaFormat
+ Checkstyle checks pass
+ @author tag added
+ Unit/slice regression tests added
+",-,"['', '', '']",
+42645850_6_2_15,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,6,2,15,PULL_REQUEST,https://github.com/spring-projects/spring-boot/pull/51549#body,pr_info_body,51549.0,,"Fixes #45377
+
+Hi team,
+
+This PR addresses an issue where custom ServerWebExchangeFirewall configurations are lost when running reactive applications on Cloud Foundry.
+
+What was happening?
+When VCAP_APPLICATION is present, CloudFoundryReactiveActuatorAutoConfiguration used a BeanPostProcessor (WebFilterChainPostProcessor) to wrap WebFilterChainProxy.
+
+The trouble with that approach is that instantiating a new WebFilterChainProxy creates a fresh instance with its private firewall field defaulting to new StrictServerWebExchangeFirewall(). As a result:
+
+Any custom ServerWebExchangeFirewall bean declared by the user was discarded.
+Direct customizations (e.g. calling setFirewall(...) on the proxy) were also lost.
+Incoming requests were evaluated by the new proxy's strict firewall at the perimeter, rejecting valid requests that rely on customized firewall rules (like matrix parameters or specific URI encodings).
+The Fix
+Following @wilkinsona's suggestion in #45377, we aligned the reactive configuration with how the servlet side already handles this in IgnoredCloudFoundryPathsWebSecurityConfiguration:
+
+Removed WebFilterChainPostProcessor.
+Added a dedicated @Order(-1) SecurityWebFilterChain bean matching /cloudfoundryapplication/** with permitAll(), csrf.disable(), and CORS configuration.
+This allows Spring Security's native ServerHttpSecurityConfiguration to create and keep the single WebFilterChainProxy. Cloud Foundry routes are given higher precedence to bypass authentication, while the rest of the application's security configuration and the user's custom firewall remain completely untouched.
+
+How this was verified
+Added regression tests in CloudFoundryReactiveActuatorAutoConfigurationTests:
+
+customFirewallBeanIsPreserved: Asserts that a custom ServerWebExchangeFirewall @Bean stays on WebFilterChainProxy.
+directlyConfiguredFirewallIsPreserved: Asserts that firewalls set directly via proxy.setFirewall(...) in a post-processor survive.
+customFirewallIsInvokedOnRequests: Verifies runtime execution of firewall.getFirewalledExchange(...).
+userSecurityWebFilterChainIsPreserved: Confirms that user-defined SecurityWebFilterChain beans coexist alongside the Cloud Foundry chain with correct ordering.
+Ran:
+
+bash
+./gradlew :module:spring-boot-cloudfoundry:test
+./gradlew :module:spring-boot-cloudfoundry:check
+All reactive tests, servlet tests, checkstyle, and Spring JavaFormat checks pass cleanly.
+
+Contributor Checklist
+ Signed-off-by trailer included in commit for DCO
+ Code formatted with Spring JavaFormat
+ Checkstyle checks pass
+ @author tag added
+ Unit/slice regression tests added
+",boot,"['', '', '']",
+42645850_6_2_16,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,6,2,16,PULL_REQUEST,https://github.com/spring-projects/spring-boot/pull/51549#body,pr_info_body,51549.0,,"Fixes #45377
+
+Hi team,
+
+This PR addresses an issue where custom ServerWebExchangeFirewall configurations are lost when running reactive applications on Cloud Foundry.
+
+What was happening?
+When VCAP_APPLICATION is present, CloudFoundryReactiveActuatorAutoConfiguration used a BeanPostProcessor (WebFilterChainPostProcessor) to wrap WebFilterChainProxy.
+
+The trouble with that approach is that instantiating a new WebFilterChainProxy creates a fresh instance with its private firewall field defaulting to new StrictServerWebExchangeFirewall(). As a result:
+
+Any custom ServerWebExchangeFirewall bean declared by the user was discarded.
+Direct customizations (e.g. calling setFirewall(...) on the proxy) were also lost.
+Incoming requests were evaluated by the new proxy's strict firewall at the perimeter, rejecting valid requests that rely on customized firewall rules (like matrix parameters or specific URI encodings).
+The Fix
+Following @wilkinsona's suggestion in #45377, we aligned the reactive configuration with how the servlet side already handles this in IgnoredCloudFoundryPathsWebSecurityConfiguration:
+
+Removed WebFilterChainPostProcessor.
+Added a dedicated @Order(-1) SecurityWebFilterChain bean matching /cloudfoundryapplication/** with permitAll(), csrf.disable(), and CORS configuration.
+This allows Spring Security's native ServerHttpSecurityConfiguration to create and keep the single WebFilterChainProxy. Cloud Foundry routes are given higher precedence to bypass authentication, while the rest of the application's security configuration and the user's custom firewall remain completely untouched.
+
+How this was verified
+Added regression tests in CloudFoundryReactiveActuatorAutoConfigurationTests:
+
+customFirewallBeanIsPreserved: Asserts that a custom ServerWebExchangeFirewall @Bean stays on WebFilterChainProxy.
+directlyConfiguredFirewallIsPreserved: Asserts that firewalls set directly via proxy.setFirewall(...) in a post-processor survive.
+customFirewallIsInvokedOnRequests: Verifies runtime execution of firewall.getFirewalledExchange(...).
+userSecurityWebFilterChainIsPreserved: Confirms that user-defined SecurityWebFilterChain beans coexist alongside the Cloud Foundry chain with correct ordering.
+Ran:
+
+bash
+./gradlew :module:spring-boot-cloudfoundry:test
+./gradlew :module:spring-boot-cloudfoundry:check
+All reactive tests, servlet tests, checkstyle, and Spring JavaFormat checks pass cleanly.
+
+Contributor Checklist
+ Signed-off-by trailer included in commit for DCO
+ Code formatted with Spring JavaFormat
+ Checkstyle checks pass
+ @author tag added
+ Unit/slice regression tests added
+",-cloudfoundry:,"['', '', '']",
+42645850_6_2_17,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,6,2,17,PULL_REQUEST,https://github.com/spring-projects/spring-boot/pull/51549#body,pr_info_body,51549.0,,"Fixes #45377
+
+Hi team,
+
+This PR addresses an issue where custom ServerWebExchangeFirewall configurations are lost when running reactive applications on Cloud Foundry.
+
+What was happening?
+When VCAP_APPLICATION is present, CloudFoundryReactiveActuatorAutoConfiguration used a BeanPostProcessor (WebFilterChainPostProcessor) to wrap WebFilterChainProxy.
+
+The trouble with that approach is that instantiating a new WebFilterChainProxy creates a fresh instance with its private firewall field defaulting to new StrictServerWebExchangeFirewall(). As a result:
+
+Any custom ServerWebExchangeFirewall bean declared by the user was discarded.
+Direct customizations (e.g. calling setFirewall(...) on the proxy) were also lost.
+Incoming requests were evaluated by the new proxy's strict firewall at the perimeter, rejecting valid requests that rely on customized firewall rules (like matrix parameters or specific URI encodings).
+The Fix
+Following @wilkinsona's suggestion in #45377, we aligned the reactive configuration with how the servlet side already handles this in IgnoredCloudFoundryPathsWebSecurityConfiguration:
+
+Removed WebFilterChainPostProcessor.
+Added a dedicated @Order(-1) SecurityWebFilterChain bean matching /cloudfoundryapplication/** with permitAll(), csrf.disable(), and CORS configuration.
+This allows Spring Security's native ServerHttpSecurityConfiguration to create and keep the single WebFilterChainProxy. Cloud Foundry routes are given higher precedence to bypass authentication, while the rest of the application's security configuration and the user's custom firewall remain completely untouched.
+
+How this was verified
+Added regression tests in CloudFoundryReactiveActuatorAutoConfigurationTests:
+
+customFirewallBeanIsPreserved: Asserts that a custom ServerWebExchangeFirewall @Bean stays on WebFilterChainProxy.
+directlyConfiguredFirewallIsPreserved: Asserts that firewalls set directly via proxy.setFirewall(...) in a post-processor survive.
+customFirewallIsInvokedOnRequests: Verifies runtime execution of firewall.getFirewalledExchange(...).
+userSecurityWebFilterChainIsPreserved: Confirms that user-defined SecurityWebFilterChain beans coexist alongside the Cloud Foundry chain with correct ordering.
+Ran:
+
+bash
+./gradlew :module:spring-boot-cloudfoundry:test
+./gradlew :module:spring-boot-cloudfoundry:check
+All reactive tests, servlet tests, checkstyle, and Spring JavaFormat checks pass cleanly.
+
+Contributor Checklist
+ Signed-off-by trailer included in commit for DCO
+ Code formatted with Spring JavaFormat
+ Checkstyle checks pass
+ @author tag added
+ Unit/slice regression tests added
+",check,"['', '', '']",
+42645850_6_2_18,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,6,2,18,PULL_REQUEST,https://github.com/spring-projects/spring-boot/pull/51549#body,pr_info_body,51549.0,,"Fixes #45377
+
+Hi team,
+
+This PR addresses an issue where custom ServerWebExchangeFirewall configurations are lost when running reactive applications on Cloud Foundry.
+
+What was happening?
+When VCAP_APPLICATION is present, CloudFoundryReactiveActuatorAutoConfiguration used a BeanPostProcessor (WebFilterChainPostProcessor) to wrap WebFilterChainProxy.
+
+The trouble with that approach is that instantiating a new WebFilterChainProxy creates a fresh instance with its private firewall field defaulting to new StrictServerWebExchangeFirewall(). As a result:
+
+Any custom ServerWebExchangeFirewall bean declared by the user was discarded.
+Direct customizations (e.g. calling setFirewall(...) on the proxy) were also lost.
+Incoming requests were evaluated by the new proxy's strict firewall at the perimeter, rejecting valid requests that rely on customized firewall rules (like matrix parameters or specific URI encodings).
+The Fix
+Following @wilkinsona's suggestion in #45377, we aligned the reactive configuration with how the servlet side already handles this in IgnoredCloudFoundryPathsWebSecurityConfiguration:
+
+Removed WebFilterChainPostProcessor.
+Added a dedicated @Order(-1) SecurityWebFilterChain bean matching /cloudfoundryapplication/** with permitAll(), csrf.disable(), and CORS configuration.
+This allows Spring Security's native ServerHttpSecurityConfiguration to create and keep the single WebFilterChainProxy. Cloud Foundry routes are given higher precedence to bypass authentication, while the rest of the application's security configuration and the user's custom firewall remain completely untouched.
+
+How this was verified
+Added regression tests in CloudFoundryReactiveActuatorAutoConfigurationTests:
+
+customFirewallBeanIsPreserved: Asserts that a custom ServerWebExchangeFirewall @Bean stays on WebFilterChainProxy.
+directlyConfiguredFirewallIsPreserved: Asserts that firewalls set directly via proxy.setFirewall(...) in a post-processor survive.
+customFirewallIsInvokedOnRequests: Verifies runtime execution of firewall.getFirewalledExchange(...).
+userSecurityWebFilterChainIsPreserved: Confirms that user-defined SecurityWebFilterChain beans coexist alongside the Cloud Foundry chain with correct ordering.
+Ran:
+
+bash
+./gradlew :module:spring-boot-cloudfoundry:test
+./gradlew :module:spring-boot-cloudfoundry:check
+All reactive tests, servlet tests, checkstyle, and Spring JavaFormat checks pass cleanly.
+
+Contributor Checklist
+ Signed-off-by trailer included in commit for DCO
+ Code formatted with Spring JavaFormat
+ Checkstyle checks pass
+ @author tag added
+ Unit/slice regression tests added
+","All reactive tests, servlet tests, checkstyle, and Spring JavaFormat checks pass cleanly.","['', '', '']",
+42645850_6_2_19,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,6,2,19,PULL_REQUEST,https://github.com/spring-projects/spring-boot/pull/51549#body,pr_info_body,51549.0,,"Fixes #45377
+
+Hi team,
+
+This PR addresses an issue where custom ServerWebExchangeFirewall configurations are lost when running reactive applications on Cloud Foundry.
+
+What was happening?
+When VCAP_APPLICATION is present, CloudFoundryReactiveActuatorAutoConfiguration used a BeanPostProcessor (WebFilterChainPostProcessor) to wrap WebFilterChainProxy.
+
+The trouble with that approach is that instantiating a new WebFilterChainProxy creates a fresh instance with its private firewall field defaulting to new StrictServerWebExchangeFirewall(). As a result:
+
+Any custom ServerWebExchangeFirewall bean declared by the user was discarded.
+Direct customizations (e.g. calling setFirewall(...) on the proxy) were also lost.
+Incoming requests were evaluated by the new proxy's strict firewall at the perimeter, rejecting valid requests that rely on customized firewall rules (like matrix parameters or specific URI encodings).
+The Fix
+Following @wilkinsona's suggestion in #45377, we aligned the reactive configuration with how the servlet side already handles this in IgnoredCloudFoundryPathsWebSecurityConfiguration:
+
+Removed WebFilterChainPostProcessor.
+Added a dedicated @Order(-1) SecurityWebFilterChain bean matching /cloudfoundryapplication/** with permitAll(), csrf.disable(), and CORS configuration.
+This allows Spring Security's native ServerHttpSecurityConfiguration to create and keep the single WebFilterChainProxy. Cloud Foundry routes are given higher precedence to bypass authentication, while the rest of the application's security configuration and the user's custom firewall remain completely untouched.
+
+How this was verified
+Added regression tests in CloudFoundryReactiveActuatorAutoConfigurationTests:
+
+customFirewallBeanIsPreserved: Asserts that a custom ServerWebExchangeFirewall @Bean stays on WebFilterChainProxy.
+directlyConfiguredFirewallIsPreserved: Asserts that firewalls set directly via proxy.setFirewall(...) in a post-processor survive.
+customFirewallIsInvokedOnRequests: Verifies runtime execution of firewall.getFirewalledExchange(...).
+userSecurityWebFilterChainIsPreserved: Confirms that user-defined SecurityWebFilterChain beans coexist alongside the Cloud Foundry chain with correct ordering.
+Ran:
+
+bash
+./gradlew :module:spring-boot-cloudfoundry:test
+./gradlew :module:spring-boot-cloudfoundry:check
+All reactive tests, servlet tests, checkstyle, and Spring JavaFormat checks pass cleanly.
+
+Contributor Checklist
+ Signed-off-by trailer included in commit for DCO
+ Code formatted with Spring JavaFormat
+ Checkstyle checks pass
+ @author tag added
+ Unit/slice regression tests added
+","Contributor Checklist
+ Signed-off-by trailer included in commit for DCO
+ Code formatted with Spring JavaFormat
+ Checkstyle checks pass
+ @author tag added
+ Unit/slice regression tests added","['', '', '']",
+42645850_6_3_0,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,6,3,0,PULL_REQUEST,https://github.com/spring-projects/spring-boot/pull/51549#issuecomment-5581700940,pr_info_comment,51549.0,,"Thanks very much, @aashikantkumar.","Thanks very much, @aashikantkumar.","['', '', '']",
+42645850_6_4_0,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,6,4,0,PULL_REQUEST,https://github.com/spring-projects/spring-boot/pull/51549#issuecomment-5694225745,pr_info_comment,51549.0,,This one needs a little more thought so I've reverted the changes in d9abd902f5affe24cdea2b822ba0f2e2d4eb611b.,This one needs a little more thought so I've reverted the changes in d9abd902f5affe24cdea2b822ba0f2e2d4eb611b.,"['', '', '']",
+42645850_6_5_0,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,6,5,0,PULL_REQUEST,https://github.com/spring-projects/spring-boot/pull/51549#issuecomment-5694428417,pr_info_comment,51549.0,,"Thanks for the update, @wilkinsona. I understand. Could you please share the specific concerns or areas that need further consideration? I’d be happy to investigate them and help work toward a better solution","Thanks for the update, @wilkinsona.","['', '', '']",
+42645850_6_5_1,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,6,5,1,PULL_REQUEST,https://github.com/spring-projects/spring-boot/pull/51549#issuecomment-5694428417,pr_info_comment,51549.0,,"Thanks for the update, @wilkinsona. I understand. Could you please share the specific concerns or areas that need further consideration? I’d be happy to investigate them and help work toward a better solution",I understand.,"['', '', '']",
+42645850_6_5_2,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,6,5,2,PULL_REQUEST,https://github.com/spring-projects/spring-boot/pull/51549#issuecomment-5694428417,pr_info_comment,51549.0,,"Thanks for the update, @wilkinsona. I understand. Could you please share the specific concerns or areas that need further consideration? I’d be happy to investigate them and help work toward a better solution",Could you please share the specific concerns or areas that need further consideration?,"['', '', '']",
+42645850_6_5_3,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,6,5,3,PULL_REQUEST,https://github.com/spring-projects/spring-boot/pull/51549#issuecomment-5694428417,pr_info_comment,51549.0,,"Thanks for the update, @wilkinsona. I understand. Could you please share the specific concerns or areas that need further consideration? I’d be happy to investigate them and help work toward a better solution",I’d be happy to investigate them and help work toward a better solution,"['', '', '']",
+42645850_7_1_0,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,7,1,0,CODE_REVIEW_COMMENT,https://github.com/spring-projects/spring-boot/pull/51549#discussion_r3935508768,pr_info_review_comment,51549.0,,I don't think these tests are necessary as the potential to cause problems with the firewall is removed entirely by the new approach. See also the equivalent servlet-based tests where we don't consider the firewall either. Please remove.,I don't think these tests are necessary as the potential to cause problems with the firewall is removed entirely by the new approach.,"['NEED', 'NEED', 'NEED']",NEED
+42645850_7_1_1,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,7,1,1,CODE_REVIEW_COMMENT,https://github.com/spring-projects/spring-boot/pull/51549#discussion_r3935508768,pr_info_review_comment,51549.0,,I don't think these tests are necessary as the potential to cause problems with the firewall is removed entirely by the new approach. See also the equivalent servlet-based tests where we don't consider the firewall either. Please remove.,See also the equivalent servlet-based tests where we don't consider the firewall either.,"['', '', '']",
+42645850_7_1_2,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,7,1,2,CODE_REVIEW_COMMENT,https://github.com/spring-projects/spring-boot/pull/51549#discussion_r3935508768,pr_info_review_comment,51549.0,,I don't think these tests are necessary as the potential to cause problems with the firewall is removed entirely by the new approach. See also the equivalent servlet-based tests where we don't consider the firewall either. Please remove.,Please remove.,"['', '', '']",
+42645850_7_2_0,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,7,2,0,CODE_REVIEW_COMMENT,https://github.com/spring-projects/spring-boot/pull/51549#discussion_r3935556787,pr_info_review_comment,51549.0,,This test should be renamed as the paths are now permitted rather than being ignored. New tests should be added to test CSRF and cross-origin requests. See `cloudFoundryPathsPermittedWithCsrfBySpringSecurity` and `crossOriginRequestToCloudFoundryPathsPermittedBySpringSecurity` in `CloudFoundryActuatorAutoConfigurationTests` for inspiration.,This test should be renamed as the paths are now permitted rather than being ignored.,"['GOAL', 'GOAL', 'GOAL']",GOAL
+42645850_7_2_1,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,7,2,1,CODE_REVIEW_COMMENT,https://github.com/spring-projects/spring-boot/pull/51549#discussion_r3935556787,pr_info_review_comment,51549.0,,This test should be renamed as the paths are now permitted rather than being ignored. New tests should be added to test CSRF and cross-origin requests. See `cloudFoundryPathsPermittedWithCsrfBySpringSecurity` and `crossOriginRequestToCloudFoundryPathsPermittedBySpringSecurity` in `CloudFoundryActuatorAutoConfigurationTests` for inspiration.,New tests should be added to test CSRF and cross-origin requests.,"['GOAL', 'GOAL', 'GOAL']",GOAL
+42645850_7_2_2,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,7,2,2,CODE_REVIEW_COMMENT,https://github.com/spring-projects/spring-boot/pull/51549#discussion_r3935556787,pr_info_review_comment,51549.0,,This test should be renamed as the paths are now permitted rather than being ignored. New tests should be added to test CSRF and cross-origin requests. See `cloudFoundryPathsPermittedWithCsrfBySpringSecurity` and `crossOriginRequestToCloudFoundryPathsPermittedBySpringSecurity` in `CloudFoundryActuatorAutoConfigurationTests` for inspiration.,See `cloudFoundryPathsPermittedWithCsrfBySpringSecurity` and `crossOriginRequestToCloudFoundryPathsPermittedBySpringSecurity` in `CloudFoundryActuatorAutoConfigurationTests` for inspiration.,"['', '', '']",
+42645850_7_3_0,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,7,3,0,CODE_REVIEW_COMMENT,https://github.com/spring-projects/spring-boot/pull/51549#discussion_r3937130810,pr_info_review_comment,51549.0,,"Makes total sense. Since we're no longer touching WebFilterChainProxy, the firewall isn't impacted anymore. I've removed these three tests and cleaned up the unused imports.",Makes total sense.,"['', '', '']",
+42645850_7_3_1,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,7,3,1,CODE_REVIEW_COMMENT,https://github.com/spring-projects/spring-boot/pull/51549#discussion_r3937130810,pr_info_review_comment,51549.0,,"Makes total sense. Since we're no longer touching WebFilterChainProxy, the firewall isn't impacted anymore. I've removed these three tests and cleaned up the unused imports.","Since we're no longer touching WebFilterChainProxy, the firewall isn't impacted anymore.","['NEED', 'NEED', 'NEED']",NEED
+42645850_7_3_2,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,7,3,2,CODE_REVIEW_COMMENT,https://github.com/spring-projects/spring-boot/pull/51549#discussion_r3937130810,pr_info_review_comment,51549.0,,"Makes total sense. Since we're no longer touching WebFilterChainProxy, the firewall isn't impacted anymore. I've removed these three tests and cleaned up the unused imports.",I've removed these three tests and cleaned up the unused imports.,"['GOAL', '', '']",
+42645850_7_4_0,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,7,4,0,CODE_REVIEW_COMMENT,https://github.com/spring-projects/spring-boot/pull/51549#discussion_r3937131757,pr_info_review_comment,51549.0,,Updated! I've renamed the test to cloudFoundryPathsPermittedBySpringSecurity and added both cloudFoundryPathsPermittedWithCsrfBySpringSecurity and crossOriginRequestToCloudFoundryPathsPermittedBySpringSecurity mirroring the servlet test suite.,Updated!,"['', '', '']",
+42645850_7_4_1,42645850,https://github.com/spring-projects/spring-boot/commit/ad8f14e7855aaf71063f6ae200064c6c6185be00,spring-projects,spring-boot,ad8f14e7855aaf71063f6ae200064c6c6185be00,7,4,1,CODE_REVIEW_COMMENT,https://github.com/spring-projects/spring-boot/pull/51549#discussion_r3937131757,pr_info_review_comment,51549.0,,Updated! I've renamed the test to cloudFoundryPathsPermittedBySpringSecurity and added both cloudFoundryPathsPermittedWithCsrfBySpringSecurity and crossOriginRequestToCloudFoundryPathsPermittedBySpringSecurity mirroring the servlet test suite.,I've renamed the test to cloudFoundryPathsPermittedBySpringSecurity and added both cloudFoundryPathsPermittedWithCsrfBySpringSecurity and crossOriginRequestToCloudFoundryPathsPermittedBySpringSecurity mirroring the servlet test suite.,"['GOAL', 'GOAL', 'GOAL']",GOAL
