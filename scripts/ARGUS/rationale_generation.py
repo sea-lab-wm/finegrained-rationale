@@ -1,19 +1,15 @@
 import argparse
 import json
-import os
 from collections import defaultdict
 from pathlib import Path
 from typing import Any
 
-import pandas as pd
-from openai import OpenAI
 
+from csv_utils import read_csv_rows
+from rationale_sources import build_references, citation_aliases, citation_id, citation_instructions, render_prompt, resolve_component_citations
+from llm_provider import generate_text
 from artifact_retrieval import DEFAULT_OUTPUT_ROOT, get_commit_output_dir, resolve_commit_coordinates
 from rationale_sentence_identifier import ensure_artifacts_file, identify_rationale_sentences
-
-
-SOURCE_ROOT = Path(__file__).resolve().parents[2]
-CG_TEMPLATE_PATH = SOURCE_ROOT / "data" / "CGPromptTemplate.csv"
 
 
 def parse_args() -> argparse.Namespace:
@@ -39,11 +35,6 @@ def parse_args() -> argparse.Namespace:
         default="o4-mini",
         help="OpenAI model used for rationale generation.",
     )
-    parser.add_argument(
-        "--prompt-strategy",
-        default="CG-FS",
-        help="Prompt strategy name from data/CGPromptTemplate.csv.",
-    )
     return parser.parse_args()
 
 
@@ -64,7 +55,6 @@ def main() -> None:
         identified_path=identified_path,
         output_dir=output_dir,
         model_name=args.model,
-        prompt_strategy=args.prompt_strategy,
     )
     print(f"Rationale summary saved to {summary_path}")
 
@@ -109,8 +99,7 @@ def ensure_pipeline_inputs(
         artifacts_path=Path(artifacts_path),
         output_dir=output_dir,
         model_name="o4-mini",
-        runs=3,
-        prompt_strategy="CI-FS",
+        runs=1,
     )
     return Path(artifacts_path), identified_path
 
@@ -120,26 +109,28 @@ def generate_rationale_summary(
     identified_path: Path,
     output_dir: Path,
     model_name: str,
-    prompt_strategy: str,
 ) -> Path:
     artifacts = read_json(artifacts_path)
-    identified_df = pd.read_csv(identified_path)
-    identified_rows = identified_df.to_dict(orient="records")
+    identified_rows = read_csv_rows(identified_path)
 
-    prompt = build_generation_prompt(artifacts, identified_rows, prompt_strategy)
+    prompt = build_generation_prompt(artifacts, identified_rows)
     (output_dir / "rationale_generation_prompt.txt").write_text(prompt, encoding="utf-8")
 
-    response_text = request_openai_response(prompt, model_name)
+    references = build_references(identified_rows)
+    response_text = request_openai_response(prompt, model_name) if references else "\n".join(
+        f"{label}: No evidence found." for label in ("GOAL", "NEED", "ALTERNATIVES")
+    )
     (output_dir / "rationale_summary.txt").write_text(response_text, encoding="utf-8")
 
-    parsed_components = parse_rationale_response(response_text)
+    parsed_components = resolve_component_citations(parse_rationale_response(response_text), references)
     payload = {
         "commit_id": artifacts["commit_id"],
         "commit_url": artifacts["commit_url"],
         "model": model_name,
-        "prompt_strategy": prompt_strategy,
         "raw_response": response_text,
         "components": parsed_components,
+        "references": references,
+        "citation_aliases": {alias: reference_id for reference_id, alias in citation_aliases(references).items()},
     }
 
     output_path = output_dir / "rationale_summary.json"
@@ -151,40 +142,26 @@ def generate_rationale_summary(
 def build_generation_prompt(
     artifacts: dict[str, Any],
     identified_rows: list[dict[str, Any]],
-    prompt_strategy: str,
 ) -> str:
-    templates = pd.read_csv(CG_TEMPLATE_PATH)
-    template_row = templates[templates["prompt_strategy"] == prompt_strategy]
-    if template_row.empty:
-        raise ValueError(f"Prompt strategy not found: {prompt_strategy}")
-    row = template_row.iloc[0]
-
     code_diff_information = "\n\n".join(
-        row["code_diff_information"]
-        .replace("<index>", str(index + 1))
-        .replace("<file_name>", file_info.get("filename", ""))
-        .replace("<diff>", file_info.get("patch") or "<patch unavailable>")
-        for index, file_info in enumerate(artifacts["commit_info"].get("files", []))
+        f'{index}. \nFile: {file_info.get("filename", "")}\nDiff:\n"""{file_info.get("patch") or "<patch unavailable>"}"""'
+        for index, file_info in enumerate(artifacts["commit_info"].get("files", []), 1)
     )
-
     sentences_information = format_identified_sentences_for_prompt(
-        row["sentences_information"],
-        identified_rows,
+        'Id: <index>\nSource: <source>\nSentence: \n"""<sentence>"""\nLabels: <labels>', identified_rows,
     )
-
-    project_name = f"{artifacts['owner']}/{artifacts['repo']}"
-    return (
-        row["template"]
-        .replace("<project_name>", project_name)
-        .replace("<code_diff_information>", code_diff_information)
-        .replace("<sentences_information>", sentences_information)
-        .replace("<sentence_count>", str(len(identified_rows)))
+    return render_prompt(
+        "commit-rationale.md", project_name=f"{artifacts['owner']}/{artifacts['repo']}",
+        code_diff_information=code_diff_information, sentences_information=sentences_information,
+        citation_instructions=citation_instructions(build_references(identified_rows)),
     )
-
 
 def format_identified_sentences_for_prompt(template: str, rows: list[dict[str, Any]]) -> str:
+    aliases = citation_aliases(build_references(rows))
     grouped: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for row in rows:
+        if citation_id(row) not in aliases:
+            continue
         grouped[f"{row['source']}::{row['source_id']}::{row['text_id']}"].append(row)
 
     buckets = {
@@ -202,7 +179,7 @@ def format_identified_sentences_for_prompt(template: str, rows: list[dict[str, A
         formatted_rows = []
         for row in group:
             formatted_rows.append(
-                template.replace("<index>", str(row["id"]))
+                template.replace("<index>", aliases[citation_id(row)])
                 .replace("<source>", str(row["source"]))
                 .replace("<sentence>", str(row["sentence"]))
                 .replace("<labels>", str(row["final_labels"]))
@@ -244,17 +221,7 @@ def format_identified_sentences_for_prompt(template: str, rows: list[dict[str, A
 
 
 def request_openai_response(prompt: str, model_name: str) -> str:
-    api_key = os.environ.get("OPENAI_TOKEN") or os.environ.get("OPENAI_API_KEY")
-    if not api_key:
-        raise RuntimeError("OPENAI_TOKEN or OPENAI_API_KEY must be set.")
-
-    client = OpenAI(api_key=api_key)
-    response = client.responses.create(
-        model=model_name,
-        input=[{"role": "user", "content": prompt}],
-        reasoning={"effort": "high"},
-    )
-    return (response.output_text or "").strip()
+    return generate_text(prompt, model_name)
 
 
 def parse_rationale_response(text: str) -> dict[str, str]:

@@ -1,0 +1,104 @@
+{
+  "name": "rationale-ext",
+  "displayName": "Rationale",
+  "description": "Generate rationale for a GitHub commit.",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": ["Other"],
+  "main": "./dist/extension.js",
+  "activationEvents": ["onStartupFinished", "onCommand:rationale.explainCommit", "onCommand:rationale.explainSelection", "onCommand:rationale.configure"],
+  "contributes": {
+    "commands": [
+      {
+        "command": "rationale.openVisualizer",
+        "title": "Rationale: Open in Visualizer"
+      },
+      {
+        "command": "rationale.configure",
+        "title": "Rationale: Configure"
+      },
+      {
+        "command": "rationale.explainCommit",
+        "title": "Rationale: Search via Commit..."
+      },
+      {
+        "command": "rationale.explainSelection",
+        "title": "Rationale: Explain Selected Code"
+      },
+      {
+        "command": "rationale.showLog",
+        "title": "Rationale: Show Log"
+      },
+      {
+        "command": "rationale.repairBackend",
+        "title": "Rationale: Repair Backend"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "rationale.openVisualizer",
+          "when": "resourceExtname == .md && resourcePath =~ /[.]rationale/ && resourceFilename =~ /^(commit|selection)-.+[.]md$/",
+          "group": "navigation@11"
+        }
+      ],
+      "editor/title/context": [
+        {
+          "command": "rationale.openVisualizer",
+          "when": "resourceExtname == .md && resourcePath =~ /[.]rationale/ && resourceFilename =~ /^(commit|selection)-.+[.]md$/",
+          "group": "navigation@11"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "rationale.openVisualizer",
+          "when": "resourceExtname == .md && resourcePath =~ /[.]rationale/ && resourceFilename =~ /^(commit|selection)-.+[.]md$/",
+          "group": "navigation@11"
+        },
+        {
+          "command": "rationale.explainSelection",
+          "when": "editorHasSelection && !editorReadonly",
+          "group": "navigation@10"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Rationale",
+      "properties": {
+        "rationale.uvPath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to a uv executable to use instead of the pinned copy Rationale downloads. Useful on machines that cannot reach GitHub releases."
+        },
+        "rationale.maxCommits": {
+          "type": "integer",
+          "default": 3,
+          "minimum": 1,
+          "description": "Maximum number of commits analyzed for selected code, ranked by the number of selected lines attributed to each commit."
+        },
+        "rationale.runs": {
+          "type": "number",
+          "default": 1,
+          "minimum": 1,
+          "description": "Identification runs used for majority voting. Defaults to one run."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "node esbuild.js",
+    "watch": "node esbuild.js --watch",
+    "package": "node esbuild.js --production",
+    "check-types": "tsc --noEmit",
+    "vscode:prepublish": "npm run package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.90.0",
+    "esbuild": "^0.23.0",
+    "typescript": "^5.5.0"
+  }
+}

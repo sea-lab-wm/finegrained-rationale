@@ -1,70 +1,75 @@
-# Recovering Fine-Grained Code Change Rationale from Multiple Software Artifacts
+# ArgusVS
 
-This repository is the replication package for *Recovering Fine-Grained Code Change Rationale from Multiple Software Artifacts*. It contains the dataset, annotation codebook, prompt templates, *ARGUS* implementation, reported experiment results, and user-study instruments used in the paper.
+ArgusVS explains the reasoning behind code changes and selected code, then saves
+results as Markdown in `.rationale/` at your repository root.
 
-*ARGUS* retrieves artifacts associated with a Java commit, identifies sentences that express **Goal**, **Need**, and **Alternatives**, and synthesizes concise rationale summaries from those sentences.
+## Features
 
-![*ARGUS* Workflow](argus.png)
+From the Command Palette, run **Rationale: Search via Commit...** and enter a
+GitHub commit URL or commit hash. Hashes use the repository GitHub's `origin`
+remote.
 
-## Package contents
+To refresh rationale later, run **Rationale: Search via Commit...**, enter the
+same command for that commit again and choose **Regenerate** when prompted.
+Rationale retrieves the current GitHub context and replaces the saved Markdown
+for that commit. Choose **Open and edit** to revise the existing Markdown by
+hand.
 
-### Data
+Otherwise, select code in VS Code and run **Rationale: Explain Selected Code**.
+Rationale uses Git blame to find the commits behind the selected lines, then
+analyzes those commits and the code. Selected code must be committed, and the
+repository's `origin` must point to GitHub for Rationale to pick up artifacts
+related to the code.
 
-- `data/sampled messages.csv` — the original commit-message dataset from Tian et al. (*referenced in Section 3.1: Commit Collection*)
-- `data/FilteredCommits.csv` — 830 candidate commits retained after language, atomicity, and size filtering. It includes the sampling indicator for the 63-study-commit sample. (*referenced in Section 3.1: Commit Collection*)
-- `data/AnnotatedSentenceData.csv` — sentence-level, multi-label annotations for the 63 sampled commits, including source metadata, relevance labels, development/evaluation-set indicators, and reference rationale summaries. (*referenced in Section 1: Introduction - contribution#6*)
-- `data/AnnotationCodebook.csv` — final annotation codebook and decision rules. (*referenced in Section 3.3.2: Rationale Annotation Process*)
-- `data/CIPromptTemplate.csv` — rationale-component-identification prompt templates. (*referenced in Section 5.2.1: Prompt Design and Section: 5.5.5 Impact of the LLM on Argus’s Performance*)
-- `data/CGPromptTemplate.csv` — rationale-component-generation prompt templates. (*referenced in Section 5.2.1: Prompt Design*)
+To reopen saved rationale, right-click its Markdown file under `.rationale/` in
+Explorer, or right-click the open editor or its tab, and choose **Rationale:
+Open in Visualizer**. The visualizer reads the current Markdown, including your
+edits.
 
-### Implementation
+## Configuration
 
-- `scripts/a_DatasetPreprocessor.py` — filters the original population and prepares the commit input data.
-- `scripts/b_ArtifactRetriever.py` — retrieves GitHub artifacts, extracts Javadocs and inline comments, and segments text into sentences.
-- `scripts/c_RationaleComponentExtractor.py` — creates and executes component-identification prompts.
-- `scripts/d_RationaleComponentGenerator.py` — creates and executes component-generation prompts.
-- `scripts/utils/` — shared configuration and helper functions.
+Run **Rationale: Configure** from the Command Palette. Provide an API Key from
+OpenAI or Anthropic or a signed-in Codex or Claude Code CLI, select a model, and
+test the connection before saving.
 
-### Results
+GitHub access is optional for public repositories and required for private ones.
 
-- `results/AnnotatorAgreement.csv` — agreement by annotation round.
-- `results/DetailedAnnotationAgreement.csv` — component-level agreement details.
-- `results/CommitWiseArtifactCount.csv` and `results/ProjectWiseArtifactCount.csv` — artifact counts after relevance validation.
-- `results/ProjectWiseArtifactCount_IrrelevantIncluded.csv` — artifact counts before excluding irrelevant artifacts.
-- `results/PromptDevelopmentPerformanceComparisonIndividualVSVoting.pdf` — individual-run versus voting comparison for component identification.
-- `results/CI/DevResult.csv` — component-identification prompt-development results.
-- `results/CI/EvaluationResult.csv` — component-identification evaluation results for GPT-o4-mini.
-- `results/CI/CrossModelEvaluationResult.csv` — cross-model component-identification results.
-- `results/CG/DevResult.csv` — component-generation development evaluations.
-- `results/CG/EvaluationResult.csv` — component-generation evaluations, including the cross-model evaluations.
-- `results/RationaleGenerationSimilarity.csv` — similarity among repeated rationale-generation runs.
+If you want to use this extension for a private repo, add a token with access to
+the repository so ARGUS can gather its artifacts. To create a fine-grained
+token, open
+[GitHub's token settings](https://github.com/settings/personal-access-tokens),
+choose the private repository under **Repository access**, and grant read-only
+access to **Contents**, **Issues**, and **Pull requests** under **Repository
+permissions**. Generate and copy the token, then paste it into the GitHub access
+field in Rationale's configuration. A classic token needs the `repo` scope
+instead.
 
-### User study 
+## Troubleshooting
 
-- `user-study/FinalQuestionnaire.docx` — consent form, demographics questions, commit-evaluation questions, and post-study questions. (*referenced in Section 6.1 Study Design*)
-- `user-study/UserStudyCommitDistribution.pdf` — distribution summary for the user-study commit set. (*referenced in Section 6.1 Study Design*)
+Setup and analysis errors appear in the **Rationale** output channel. Run
+**Rationale: Show Log** to view it. For backend setup problems, run **Rationale:
+Repair Backend**.
 
-## Environment setup
+When reporting a problem, attach your Rationale and VS Code versions and the
+error from the output channel and create a [new issue]
+(https://github.com/sea-lab-wm/finegrained-rationale/issues/new).
 
-The scripts were developed with Python 3.10. They use live GitHub data and LLM APIs, so a GitHub access token and an OpenAI API key are required.
+## Settings
 
-```bash
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-export OPENAI_TOKEN=<your-openai-api-key>
-export GITHUB_TOKEN=<your-github-access-token>
+Set the commit limit in VS Code Settings or your `settings.json`:
+
+```json
+{
+  "rationale.maxCommits": 5
+}
 ```
 
-Run commands from the repository root (`finegrained-rationale/`).
+- `rationale.maxCommits`: Maximum commits analyzed for selected code, ranked by
+  the number of selected lines attributed to each commit; defaults to `3`, with
+  a minimum of `1`. Searching by a specific commit analyzes that commit only.
+- `rationale.runs`: Number of rationale identification runs; defaults to `1`.
+- `rationale.uvPath`: Optional path to an installed `uv` executable, useful if
+  Rationale cannot download its bundled copy.
 
-## Running the pipeline
-
-The pipeline is ordered as follows:
-
-```bash
-python scripts/a_DatasetPreprocessor.py
-python scripts/b_ArtifactRetriever.py
-python scripts/c_RationaleComponentExtractor.py -t test
-python scripts/d_RationaleComponentGenerator.py -t test
-```
+See [PUBLISHING.md](./vscode-extension/PUBLISHING.md) for building and
+publishing the extension.

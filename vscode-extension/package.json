@@ -1,0 +1,113 @@
+{
+  "name": "argus-rationale",
+  "displayName": "ARGUS for VS Code",
+  "description": "Generate rationale for a GitHub commit.",
+  "version": "0.5.0",
+  "publisher": "SEALab",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sea-lab-wm/finegrained-rationale.git"
+  },
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./frontend/dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "rationale.openVisualizer",
+        "title": "Rationale: Open in Visualizer"
+      },
+      {
+        "command": "rationale.configure",
+        "title": "Rationale: Configure"
+      },
+      {
+        "command": "rationale.explainCommit",
+        "title": "Rationale: Search via Commit..."
+      },
+      {
+        "command": "rationale.explainSelection",
+        "title": "Rationale: Explain Selected Code"
+      },
+      {
+        "command": "rationale.showLog",
+        "title": "Rationale: Show Log"
+      },
+      {
+        "command": "rationale.repairBackend",
+        "title": "Rationale: Repair Backend"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "rationale.openVisualizer",
+          "when": "resourceExtname == .md && resourcePath =~ /[.]rationale/ && resourceFilename =~ /^(commit|selection)-.+[.]md$/",
+          "group": "navigation@11"
+        }
+      ],
+      "editor/title/context": [
+        {
+          "command": "rationale.openVisualizer",
+          "when": "resourceExtname == .md && resourcePath =~ /[.]rationale/ && resourceFilename =~ /^(commit|selection)-.+[.]md$/",
+          "group": "navigation@11"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "rationale.openVisualizer",
+          "when": "resourceExtname == .md && resourcePath =~ /[.]rationale/ && resourceFilename =~ /^(commit|selection)-.+[.]md$/",
+          "group": "navigation@11"
+        },
+        {
+          "command": "rationale.explainSelection",
+          "when": "editorHasSelection && !editorReadonly",
+          "group": "navigation@10"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "ARGUS",
+      "properties": {
+        "rationale.uvPath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to a uv executable to use instead of the pinned copy Rationale downloads. Useful on machines that cannot reach GitHub releases."
+        },
+        "rationale.maxCommits": {
+          "type": "integer",
+          "default": 3,
+          "minimum": 1,
+          "description": "Maximum number of commits analyzed for selected code, ranked by the number of selected lines attributed to each commit."
+        },
+        "rationale.runs": {
+          "type": "number",
+          "default": 1,
+          "minimum": 1,
+          "description": "Identification runs used for majority voting. Defaults to one run."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "node build.js && npm --prefix frontend ci && npm --prefix frontend run package",
+    "debug": "npm run build && node debug.js",
+    "test": "npm run build && node --test test/*.test.js test/*.test.mjs",
+    "package": "npm run build && vsce package"
+  },
+  "devDependencies": {
+    "@vscode/vsce": "^3.2.2"
+  },
+  "files": [
+    "frontend/dist/**",
+    "python/**",
+    "README.md"
+  ]
+}

@@ -37,7 +37,7 @@ This module reads the saved artifacts and converts them into sentence-level reco
 
 In plain terms, it:
 
-- splits artifact text into individual sentences using `en_core_web_trf`
+- splits artifact text into individual sentences with the rule-based splitter in `sentence_splitter.py`
 - assigns a stable sentence ID to each sentence
 - builds the rationale identification prompt
 - asks the LLM to label sentences with `GOAL`, `NEED`, and `ALTERNATIVES`
@@ -63,12 +63,19 @@ In plain terms, it:
 - builds the rationale generation prompt
 - asks the LLM to write `GOAL`, `NEED`, and `ALTERNATIVES` summaries
 - saves both the raw text response and a structured JSON version
+- asks for inline source footnote markers and validates them against the identified sentences
 
 Its outputs are:
 
 - `rationale_generation_prompt.txt`
 - `rationale_summary.txt`
 - `rationale_summary.json`
+
+The summary JSON includes `references` derived from
+`identified_rationale_sentences.csv`: the original sentence ID, source type,
+source URL, evidence sentence, and component labels. Valid inline footnote
+markers in `components` use these reference IDs. The VS Code extension turns
+them into numbered Markdown footnotes and preserves the original source links.
 
 ## Inputs
 
@@ -175,23 +182,6 @@ Default:
 ```bash
 3
 ```
-
-#### `--prompt-strategy`
-
-Used by:
-
-- `rationale_sentence_identifier.py`
-- `rationale_generation.py`
-
-This selects a prompt template from:
-
-- `data/CIPromptTemplate.csv`
-- `data/CGPromptTemplate.csv`
-
-Defaults:
-
-- identification: `CI-FS`
-- generation: `CG-FS`
 
 ## Environment Requirements
 
@@ -485,7 +475,6 @@ Schema:
   "commit_id": 42645850,
   "commit_url": "https://github.com/<owner>/<repo>/commit/<sha>",
   "model": "o4-mini",
-  "prompt_strategy": "CG-FS",
   "raw_response": "GOAL: ...\nNEED: ...",
   "components": {
     "GOAL": "...",
@@ -522,7 +511,7 @@ So an ID like `42645850_5_3_1` means:
 ## Practical Notes
 
 - Run the modules from the repository root so relative paths to `data/` work correctly.
-- The current implementation uses the `en_core_web_trf` SpaCy model for sentence splitting.
+- Sentence splitting uses the dependency-free, rule-based `sentence_splitter.py`. The original study used the `en_core_web_trf` spaCy model, so sentence boundaries (and therefore sentence IDs) can differ from the published results.
 - The current implementation does not create one wrapper script for all three stages; you run the three modules in sequence.
 - If an intermediate file already exists and you point a later stage directly to it, the later stage will reuse it.
 - The CSV and JSON outputs carry the same information, but JSON preserves Python list structure better for fields like `run_labels`.

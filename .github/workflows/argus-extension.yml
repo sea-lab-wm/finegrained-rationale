@@ -1,0 +1,64 @@
+name: ARGUS extension
+
+on:
+  push:
+    paths:
+      - 'scripts/ARGUS/**'
+      - 'data/AnnotationCodebook.csv'
+      - 'data/CIPromptTemplate.csv'
+      - 'data/CGPromptTemplate.csv'
+      - 'vscode-extension/**'
+      - '.github/workflows/argus-extension.yml'
+  pull_request:
+    paths:
+      - 'scripts/ARGUS/**'
+      - 'data/AnnotationCodebook.csv'
+      - 'data/CIPromptTemplate.csv'
+      - 'data/CGPromptTemplate.csv'
+      - 'vscode-extension/**'
+      - '.github/workflows/argus-extension.yml'
+  workflow_dispatch:
+
+jobs:
+  dependencies:
+    name: Sync backend environment (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: '0.11.19'
+      - run: uv sync --frozen --no-dev --project vscode-extension/backend --python 3.14 --managed-python
+        env:
+          UV_PROJECT_ENVIRONMENT: ${{ runner.temp }}/rationale-env
+      - run: uv run --frozen --no-sync --project vscode-extension/backend python -m compileall -q scripts/ARGUS vscode-extension/scripts
+        env:
+          UV_PROJECT_ENVIRONMENT: ${{ runner.temp }}/rationale-env
+      - run: uv run --frozen --no-sync --project vscode-extension/backend python -m unittest discover -s vscode-extension/test -p 'test_*.py'
+        env:
+          UV_PROJECT_ENVIRONMENT: ${{ runner.temp }}/rationale-env
+
+  package:
+    name: Package universal VSIX
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+        working-directory: vscode-extension
+      - run: npm run build
+        working-directory: vscode-extension
+      - run: npm test
+        working-directory: vscode-extension
+      - run: npm run package
+        working-directory: vscode-extension
+      - uses: actions/upload-artifact@v4
+        with:
+          name: argus-rationale-universal
+          path: vscode-extension/argus-rationale-*.vsix

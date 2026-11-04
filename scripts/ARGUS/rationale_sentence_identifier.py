@@ -2,15 +2,14 @@ import argparse
 import csv
 import io
 import json
-import os
 from collections import defaultdict
 from pathlib import Path
 from typing import Any
 
-import pandas as pd
-import spacy
-from openai import OpenAI
-
+from csv_utils import write_csv_rows
+from llm_provider import generate_text
+from rationale_sources import render_prompt
+from sentence_splitter import split_sentences
 from artifact_retrieval import (
     DEFAULT_OUTPUT_ROOT,
     get_commit_output_dir,
@@ -20,9 +19,6 @@ from artifact_retrieval import (
 )
 
 
-SOURCE_ROOT = Path(__file__).resolve().parents[2]
-CODEBOOK_PATH = SOURCE_ROOT / "data" / "AnnotationCodebook.csv"
-CI_TEMPLATE_PATH = SOURCE_ROOT / "data" / "CIPromptTemplate.csv"
 SOURCE_ID_MAP = {
     "COMMIT_MESSAGE": 1,
     "CODE_COMMENT": 2,
@@ -57,13 +53,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--runs",
         type=int,
-        default=3,
+        default=1,
         help="Number of LLM runs used for majority voting.",
-    )
-    parser.add_argument(
-        "--prompt-strategy",
-        default="CI-FS",
-        help="Prompt strategy name from data/CIPromptTemplate.csv.",
     )
     return parser.parse_args()
 
@@ -84,7 +75,6 @@ def main() -> None:
         output_dir=output_dir,
         model_name=args.model,
         runs=args.runs,
-        prompt_strategy=args.prompt_strategy,
     )
     print(f"Identified rationale sentences saved to {identified_path}")
 
@@ -113,15 +103,14 @@ def identify_rationale_sentences(
     output_dir: Path,
     model_name: str,
     runs: int,
-    prompt_strategy: str,
 ) -> Path:
     payload = read_json(artifacts_path)
     sentences = build_sentence_rows(payload)
     sentences_csv_path = output_dir / "sentences.csv"
-    pd.DataFrame(sentences).to_csv(sentences_csv_path, index=False)
+    write_csv_rows(sentences_csv_path, sentences)
     write_json(output_dir / "sentences.json", sentences)
 
-    prompt = build_identification_prompt(payload, sentences, prompt_strategy)
+    prompt = build_identification_prompt(payload, sentences)
     prompt_path = output_dir / "identification_prompt.txt"
     prompt_path.write_text(prompt, encoding="utf-8")
 
@@ -152,9 +141,9 @@ def identify_rationale_sentences(
     rationale_rows = [row for row in all_rows if row["final_labels"]]
 
     all_sentences_path = output_dir / "sentences_labeled.csv"
-    pd.DataFrame(all_rows).to_csv(all_sentences_path, index=False)
+    write_csv_rows(all_sentences_path, all_rows)
     identified_path = output_dir / "identified_rationale_sentences.csv"
-    pd.DataFrame(rationale_rows).to_csv(identified_path, index=False)
+    write_csv_rows(identified_path, rationale_rows)
 
     write_json(output_dir / "sentences_labeled.json", all_rows)
     write_json(output_dir / "identified_rationale_sentences.json", rationale_rows)
@@ -169,19 +158,6 @@ def read_json(path: Path) -> dict[str, Any]:
 def write_json(path: Path, payload: Any) -> None:
     with path.open("w", encoding="utf-8") as handle:
         json.dump(payload, handle, indent=2)
-
-
-def get_nlp():
-    if not hasattr(get_nlp, "_model"):
-        get_nlp._model = spacy.load("en_core_web_trf")
-    return get_nlp._model
-
-
-def split_sentences(text: str | None) -> list[str]:
-    if not text:
-        return []
-    doc = get_nlp()(text)
-    return [sentence.text.strip() for sentence in doc.sents if sentence.text.strip()]
 
 
 def build_sentence_rows(payload: dict[str, Any]) -> list[dict[str, Any]]:
@@ -341,45 +317,19 @@ def filter_issue_body(text: str) -> str:
 def build_identification_prompt(
     payload: dict[str, Any],
     sentences: list[dict[str, Any]],
-    prompt_strategy: str,
 ) -> str:
-    templates = pd.read_csv(CI_TEMPLATE_PATH)
-    template_row = templates[templates["prompt_strategy"] == prompt_strategy]
-    if template_row.empty:
-        raise ValueError(f"Prompt strategy not found: {prompt_strategy}")
-    row = template_row.iloc[0]
-    template = row["template"]
-
-    codebook = pd.read_csv(CODEBOOK_PATH)
-    codebook = codebook[codebook["Annotation Labels"].isin(RATIONALE_CODES)].reset_index(drop=True)
-
-    code_information = "\n\n".join(
-        row["code_information"]
-        .replace("<index>", str(index + 1))
-        .replace("<code>", code_row["Annotation Labels"])
-        .replace("<definintion>", str(code_row["Description"]))
-        .replace("<question>", str(code_row["Component Expressed as Question"]))
-        .replace("<rule>", str(code_row.get("Rules", "")))
-        for index, code_row in codebook.iterrows()
-    )
-
     code_diff_information = "\n\n".join(
-        row["code_diff_information"]
-        .replace("<index>", str(index + 1))
-        .replace("<file_name>", file_info.get("filename", ""))
-        .replace("<diff>", file_info.get("patch") or "<patch unavailable>")
-        for index, file_info in enumerate(payload["commit_info"].get("files", []))
+        f'{index}. \nFile: {file_info.get("filename", "")}\nDiff:\n"""{file_info.get("patch") or "<patch unavailable>"}"""'
+        for index, file_info in enumerate(payload["commit_info"].get("files", []), 1)
     )
-
-    sentences_information = format_sentences_for_prompt(row["sentences_information"], sentences)
-    project_name = f"{payload['owner']}/{payload['repo']}"
-
-    return (
-        template.replace("<project_name>", project_name)
-        .replace("<code_information>", code_information)
-        .replace("<code_diff_information>", code_diff_information)
-        .replace("<sentences_information>", sentences_information)
-        .replace("<sentence_count>", str(len(sentences)))
+    sentences_information = format_sentences_for_prompt(
+        'Id: <index>\nSource: <source>\nSentence: \n"""<sentence>"""', sentences,
+    )
+    return render_prompt(
+        "evidence-identification.md",
+        project_name=f"{payload['owner']}/{payload['repo']}",
+        code_diff_information=code_diff_information,
+        sentences_information=sentences_information,
     )
 
 
@@ -446,17 +396,7 @@ def format_sentences_for_prompt(template: str, sentences: list[dict[str, Any]]) 
 
 
 def request_openai_response(prompt: str, model_name: str) -> str:
-    api_key = os.environ.get("OPENAI_TOKEN") or os.environ.get("OPENAI_API_KEY")
-    if not api_key:
-        raise RuntimeError("OPENAI_TOKEN or OPENAI_API_KEY must be set.")
-
-    client = OpenAI(api_key=api_key)
-    response = client.responses.create(
-        model=model_name,
-        input=[{"role": "user", "content": prompt}],
-        reasoning={"effort": "high"},
-    )
-    return (response.output_text or "").strip()
+    return generate_text(prompt, model_name)
 
 
 def parse_identification_response(response_text: str) -> dict[str, list[str]]:
